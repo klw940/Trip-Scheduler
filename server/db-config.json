@@ -1,0 +1,6 @@
+{
+	"host"			: "your_domain",
+	"user"			: "your_id",
+	"password"		: "your_pw",
+	"database"		: "your_database"
+}
