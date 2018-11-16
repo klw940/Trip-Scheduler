@@ -1,0 +1,16 @@
+.GroupMain{
+    height: 100%;
+}
+
+.Chat{
+    background: #61dafb;
+    float: left;
+    width: 50%;
+    height: 90%;
+}
+.Calandar {
+    background: none;
+    float: right;
+    width: 50%;
+    height: 90%;
+}
