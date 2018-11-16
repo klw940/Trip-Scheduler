@@ -7,7 +7,7 @@ const GroupMain = ({match}) =>{
     return(
         
         <div className="GroupMain">
-            <div>{match.params.username}-{match.params.groupid}</div>
+            <div className="GroupHead">{match.params.username}-{match.params.groupid}</div>
             <div className="Chat"><Chat url={match.url}/></div>
             <div className="Calandar"><Calandar/></div>
         </div>
