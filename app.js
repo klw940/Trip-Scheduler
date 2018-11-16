@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan'); ///log정보 확인
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./server/routes/index');
+var usersRouter = require('./server/routes/users');
 
 var app = express();
 var allowCrossDomain = function(req, res, next) {

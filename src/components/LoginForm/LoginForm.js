@@ -32,14 +32,19 @@ class LoginForm extends Component {
     }
     if (postData) {
       PostData(postData.name, postData).then(result => {
-        this.setState( postData);
+        this.setState( result )
+        console.log(this.state)
+        this.setState( postData );
         this.setState({ redirect: true });
       });
     };
   }
   render() {
     if (this.state.redirect || sessionStorage.getItem('userData')) {
-      return (<Redirect to={"/"+this.state.name} />)
+      return (<Redirect to={{
+        pathname: "/"+this.state.name,
+        state: { referrer:this.state.data }
+      }} />)
     }
     const responseGoogle = response => {
       console.log("google console");
