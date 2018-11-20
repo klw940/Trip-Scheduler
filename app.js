@@ -9,6 +9,8 @@ var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
 
 var app = express();
+
+//HTTP 접근 제어(CROS) 처리
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -16,7 +18,7 @@ var allowCrossDomain = function(req, res, next) {
   next();
 }
 app.use(allowCrossDomain);
-// view engine setup
+//view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
