@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { LoginForm, User_Group, GroupProject } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+//import ExampleComponent from './containers/fullcalendarexample/fullcalendar.js';
 class App extends Component {
   render() {
     return (
@@ -18,6 +18,7 @@ class App extends Component {
            */}
         </div>
       </BrowserRouter>
+      //<ExampleComponent/>
     );
   }
 }

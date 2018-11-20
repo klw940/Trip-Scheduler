@@ -7,16 +7,17 @@ var router = express.Router();
 router.use(bodyparser.json());
 
 router.post('/', function(req, res, next) {
-  const user = JSON.parse(req.body.user);
+
+  const group = JSON.parse(req.body.user);
   MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true },
         (err, client) => {
             async function getList()
             {
                 const db = client.db('Trip_Scheduler')
-                const collection = db.collection('User_Group') ///group member들도 한번에 가져올 것
-                collection.find({}, { User_ID : user.email }).toArray(function (err, result) {
+                const collection = db.collection('Group_Member')
+                collection.find({}, { Group_id : group.id }).toArray(function (err, result) {
                     if (err) throw err;
-                    res.send(result);    
+                    res.send(result);
                     client.close();
                 })
             }
@@ -25,20 +26,18 @@ router.post('/', function(req, res, next) {
         }
     );    
 });
-//그룹 생성
+//그룹맴버로 추가
 router.post('/create',(req,res)=>{
-const user = JSON.parse(req.body.user);
   MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true },
       (err, client) => {
           const db = client.db("Trip_Scheduler")
-          const collection = db.collection('User_Group')
-          collection.insertOne({ User_ID : user.email, Group_Name:user.group }, (err, result) => {
+                const collection = db.collection('Group_Member')
+          collection.insertOne({ name: req.body.name, Contact: req.body.contact }, (err, result) => {
+              console.log("inserted one document")
               client.close();
-
-              ///그룹멤버도 추가해주기
-              res.send(result);
           })
       }
   );
+  res.redirect('/');
 })
 module.exports = router;
