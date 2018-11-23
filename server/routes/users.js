@@ -7,38 +7,29 @@ var router = express.Router();
 router.use(bodyparser.json());
 
 router.post('/', function(req, res, next) {
-  const user = JSON.parse(req.body.user);
-  MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true },
-        (err, client) => {
-            async function getList()
-            {
-                const db = client.db('Trip_Scheduler')
-                const collection = db.collection('User_Group') ///group member들도 한번에 가져올 것
-                collection.find({}, { User_ID : user.email }).toArray(function (err, result) {
-                    if (err) throw err;
-                    res.send(result);    
-                    client.close();
-                })
-            }
-            getList().then()
-
+    const user = JSON.parse(req.body.user);
+    var getGroipList = async () => {
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler')
+        const User_Group = await db.collection('User_Group');
+        const result = await User_Group.find({ User_ID: user.email }).toArray();
+        // req.session['Group_List'] = result;
+        res.send(result);
+        client.close();
         }
-    );    
-});
-//그룹 생성
-router.post('/create',(req,res)=>{
-const user = JSON.parse(req.body.user);
-  MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true },
-      (err, client) => {
-          const db = client.db("Trip_Scheduler")
-          const collection = db.collection('User_Group')
-          collection.insertOne({ User_ID : user.email, Group_Name:user.group }, (err, result) => {
-              client.close();
+    getGroipList();
 
-              ///그룹멤버도 추가해주기
-              res.send(result);
-          })
-      }
-  );
-})
+});
+
+router.post('/create',(req,res)=>{
+    const user = JSON.parse(req.body.user);
+    var CreateGroup = async() => {
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler').collection('User_Group')
+        const result = await db.insertOne({ Group_Name:user.group, User_ID : user.email, Member : [user.name] })
+        res.send(result);
+        client.close();
+    }
+    CreateGroup();
+});
 module.exports = router;

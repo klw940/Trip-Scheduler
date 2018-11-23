@@ -3,30 +3,20 @@ import Popup from 'reactjs-popup'
 import { PostData } from '../../../containers';
 import { Redirect } from "react-router-dom";
 
-//CSS 추가 없으면 container로 옮길 예정
-
 class CreateGroup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: this.props.name,
-            email: this.props.email,
+            name: JSON.parse(sessionStorage.getItem('Group_List'))[0].User_Name,
+            email: JSON.parse(sessionStorage.getItem('Group_List'))[0].User_ID,
             redirect: false
         }
     }
-    input = null;
+    
     render() {
-        if (this.state.redirect){
-            return (
-                <Redirect to={{
-                    pathname: "/"+ this.props.name,
-                    state:{referrer:this.props.referrer, email:this.state.email}
-                  }} 
-                
-                />
-            )
+        if(this.state.redirect){
+            return <Redirect to={'/'+this.state.name}/>
         }
-
         return (
             <div className="createGroup">
                 <Popup
@@ -47,14 +37,15 @@ class CreateGroup extends Component {
                                     onClick={() => {
                                         var data = {
                                             email: this.state.email,
-                                            group: this.input.value   //react에서 Document접근하는 법
+                                            group: this.input.value,   //react에서 Document접근하는 법
+                                            name: this.state.name
                                         }
                                         PostData(this.state.name + '/create', data).then(result => {
-                                            console.log(result);
+                                            sessionStorage.setItem('Group_List', JSON.stringify(result.data));
                                             this.setState({redirect:true})
                                         })
                                         close()
-                                    }}>
+                                }}>
                                     Create
                                 </button>
                                 <button type="button" className="button" onClick={() => close()}>
