@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { LoginForm, User_Group, GroupProject } from "./components";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {Route, Switch } from "react-router-dom";
+import './App.css'
+
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
         <div className="App">
           <Route exact path="/" component={LoginForm} />
           {/* session 구현해서 직접 패스 입력해 접근하는 것 막기 */}
@@ -17,7 +18,6 @@ class App extends Component {
           exact는 정확히 해당경로만 
            */}
         </div>
-      </BrowserRouter>
     );
   }
 }

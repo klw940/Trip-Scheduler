@@ -2,6 +2,11 @@
     height: 100%;
 }
 
+.GroupHead{
+    height: 10%;
+    width: 100%;
+}
+
 .Chat{
     background: #61dafb;
     float: left;
