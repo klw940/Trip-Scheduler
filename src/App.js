@@ -12,20 +12,18 @@ class App extends Component {
 
       <BrowserRouter>
         {/* 없는 path에 대한 접근을 막고 로그인 세션유지를 위함 */}
-        {!authenticate || window.location.href==='http://localhost:3000/'
-        ?<div className="App">
-          {!username  //로그인 x
-            ? <Route exact path="/" component={LoginForm} />
-            : <Redirect to={"/" + username} />
+        {/*!authenticate || window.location.href==='http://localhost:3000/'*/}
+        <div className="App">
+           {/*!username  //로그인 x */}
+             <Route exact path="/" component={LoginForm} />
+      {/*<Redirect to={"/" + username} />*/}
 
-          }
+          
           <Switch>
             <Route path="/:username/:groupname" component={GroupProject} />
             <Route path="/:username" component={User_Group} />
           </Switch>
         </div>
-        :<div>404</div>
-        }
         {/* switch는 스위치안에서 선택 위에서 아래로 순서대로 확인
           exact는 정확히 해당경로만 
            */}
