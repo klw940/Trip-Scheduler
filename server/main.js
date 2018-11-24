@@ -35,10 +35,10 @@ io.on('connection', function (socket) {
     console.log('connect');
     var instanceId = socket.id;
 
-    socket.on('joinRoom',function (data) {
-        console.log(data);
-        socket.join(data.channel);
-        channel = data.channel;
+    socket.on('channelJoin',function (data) {
+        console.log('channelJoin :',data);
+        socket.join(data);
+        channel = data;
         console.log(channel);
         MongoClient.connect('mongodb://localhost:27017/', function (error, client) {
             console.log(channel);
@@ -49,12 +49,12 @@ io.on('connection', function (socket) {
                     if (err) console.log(err);
                     doc.forEach(function(item){
                         console.log(item);
-                        io.sockets.in(channel).emit('recMsg', {comment:item});
+                        io.sockets.in(channel).emit('receive', {comment:item});
                     });
                     console.log("소켓입장확인");
-                    let msg={msg:socket.handshake.address+"님이 "+channel+" 채널에 입장하셨습니다."};
+                    let msg={msg:socket.handshake.address+"님이 "+channel+" 채널에 입장하셨습니다.",date: Date.now()};
                     console.log(msg);
-                    io.sockets.in(channel).emit('recMsg', {comment:msg});
+                    io.sockets.in(channel).emit('receive', {comment:msg});
                     client.close();
                 });
             }
@@ -62,8 +62,9 @@ io.on('connection', function (socket) {
     });
 
     socket.on('send', function (data) {
+        console.log('입력소켓')
         console.log('data :', data)
-        let dataAddinfo = {ip: socket.handshake.address, msg: data.comment, date: Date.now()};
+        let dataAddinfo = {ip: socket.handshake.address, msg: data.msg, date: Date.now()};
         console.log(dataAddinfo)
         MongoClient.connect('mongodb://localhost:27017/', function (error, client) {
             if (error) console.log(error);
@@ -80,13 +81,13 @@ io.on('connection', function (socket) {
                 });
             }
         });
-        io.sockets.in(data.channel).emit('recMsg', {comment: dataAddinfo});
+        console.log('receive : ',data.channel,dataAddinfo);
+        io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
 
-    socket.on('reqMsg', function (data) {
-        console.log(data);
-        io.sockets.in(channel).emit('recMsg', {comment : data.comment+'\n'});
-    })
+    socket.on('receive', function (data) {
+        console.log('테스트용');
+    });
 });
 
 /*소켓용 테스트*/

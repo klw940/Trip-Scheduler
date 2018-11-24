@@ -1,0 +1,26 @@
+.channelJoin{
+    height: 10px;
+}
+
+.chattingView-msg{
+    height: 20px;
+}
+
+.chattingView-body{
+    height: 100%;
+    width: 100%;
+}
+
+.chattingView-chatbox{
+    overflow:scroll;
+    overflow-x: hidden;
+    height: 90%;
+}
+
+.chattingView-input{
+    height: 10%;
+}
+
+.chattingView-chat{
+    height: 100%;
+}

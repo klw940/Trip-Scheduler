@@ -14,14 +14,15 @@ class GroupMain extends Component{
         }
     }
     render(){
-        var member = this.state.group[0].user_name; 
+        //var member = this.state.group[0].user_name;
+        var member={name:'ㅇㅇㅇ'}
         return(        
             <div className="GroupMain">
                 <div>{this.state.username}-{this.state.groupname}</div>
                 <h3>GroupMember</h3>
-                {member.map(function(name){
+                {/*member.map(function(name){
                     return <h4>{name}</h4>
-                })}
+                })}*/}
                 <div className="Chat"><Chat url={this.props.match.url}/></div>
                 <div className="Calandar"><Calandar/></div>
             </div>
