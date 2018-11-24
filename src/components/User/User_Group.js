@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import CreateGroup from './CreateGroup/CreateGroup';
-import {PostData} from '../../containers';
 import './User_Group.css'
 
 class User_Group extends Component {
@@ -12,26 +11,19 @@ class User_Group extends Component {
             redirect: false,
             username : sessionStorage.getItem('username'),
             email: sessionStorage.getItem('useremail'),
+            change: false
         };
     }
-    group(groupID, groupName) {
-        var group = {
-            groupName: groupName,
-            id: groupID
-        };
-        if (group) {
-            PostData(this.state.username + '/' + group.groupName, group).then(result => {
-                this.setState({ groupName:groupName });
-                sessionStorage.setItem("group", JSON.stringify(result.data));
-                this.setState({ redirect: true });
-            });
-        };
+    group(groupName, ID, Name) {
+        this.setState({ memberid:ID, membername:Name});
+        this.setState({ groupName:groupName });
+        this.setState({ redirect: true });
     }
-    
     render() {
         if (this.state.redirect) {
             return (<Redirect to={{
                 pathname: "/" + this.state.username + "/" + this.state.groupName,
+                state:{memberid:this.state.memberid, membername:this.state.membername}
             }}
             />)
         }
@@ -41,7 +33,7 @@ class User_Group extends Component {
         var list = JSON.parse(sessionStorage.getItem('Group_List')).map(list => {
             return(
                 <div className="group">
-                    <button key={list._id} onClick={() => this.group(list._id, list.Group_Name)}>{list.Group_Name}</button>
+                    <button key={list._id} onClick={() => this.group(list.Group_Name, list.Member_ID, list.Member_name)}>{list.Group_Name}</button>
                 </div>
             )
         })
@@ -50,10 +42,9 @@ class User_Group extends Component {
                 {this.state.username}
                 <br />
                 <h2>Group List</h2>
-                {/* map 함수를 통해 반복적인 작업 수행 */}
-                {list}
+                <div className="GroupList">{list}</div>
                 <br/>
-                <CreateGroup name={this.state.username} email={this.state.email}/>
+                <CreateGroup name={this.state.username} email={this.state.email} change={()=>{this.setState({change:true})}}/>
                 <button onClick ={()=>{
                     sessionStorage.clear()
                     this.setState({login: false})
