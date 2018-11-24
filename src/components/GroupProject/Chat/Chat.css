@@ -2,11 +2,15 @@
     height: 10px;
 }
 
-.chattingView-msg{
+.chattingView-msg{ /*메세지 박스*/
     height: 20px;
+    padding-bottom: 3px;
+    float:bottom;
 }
 
 .chattingView-body{
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
 }
@@ -14,13 +18,30 @@
 .chattingView-chatbox{
     overflow:scroll;
     overflow-x: hidden;
-    height: 90%;
+    flex: 1;
 }
 
-.chattingView-input{
-    height: 10%;
+.chattingView-input{ /*입력창*/
+    float:bottom;
+    height: 60px;
+    width:100%;
 }
 
 .chattingView-chat{
     height: 100%;
+}
+
+.inputMsg{
+    margin:0;
+    border:0;
+    padding: 0;
+    height: 100%;
+    width: 80%;
+    font-size: 20px;
+    text-indent: 10px;
+}
+
+.btn-primary{
+    height: 100%;
+    width: 20%;
 }

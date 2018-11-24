@@ -10,12 +10,12 @@
 .Chat{
     background: #61dafb;
     float: left;
-    width: 50%;
+    width: 30%;
     height: 90%;
 }
 .Calandar {
     background: none;
     float: right;
-    width: 50%;
+    width: 70%;
     height: 90%;
 }

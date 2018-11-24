@@ -18,7 +18,7 @@ class Chat extends Component {
         socket.on('receive', function (data) {
             console.log(data)
             cursor.setState({chatList:cursor.state.chatList.concat([data])});
-            document.querySelector(".chattingView-chat").scrollTo(0,document.querySelector(".chattingView-chat").scrollHeight);
+            document.querySelector(".chattingView-chatbox").scrollTo(0,document.querySelector(".chattingView-chatbox").scrollHeight);
         });
     }
     componentWillReceiveProps(changeProps){
@@ -60,13 +60,12 @@ class Chat extends Component {
         });
         return (
             <div className="chattingView-body">
-                <div>{this.props.match}</div>
                 <div className="chattingView-chatbox">
                     <div className="chattingView-chat">{list}</div>
                 </div>
                 <div className="chattingView-input">
-                    <input type="text" className="form-control inputMsg" placeholder="input message..."  onChange={this.inputMSG} onKeyDown={this.keysend}/>
-                    <button type="button" className="btn btn-primary" onClick={this.send}>입력</button>
+                    <input type="text" className=" inputMsg" placeholder="input message..."  onChange={this.inputMSG} onKeyDown={this.keysend}/>
+                    <button type="button" className="btn-primary" onClick={this.send}>입력</button>
                 </div>
             </div>
         );
