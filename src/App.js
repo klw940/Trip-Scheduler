@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { LoginForm, User_Group, GroupProject } from "./components";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import './App.css'
 
 class App extends Component {
 
@@ -8,6 +9,7 @@ class App extends Component {
     var username = sessionStorage.getItem('username');
     var authenticate = (encodeURI(username) !== window.location.href.split('/')[3]);//한글이기 때문에 인코딩된 값으로 출력됨
     return (
+
       <BrowserRouter>
         {/* 없는 path에 대한 접근을 막고 로그인 세션유지를 위함 */}
         {!authenticate || window.location.href==='http://localhost:3000/'
