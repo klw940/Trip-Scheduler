@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Grid, Header, Image } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
 import "./LoginForm.css";
-import {PostData} from '../../containers'
+import { PostData } from '../../containers'
 import { Redirect } from "react-router-dom";
 
 class LoginForm extends Component {
@@ -32,40 +32,36 @@ class LoginForm extends Component {
     }
     if (postData) {
       PostData(postData.name, postData).then(result => {
-        this.setState( result )
-        console.log(this.state)
-        this.setState( postData );
+        this.setState(postData);
+        sessionStorage.setItem('username', res.w3.ig);
+        sessionStorage.setItem('useremail', res.w3.U3);
+        sessionStorage.setItem('Group_List', JSON.stringify(result.data));// session 저장  
+        this.setState(result); //_id(Group_ID), Group_Name, User_ID, Member(Array)  4가지 변수 저장
         this.setState({ redirect: true });
       });
     };
   }
   render() {
-    if (this.state.redirect || sessionStorage.getItem('userData')) {
+    if (this.state.redirect) {
       return (<Redirect to={{
-        pathname: "/"+this.state.name,
-        state: { referrer:this.state.data }
+        pathname: "/" + this.state.name,
       }} />)
     }
     const responseGoogle = response => {
-      console.log("google console");
-      console.log(response);
       this.signup(response, "google");
     };
     return (
       <div className="login-form">
         <Grid>
           <Header className="header" as="h2">
-            <br />
-            <br />
-            <br />
+            <br /><br /><br />
             <Image src="/logo.png" />
             <br />
             Log-in to your account
           </Header>
           <br />
           <GoogleLogin
-            //port가 계속 변해서 제 ID 사용했습니다.
-            clientId="36241720112-8jmb79krbnamuk0avqubhp0ia926nj7g.apps.googleusercontent.com"
+            clientId="717271903689-1elevq8nve9karftirv96uh5g20po8vp.apps.googleusercontent.com"
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
           />

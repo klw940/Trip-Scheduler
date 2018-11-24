@@ -3,10 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// var session = require('express-session');
+// const FileStore = require('session-file-store')(session);
 var logger = require('morgan'); ///log정보 확인
+
 
 var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
+var groupsRouter = require('./server/routes/groups')
 
 var app = express();
 
@@ -28,9 +32,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
+// app.use(session({
+//   secret: '!@#$%^&*',
+//   resave: false,
+//   saveUninitialized :true,
+//   store: new FileStore()
+//   })
+// );
 
 app.use('/', indexRouter);
 app.use('/:users', usersRouter);
+app.use('/:users/:groups', groupsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
