@@ -1,22 +1,18 @@
 import React, { Component } from 'react'
 import Popup from 'reactjs-popup'
 import { PostData } from '../../../containers';
-import { Redirect } from "react-router-dom";
 
 class CreateGroup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: JSON.parse(sessionStorage.getItem('Group_List'))[0].User_Name,
-            email: JSON.parse(sessionStorage.getItem('Group_List'))[0].User_ID,
+            name: this.props.name,
+            email: this.props.email,
             redirect: false
         }
     }
     
     render() {
-        if(this.state.redirect){
-            return <Redirect to={'/'+this.state.name}/>
-        }
         return (
             <div className="createGroup">
                 <Popup
@@ -28,7 +24,7 @@ class CreateGroup extends Component {
                         <div className="group">
                             <div className="header"> Group Create </div>
                             <div className="content">
-                                <input type="text" className="newGroup" ref={ref => {this.input = ref;}} />
+                                <input type="text" className="newGroup" ref={ref => {this.input = ref}} />
                             </div>
                             <div className="actions">
                                 <button
@@ -41,8 +37,9 @@ class CreateGroup extends Component {
                                             name: this.state.name
                                         }
                                         PostData(this.state.name + '/create', data).then(result => {
-                                            sessionStorage.setItem('Group_List', JSON.stringify(result.data));
-                                            this.setState({redirect:true})
+                                            var Group_List = JSON.parse(sessionStorage.getItem('Group_List'));
+                                            Group_List.push(result.data[0]);
+                                            sessionStorage.setItem('Group_List', JSON.stringify(Group_List));
                                         })
                                         close()
                                 }}>

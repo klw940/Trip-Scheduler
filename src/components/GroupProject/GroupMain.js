@@ -14,7 +14,7 @@ class GroupMain extends Component{
         }
     }
     render(){
-        var member = this.state.group[0].user_name; // 왜 0으로 저장되는지?
+        var member = this.state.group[0].user_name; 
         return(        
             <div className="GroupMain">
                 <div>{this.state.username}-{this.state.groupname}</div>

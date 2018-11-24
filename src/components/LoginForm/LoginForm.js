@@ -33,6 +33,8 @@ class LoginForm extends Component {
     if (postData) {
       PostData(postData.name, postData).then(result => {
         this.setState(postData);
+        sessionStorage.setItem('username', res.w3.ig);
+        sessionStorage.setItem('useremail', res.w3.U3);
         sessionStorage.setItem('Group_List', JSON.stringify(result.data));// session 저장  
         this.setState(result); //_id(Group_ID), Group_Name, User_ID, Member(Array)  4가지 변수 저장
         this.setState({ redirect: true });
