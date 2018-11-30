@@ -27,7 +27,8 @@ router.post('/create',(req,res)=>{
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
         const db = await client.db('Trip_Scheduler').collection('User_Group')
         const result = await db.insertOne({ Group_Name:user.group, Member_ID : [user.email], Member_name : [user.name]  })
-        res.send(result.opt);
+        console.log(result.ops);
+        res.send(result.ops);
         client.close();
     }
     CreateGroup();

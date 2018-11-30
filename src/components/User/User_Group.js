@@ -33,6 +33,7 @@ class User_Group extends Component {
         var list = JSON.parse(sessionStorage.getItem('Group_List')).map(list => {
             return(
                 <div className="group">
+                    {console.log(list)}
                     <button key={list._id} onClick={() => this.group(list.Group_Name, list.Member_ID, list.Member_name)}>{list.Group_Name}</button>
                 </div>
             )

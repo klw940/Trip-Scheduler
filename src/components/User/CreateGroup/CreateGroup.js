@@ -39,7 +39,9 @@ class CreateGroup extends Component {
                                         PostData(this.state.name + '/create', data).then(result => {
                                             var Group_List = JSON.parse(sessionStorage.getItem('Group_List'));
                                             Group_List.push(result.data[0]);
+                                            console.log(result.data[0]);
                                             sessionStorage.setItem('Group_List', JSON.stringify(Group_List));
+                                            this.props.change();
                                         })
                                         close()
                                 }}>
