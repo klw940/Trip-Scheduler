@@ -29,7 +29,7 @@ const mongodb =require('mongodb');
 const MongoClient = mongodb.MongoClient;
 var io = require('socket.io').listen(3100);
 var channel;
-const dbName = 'db';
+const dbName = 'Trip_Scheduler';
 
 io.on('connection', function (socket) {
     console.log('connect');
@@ -70,11 +70,13 @@ io.on('connection', function (socket) {
             if (error) console.log(error);
             else {
                 const db = client.db(dbName);
+                console.log(data.email)
                 db.collection('log').insert({
                     ip: dataAddinfo.ip,
                     msg: dataAddinfo.msg,
                     date: dataAddinfo.date,
-                    channel: data.channel
+                    channel: data.channel,
+                    email: data.email
                 }, function (err, doc) {
                     if (err) console.log(err);
                     client.close();
@@ -82,7 +84,7 @@ io.on('connection', function (socket) {
             }
         });
         console.log('receive : ',data.channel,dataAddinfo);
-        io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
+        io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo, email:data.email});
     });
 
     socket.on('receive', function (data) {

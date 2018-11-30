@@ -6,7 +6,12 @@ const socket = io.connect('http://localhost:3100');
 class Chat extends Component {
     constructor(props) {
         super(props);
-        this.state = {msg:'', channel:'123', chatList:[]};
+        this.state = {
+            msg:'',
+            channel:this.props.groupname,
+            chatList:[],
+            email: sessionStorage.getItem('useremail'),
+        };
         this.send = this.send.bind(this);
         this.keysend = this.keysend.bind(this);
         this.inputMSG = this.inputMSG.bind(this);
@@ -29,13 +34,14 @@ class Chat extends Component {
         });
     }
     send(){
-        socket.emit('send',{msg:this.state.msg, channel:this.state.channel});
+        console.log(this.state.email)
+        socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
         this.setState({msg:''});
         document.querySelector(".inputMsg").value="";
     }
     keysend(event){
         if(event.keyCode===13) {
-            socket.emit('send',{msg:this.state.msg, channel:this.state.channel});
+            socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
             this.setState({msg:''});
             document.querySelector(".inputMsg").value="";
         }
@@ -49,17 +55,19 @@ class Chat extends Component {
             let date= new Date(item.comment.date);
             return(
                 <div key={index}>
-                    {item.comment.ip!=null?
-                        <div className="chattingView-header">
-                            <div>{item.comment.ip}</div>
-                            <div>{date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</div>
-                        </div>:null}
-                    <div className="chattingView-msg">{item.comment.msg}</div>
-                </div>
+                    <div align="right">
+                        {item.comment.ip!=null?
+                            <div className="chattingView-header">
+                                <div>{item.comment.ip}</div>
+                                <div>{date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</div>
+                            </div>:null}
+                            <div className="chattingView-msg">{item.comment.msg}</div>
+                    </div>
             )
         });
         return (
             <div className="chattingView-body">
+                {this.state.email}
                 <div className="chattingView-chatbox">
                     <div className="chattingView-chat">{list}</div>
                 </div>

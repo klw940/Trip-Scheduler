@@ -25,7 +25,7 @@ class GroupMain extends Component{
                 {/*{this.state.memberid.map(function(name){*/}
                     {/*return <h4>{name}</h4>*/}
                 {/*})}*/}
-                <div className="Chat"><Chat url={this.props.match.url}/></div>
+                <div className="Chat"><Chat groupname={this.state.groupname}/></div>
                 <div className="Calandar"><Calandar/></div>
             </div>
         )
