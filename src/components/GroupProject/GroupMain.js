@@ -23,9 +23,11 @@ class GroupMain extends Component{
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
+
     componentDidMount() {
         socket.emit('channelJoin', this.state.channel);
     }
+
     render(){
         const { cardVisible } = this.state;
 
@@ -48,7 +50,7 @@ class GroupMain extends Component{
                         <Card />
                     </Sidebar>
                     <Sidebar.Pusher>
-                        <div className="Chat"><Chat groupname={this.state.groupname}/></div>
+                        <div className="Chat"><Chat groupname={this.state.groupname} socket={socket}/></div>
                         <div className="Calendar"><Calandar/></div>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
@@ -59,8 +61,6 @@ class GroupMain extends Component{
                 {/*{this.state.memberid.map(function(name){*/}
                 {/*return <h4>{name}</h4>*/}
                 {/*})}*/}
-                <div className="Chat"><Chat groupname={this.state.groupname} socket={socket}/></div>
-                <div className="Calandar"><Calandar/></div>
             </div>
         )
     }
