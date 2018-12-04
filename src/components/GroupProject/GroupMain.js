@@ -3,7 +3,7 @@ import Chat from "./Chat/Chat";
 import Calandar from "./Calendar/Calandar";
 import Card from "./Card/Card";
 import "./GroupMain.css"
-import { Menu, Icon, Sidebar, Segment } from 'semantic-ui-react';
+import { Menu, Icon, Grid } from 'semantic-ui-react';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3100');
@@ -66,21 +66,20 @@ class GroupMain extends Component {
                         }>추가</button>
                     </h4>
                 </Menu>
-                <Sidebar.Pushable as={Segment}>
-                    <Sidebar
-                        as={Menu}
-                        animation='overlay'
-                        vertical
-                        visible={cardVisible}
-                        width='wide'
-                    >
-                        <Card />
-                    </Sidebar>
-                    <Sidebar.Pusher>
-                        <div className="Chat"><Chat groupname={this.state.groupname} socket={socket} username={this.state.username}/></div>
-                        <div className="Calendar"><Calandar /></div>
-                    </Sidebar.Pusher>
-                </Sidebar.Pushable>
+                <Grid columns={2}>
+                    <Grid.Row>
+                        <Grid.Column width={4}>
+                            {
+                                this.state.cardVisible ?
+                                <Card/>:
+                                <Chat className="Chat" groupname={this.state.groupname} socket={socket} username={this.state.username}/>
+                            }
+                        </Grid.Column>
+                        <Grid.Column width={12}>
+                             <Calandar className="Calendar"/>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </div>
         )
     }

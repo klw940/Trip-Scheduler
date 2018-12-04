@@ -10,12 +10,10 @@
 .Chat{
     background: #ccf3ff;
     float: left;
-    width: 30%;
     height: 90%;
 }
 .Calendar {
     background: none;
     float: right;
-    width: 70%;
     height: 90%;
 }
