@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import $ from "jquery";
 import 'jquery-ui-dist/jquery-ui';
 import 'fullcalendar';
+import 'fullcalendar/dist/fullcalendar.css';
 
 class Calendar extends Component{
 
