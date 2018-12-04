@@ -16,9 +16,8 @@ class User_Group extends Component {
             change: false
         };
     }
-    group(groupName, ID, Name) {
-        this.setState({ memberid: ID, membername: Name });
-        this.setState({ groupName: groupName });
+    group(groupID, groupName, ID, Name) {
+        this.setState({ groupID: groupID, groupName:groupName, memberid:ID, membername:Name});
         this.setState({ redirect: true });
     }
     showModal = () => {
@@ -32,18 +31,19 @@ class User_Group extends Component {
         if (this.state.redirect) {
             return (<Redirect to={{
                 pathname: "/" + this.state.username + "/" + this.state.groupName,
-                state: { memberid: this.state.memberid, membername: this.state.membername }
+                state:{memberid:this.state.memberid, membername:this.state.membername, groupid:this.state.groupID}
             }}
             />)
         }
         if (!this.state.login) {
             return (<Redirect to='/' />)
         }
+
         var list = JSON.parse(sessionStorage.getItem('Group_List')).map(
             list => (<User_Group_Info
                 key={list._id}
                 list={list}
-                group={() => {this.group(list.Group_Name, list.Member_ID, list.Member_name)}}
+                group={() => {this.group(list._id, list.Group_Name, list.Member_ID, list.Member_name)}}
             />)
         )
         return (

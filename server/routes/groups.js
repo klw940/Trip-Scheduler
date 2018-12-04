@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyparser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 var router = express.Router();
 
 /* GET users listing. */
@@ -19,7 +19,7 @@ router.post('/', function (req, res, next) {
 });
 //그룹맴버로 추가
 router.post('/create', (req, res) => {
-    MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true },
+    MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true },
         (err, client) => {
             const db = client.db("Trip_Scheduler")
             const collection = db.collection('Group_Member')
@@ -30,5 +30,34 @@ router.post('/create', (req, res) => {
         }
     );
     res.redirect('/');
+})
+router.post('/addmember', (req, res) => {
+    const group = JSON.parse(req.body.user);
+    var memberCheck = async () => {
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler').collection('loginMember');
+        const result = await db.find({ id: group.newMemberid }).toArray();
+        client.close();
+        return result;
+    }
+    var addMember = async (rlt) => {
+        if (!rlt[0]) res.end("errrrrrr");
+        else {
+            console.log(rlt);
+            rlt = rlt[0];
+            const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+            const db = await client.db('Trip_Scheduler').collection('User_Group');
+            const result = await db.findOneAndUpdate(
+                { _id: ObjectId(group.groupid) },
+                { $push: { "Member_ID": rlt.id, "Member_name": rlt.name } },
+                {returnOriginal:false}
+            )
+            console.log(result);
+            res.send(result);
+            client.close();
+        }
+    }
+    memberCheck().then(result => addMember(result));
+
 })
 module.exports = router;

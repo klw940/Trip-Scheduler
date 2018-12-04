@@ -8,17 +8,27 @@ router.use(bodyparser.json());
 
 router.post('/', function(req, res, next) {
     const user = JSON.parse(req.body.user);
+    var loginCheck = async () => {
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler')
+        const loginMember = await db.collection('loginMember');
+        const result = await loginMember.updateOne(
+            { id: user.email },
+            { $set: { id: user.email, name: user.name }},
+            { upsert: true }
+        );
+        client.close();
+    }
     var getGroipList = async () => {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
         const db = await client.db('Trip_Scheduler')
         const User_Group = await db.collection('User_Group');
         const result = await User_Group.find({Member_ID: {$elemMatch:{$eq:user.email}} }).toArray();
-        // req.session['Group_List'] = result;
         res.send(result);
         client.close();
-        }
+    }
+    loginCheck().then();
     getGroipList();
-
 });
 
 router.post('/create',(req,res)=>{
