@@ -57,7 +57,8 @@ class User_Group extends Component {
                             <Button onClick ={()=>{
                                 sessionStorage.clear()
                                 this.setState({login: false})
-                            }}>logout</Button>
+                            }}  size='mini' color='red' style={{ marginTop: '1em' }}>
+                            logout</Button>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -68,15 +69,6 @@ class User_Group extends Component {
                     <Grid.Row>
                         <Grid.Column width={2}>
                             <CreateGroup name={this.state.username} email={this.state.email} change={()=>{this.setState({change:true})}}/>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Button onClick={() => {
-                                sessionStorage.clear()
-                                this.setState({ login: false })
-                            }} size='mini' color='red' style={{ marginTop: '1em' }}
-                            >logout</Button>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
