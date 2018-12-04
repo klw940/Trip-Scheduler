@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import io from 'socket.io-client';
 import './Chat.css'
 
-const socket = io.connect('http://localhost:3100');
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +9,7 @@ class Chat extends Component {
             msg:'',
             channel:this.props.groupname,
             chatList:[],
-            email: sessionStorage.getItem('useremail'),
+            email: sessionStorage.getItem('useremail')
         };
         this.send = this.send.bind(this);
         this.keysend = this.keysend.bind(this);
@@ -19,29 +18,22 @@ class Chat extends Component {
     componentDidMount(){
         let cursor=this;
         console.log(this.state.channel)
-        socket.emit('channelJoin', this.state.channel);
-        socket.on('receive', function (data) {
+        this.props.socket.emit('channelJoin', this.state.channel);
+        this.props.socket.on('receive', function (data) {
             console.log(data)
             cursor.setState({chatList:cursor.state.chatList.concat([data])});
             document.querySelector(".chattingView-chatbox").scrollTo(0,document.querySelector(".chattingView-chatbox").scrollHeight);
         });
     }
-    componentWillReceiveProps(changeProps){
-        socket.emit('channelLeave', this.state.channel);
-        this.setState({channel:changeProps.channel},()=>{
-            this.setState({chatList:[]});
-            socket.emit('channelJoin', this.state.channel);
-        });
-    }
     send(){
         console.log(this.state.email)
-        socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+        this.props.socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
         this.setState({msg:''});
         document.querySelector(".inputMsg").value="";
     }
     keysend(event){
         if(event.keyCode===13) {
-            socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+            this.props.socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
             this.setState({msg:''});
             document.querySelector(".inputMsg").value="";
         }
@@ -52,17 +44,27 @@ class Chat extends Component {
     render() {
         let list = this.state.chatList.map((item, index) =>{
             console.log(item)
+            let checkme='Y';
             let date= new Date(item.comment.date);
+
+            function addZero(i) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                return i;
+            }
+
             return(
                 <div key={index}>
-                    <div align="right">
-                        {item.comment.ip!=null?
-                            <div className="chattingView-header">
-                                <div>{item.comment.ip}</div>
-                                <div>{date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</div>
-                            </div>:null}
-                            <div className="chattingView-msg">{item.comment.msg}</div>
+                    <div className="chattingView-msgline">
+                        <div style={item.email==this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
+                            <div className="chattingView-msgbox">
+                                <span>{item.comment.msg}</span><br/>
+                                <span>{addZero(date.getHours())}:{addZero(date.getMinutes())}</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
             )
         });
         return (

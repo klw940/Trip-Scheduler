@@ -2,10 +2,15 @@
     height: 10px;
 }
 
-.chattingView-msg{ /*메세지 박스*/
-    height: 20px;
+.chattingView-msgline{ /*메세지 박스*/
     padding-bottom: 3px;
-    float:bottom;
+    width: 90%;
+    display: inline-block;
+}
+
+.chattingView-msgbox{ /*메세지 박스*/
+    display: inline-block;
+    background-color: white;
 }
 
 .chattingView-body{
@@ -29,6 +34,7 @@
 
 .chattingView-chat{
     height: 100%;
+    text-align: center;
 }
 
 .inputMsg{
@@ -44,4 +50,12 @@
 .btn-primary{
     height: 100%;
     width: 20%;
+}
+
+.itemY{
+    text-align: right;
+}
+
+.itemN{
+    text-align: left;
 }

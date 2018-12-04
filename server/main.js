@@ -52,9 +52,9 @@ io.on('connection', function (socket) {
                         io.sockets.in(channel).emit('receive', {comment:item});
                     });
                     console.log("소켓입장확인");
-                    let msg={msg:socket.handshake.address+"님이 "+channel+" 채널에 입장하셨습니다.",date: Date.now()};
-                    console.log(msg);
-                    io.sockets.in(channel).emit('receive', {comment:msg});
+                    // let msg={msg:socket.handshake.address+"님이 "+channel+" 채널에 입장하셨습니다.",date: Date.now()};
+                    // console.log(msg);
+                    // io.sockets.in(channel).emit('receive', {comment:msg});
                     client.close();
                 });
             }
