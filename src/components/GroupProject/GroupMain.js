@@ -77,7 +77,7 @@ class GroupMain extends Component {
                         <Card />
                     </Sidebar>
                     <Sidebar.Pusher>
-                        <div className="Chat"><Chat groupname={this.state.groupname} socket={socket} /></div>
+                        <div className="Chat"><Chat groupname={this.state.groupname} socket={socket} username={this.state.username}/></div>
                         <div className="Calendar"><Calandar /></div>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>

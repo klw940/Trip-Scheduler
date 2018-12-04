@@ -10,7 +10,6 @@
 
 .chattingView-msgbox{ /*메세지 박스*/
     display: inline-block;
-    background-color: white;
 }
 
 .chattingView-body{
@@ -58,4 +57,40 @@
 
 .itemN{
     text-align: left;
+}
+
+.balloonY {
+    display: inline-block;
+    position: relative;
+    background: white;
+    margin: 0 auto 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.balloonY:after {
+    content: '';
+    position: absolute;
+    border-top: 10px solid white;
+    border-right: 1px solid transparent;
+    border-left: 15px solid transparent;
+    bottom: -9px;
+    right: 5px;
+}
+
+.balloonN {
+    display: inline-block;
+    position: relative;
+    background: white;
+    margin: 0 auto 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.balloonN:after {
+    content: '';
+    position: absolute;
+    border-top: 10px solid white;
+    border-right: 10px solid transparent;
+    border-left: 1px solid transparent;
+    bottom: -9px;
+    left: 5px;
 }

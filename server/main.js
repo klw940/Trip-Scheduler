@@ -52,9 +52,6 @@ io.on('connection', function (socket) {
                         io.sockets.in(channel).emit('receive', { comment: item });
                     });
                     console.log("소켓입장확인");
-                    // let msg={msg:socket.handshake.address+"님이 "+channel+" 채널에 입장하셨습니다.",date: Date.now()};
-                    // console.log(msg);
-                    // io.sockets.in(channel).emit('receive', {comment:msg});
                     client.close();
                 });
             }
@@ -64,7 +61,7 @@ io.on('connection', function (socket) {
     socket.on('send', function (data) {
         console.log('입력소켓')
         console.log('data :', data)
-        let dataAddinfo = { ip: socket.handshake.address, msg: data.msg, date: Date.now() };
+        let dataAddinfo = {ip: socket.handshake.address, msg: data.msg, date: Date.now(), email:data.email, username: data.username};
         console.log(dataAddinfo)
         MongoClient.connect('mongodb://127.0.0.1:27017/', function (error, client) {
             if (error) console.log(error);
@@ -76,15 +73,16 @@ io.on('connection', function (socket) {
                     msg: dataAddinfo.msg,
                     date: dataAddinfo.date,
                     channel: data.channel,
-                    email: data.email
+                    email: dataAddinfo.email,
+                    username:dataAddinfo.username
                 }, function (err, doc) {
                     if (err) console.log(err);
                     client.close();
                 });
             }
         });
-        console.log('receive : ', data.channel, dataAddinfo);
-        io.sockets.in(data.channel).emit('receive', { comment: dataAddinfo, email: data.email });
+        console.log('receive : ',data.channel,dataAddinfo);
+        io.sockets.in(data.channel).emit('receive', {tag:false,comment: dataAddinfo});
     });
 
     socket.on('receive', function (data) {

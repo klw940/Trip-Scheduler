@@ -1,5 +1,4 @@
 import React,{Component} from 'react'
-import io from 'socket.io-client';
 import './Chat.css'
 
 class Chat extends Component {
@@ -9,7 +8,8 @@ class Chat extends Component {
             msg:'',
             channel:this.props.groupname,
             chatList:[],
-            email: sessionStorage.getItem('useremail')
+            email: sessionStorage.getItem('useremail'),
+            username:this.props.username
         };
         this.send = this.send.bind(this);
         this.keysend = this.keysend.bind(this);
@@ -27,13 +27,13 @@ class Chat extends Component {
     }
     send(){
         console.log(this.state.email)
-        this.props.socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+        this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
         this.setState({msg:''});
         document.querySelector(".inputMsg").value="";
     }
     keysend(event){
         if(event.keyCode===13) {
-            this.props.socket.emit('send',{email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+            this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
             this.setState({msg:''});
             document.querySelector(".inputMsg").value="";
         }
@@ -42,25 +42,57 @@ class Chat extends Component {
         this.setState({ msg: event.target.value });
     }
     render() {
+        var my_email=this.state.email;
+        var pre_email=this.state.email;
         let list = this.state.chatList.map((item, index) =>{
-            console.log(item)
-            let checkme='Y';
             let date= new Date(item.comment.date);
-
-            function addZero(i) {
+            let now_email = item.comment.email; // 현재 이메일
+            function addZero(i) { // 시간이 한자리 일때 앞에 0추가해줌!
                 if (i < 10) {
                     i = "0" + i;
                 }
                 return i;
             }
 
+            function emailcheck() {
+                if(pre_email!=now_email){
+                    pre_email=now_email
+                    return(
+                        <p style={{margin:'5px'}}>{item.comment.username}</p>
+                    )
+                }
+            }
+
+            function mycheck() {
+                if(item.comment.email==my_email){
+                    return(
+                        <div>
+                            {addZero(date.getHours())}:{addZero(date.getMinutes())}
+                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
+                                {item.comment.msg}
+                            </div>
+                        </div>
+                    )
+                }
+                else{
+                    return(
+                        <div>
+                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
+                                {item.comment.msg}
+                            </div>
+                            {addZero(date.getHours())}:{addZero(date.getMinutes())}
+                        </div>
+                    )
+                }
+            }
+
             return(
                 <div key={index}>
                     <div className="chattingView-msgline">
-                        <div style={item.email===this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
+                        <div style={item.comment.email==this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
                             <div className="chattingView-msgbox">
-                                <span>{item.comment.msg}</span><br/>
-                                <span>{addZero(date.getHours())}:{addZero(date.getMinutes())}</span>
+                                {emailcheck()}
+                                {mycheck()}
                             </div>
                         </div>
                     </div>
