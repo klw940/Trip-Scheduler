@@ -5,6 +5,8 @@ import Card from "./Card/Card";
 import "./GroupMain.css"
 import { Menu, Icon, Sidebar, Segment } from 'semantic-ui-react';
 //import { PostData } from '../../containers';
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:3100');
 
 class GroupMain extends Component{
     constructor (props){
@@ -21,8 +23,9 @@ class GroupMain extends Component{
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
-
-
+    componentDidMount() {
+        socket.emit('channelJoin', this.state.channel);
+    }
     render(){
         const { cardVisible } = this.state;
 
@@ -56,6 +59,8 @@ class GroupMain extends Component{
                 {/*{this.state.memberid.map(function(name){*/}
                 {/*return <h4>{name}</h4>*/}
                 {/*})}*/}
+                <div className="Chat"><Chat groupname={this.state.groupname} socket={socket}/></div>
+                <div className="Calandar"><Calandar/></div>
             </div>
         )
     }
