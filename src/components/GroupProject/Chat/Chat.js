@@ -63,6 +63,7 @@ class Chat extends Component {
                             </div>:null}
                             <div className="chattingView-msg">{item.comment.msg}</div>
                     </div>
+                </div>
             )
         });
         return (
