@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Chat from "./Chat/Chat";
 import Calandar from "./Calendar/Calandar";
+import Card from "./Card/Card";
 import "./GroupMain.css"
+import { Menu, Icon, Sidebar, Segment } from 'semantic-ui-react';
 //import { PostData } from '../../containers';
 
 class GroupMain extends Component{
@@ -11,22 +13,49 @@ class GroupMain extends Component{
             groupname:this.props.match.params.groupname,
             username: this.props.match.params.username,
             membername: this.props.location.state.membername,
-            memberid: this.props.location.state.memberid
+            memberid: this.props.location.state.memberid,
+            cardVisible: false,
         }
     }
+
+    viewCards = () => {
+        this.setState({ cardVisible: !this.state.cardVisible });
+    }
+
+
     render(){
-        return(        
+        const { cardVisible } = this.state;
+
+        return(
             <div className="GroupMain">
-                <div className="GroupHead">{this.state.username}-{this.state.groupname}</div>
+                <Menu icon='labeled'>
+                    <Menu.Item name="tasks" onClick={this.viewCards}>
+                        <Icon name="tasks" size="big"/>
+                    </Menu.Item>
+                    <h1>{this.state.username}-{this.state.groupname}</h1>
+                </Menu>
+                <Sidebar.Pushable as={Segment}>
+                    <Sidebar
+                        as={Menu}
+                        animation='overlay'
+                        vertical
+                        visible={cardVisible}
+                        width='wide'
+                    >
+                        <Card />
+                    </Sidebar>
+                    <Sidebar.Pusher>
+                        <div className="Chat"><Chat groupname={this.state.groupname}/></div>
+                        <div className="Calendar"><Calandar/></div>
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable>
                 {/*<h3>GroupMember</h3>*/}
                 {/*{this.state.membername.map(function(name){*/}
-                    {/*return <h4>{name}</h4>*/}
+                {/*return <h4>{name}</h4>*/}
                 {/*})}*/}
                 {/*{this.state.memberid.map(function(name){*/}
-                    {/*return <h4>{name}</h4>*/}
+                {/*return <h4>{name}</h4>*/}
                 {/*})}*/}
-                <div className="Chat"><Chat groupname={this.state.groupname}/></div>
-                <div className="Calandar"><Calandar/></div>
             </div>
         )
     }

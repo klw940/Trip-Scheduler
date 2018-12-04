@@ -61,8 +61,9 @@ class Chat extends Component {
                                 <div>{item.comment.ip}</div>
                                 <div>{date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 {date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</div>
                             </div>:null}
-                            <div className="chattingView-msg">{item.comment.msg}</div>
+                        <div className="chattingView-msg">{item.comment.msg}</div>
                     </div>
+                </div>
             )
         });
         return (
@@ -78,6 +79,7 @@ class Chat extends Component {
             </div>
         );
     }
+
 }
 
 export default Chat;
