@@ -2,7 +2,7 @@ import LoginForm from './LoginForm/LoginForm';
 import User_Group from './User/User_Group';
 import GroupProject from './GroupProject/GroupMain';
 import CreateGroup from './User/CreateGroup/CreateGroup';
-import Calendar from './GroupProject/Calendar/Calendar';
+import Calendar from './GroupProject/Calendar/Calandar';
 import Card from './GroupProject/Card/Card';
 import Chat from './GroupProject/Chat/Chat';
 import User_Group_Info from './User/User_Group_Info'

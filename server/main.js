@@ -49,7 +49,7 @@ io.on('connection', function (socket) {
                     if (err) console.log(err);
                     doc.forEach(function (item) {
                         console.log(item);
-                        io.sockets.in(channel).emit('receive', { comment: item });
+                        socket.emit('receive', { comment: item });
                     });
                     console.log("소켓입장확인");
                     client.close();
