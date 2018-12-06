@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import Chat from "./Chat/Chat";
-import Calandar from "./Calendar/Calandar";
-import Card from "./Card/Card";
 import "./GroupMain.css"
 import { Menu, Icon, Grid } from 'semantic-ui-react';
+import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3100');
@@ -25,14 +23,11 @@ class GroupMain extends Component {
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
-
     componentDidMount() {
         socket.emit('channelJoin', this.state.channel);
     }
 
     render() {
-        const { cardVisible } = this.state;
-
         return (
             <div className="GroupMain">
 
@@ -42,11 +37,11 @@ class GroupMain extends Component {
                     </Menu.Item>
                     <h1>{this.state.username}-{this.state.groupname}</h1>
                     <h4>
-                        <button type="button" onClick={this.delMember}>나가기</button><br />
+                        <button type="button" >나가기</button><br />
                         &nbsp; 이메일: <input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
                         &nbsp; <button type="button" onClick={() => {
 
-                            if (this.state.memberid.indexOf(this.id.value) != -1) {
+                            if (this.state.memberid.indexOf(this.id.value) !== -1) {
                                 console.log("이미 있음")
                                 this.id.value = "";
                                 return 0;
@@ -76,7 +71,7 @@ class GroupMain extends Component {
                             }
                         </Grid.Column>
                         <Grid.Column width={12}>
-                             <Calandar className="Calendar"/>
+                             <Calendar className="Calendar"/>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

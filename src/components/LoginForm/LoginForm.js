@@ -3,20 +3,18 @@ import { Grid, Header, Image } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
 import "./LoginForm.css";
 import { PostData } from '../../containers'
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-        //state는 jsx에서this.state.stateName으로 사용가능
-        //constructor 에서 설정
-        //component에서 this.setState({})로 수정가능
-        //state사용시 초기값 설정은 필수this.setState({ redirect: true });으로 사용
-        //this.signup = this.signup.bind(this); bind는 this(html)가 render에서 사용하는 this와 같다는 뜻 보통 constructor에서 지정해줌
         this.state = {
             loginError: false,
             redirect: false,
         };
+    }
+    componentWillMount(){
+        this.props.history.push('/'); /// withrouter와 같이 써야함  develope모드(npm start)에서는 2번씩 render하기때문에 뒤로가기 2번씩 생성됨 https://github.com/erikras/react-redux-universal-hot-example/issues/429
     }
     signup(res, type) {
         var postData;
@@ -51,7 +49,7 @@ class LoginForm extends Component {
             this.signup(response, "google");
         };
         return (
-            <Grid centered Columns={2} verticalAlign='middle' className="login-form">
+            <Grid centered columns={2} verticalAlign='middle' className="login-form">
                 <Grid.Row>
                     <Grid.Column width={6} textAlign='center'>
                         <Image src="/logo.png" centered/>
@@ -70,4 +68,4 @@ class LoginForm extends Component {
     }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);

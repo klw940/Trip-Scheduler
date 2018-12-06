@@ -36,13 +36,14 @@ class CreateGroup extends Component {
                                             group: this.input.value,   //react에서 Document접근하는 법
                                             name: this.state.name
                                         }
-                                        PostData(this.state.name + '/create', data).then(result => {
-                                            var Group_List = JSON.parse(sessionStorage.getItem('Group_List'));
-                                            Group_List.push(result.data[0]);
-                                            console.log(result.data[0]);
-                                            sessionStorage.setItem('Group_List', JSON.stringify(Group_List));
-                                            this.props.change();
-                                        })
+                                        if(this.input.value!==""){
+                                            PostData(this.state.name + '/create', data).then(result => {
+                                                var Group_List = JSON.parse(sessionStorage.getItem('Group_List'));
+                                                Group_List.push(result.data[0]);
+                                                sessionStorage.setItem('Group_List', JSON.stringify(Group_List));
+                                                this.props.change();
+                                            })
+                                        }
                                         close()
                                 }}>
                                     Create

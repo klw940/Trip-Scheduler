@@ -1,5 +1,8 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react';
+import ChatList from './ChatList';
 import './Chat.css'
+
+////스타일 CSS로 이동
 
 class Chat extends Component {
     constructor(props) {
@@ -17,7 +20,6 @@ class Chat extends Component {
     }
     componentDidMount(){
         let cursor=this;
-        console.log(this.state.channel)
         this.props.socket.emit('channelJoin', this.state.channel);
         this.props.socket.on('receive', function (data) {
             console.log(data)
@@ -26,7 +28,6 @@ class Chat extends Component {
         });
     }
     send(){
-        console.log(this.state.email)
         this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
         this.setState({msg:''});
         document.querySelector(".inputMsg").value="";
@@ -42,63 +43,11 @@ class Chat extends Component {
         this.setState({ msg: event.target.value });
     }
     render() {
-        var my_email=this.state.email;
-        var pre_email=this.state.email;
-        let list = this.state.chatList.map((item, index) =>{
-            let date= new Date(item.comment.date);
-            let now_email = item.comment.email; // 현재 이메일
-            function addZero(i) { // 시간이 한자리 일때 앞에 0추가해줌!
-                if (i < 10) {
-                    i = "0" + i;
-                }
-                return i;
-            }
+        let list = this.state.chatList.map((item, index) => 
+            ChatList(this.state.email, this.state.email, item, index, this.state.email)
+        );
 
-            function emailcheck() {
-                if(pre_email!=now_email){
-                    pre_email=now_email
-                    return(
-                        <p style={{margin:'5px'}}>{item.comment.username}</p>
-                    )
-                }
-            }
-
-            function mycheck() {
-                if(item.comment.email==my_email){
-                    return(
-                        <div>
-                            {addZero(date.getHours())}:{addZero(date.getMinutes())}
-                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
-                                {item.comment.msg}
-                            </div>
-                        </div>
-                    )
-                }
-                else{
-                    return(
-                        <div>
-                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
-                                {item.comment.msg}
-                            </div>
-                            {addZero(date.getHours())}:{addZero(date.getMinutes())}
-                        </div>
-                    )
-                }
-            }
-
-            return(
-                <div key={index}>
-                    <div className="chattingView-msgline">
-                        <div style={item.comment.email==this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
-                            <div className="chattingView-msgbox">
-                                {emailcheck()}
-                                {mycheck()}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        });
+        //렌더 부분
         return (
             <div className="chattingView-body">
                 {this.state.email}

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
-import CreateGroup from './CreateGroup/CreateGroup';
-import { Header, Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
+import { Redirect, withRouter } from "react-router-dom";
+import {CreateGroup, User_Group_Info} from '../../components';
+import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
 import './User_Group.css'
-import User_Group_Info from "./User_Group_Info";
 
 class User_Group extends Component {
-    constructor(props) {
-        super(props)
+    constructor(props, context) {
+        super(props, context)
         this.state = {
             login: true,
             redirect: false,
@@ -16,9 +15,16 @@ class User_Group extends Component {
             change: false
         };
     }
+    componentDidMount(){
+        this.props.history.push('/'+this.state.username);  ///may be.... dev mode render twice
+    }
     group(groupID, groupName, ID, Name) {
         this.setState({ groupID: groupID, groupName:groupName, memberid:ID, membername:Name});
         this.setState({ redirect: true });
+    }
+    Logout = () => {
+        sessionStorage.clear()
+        this.setState({login: false})
     }
     showModal = () => {
         this.setState({ show: true });
@@ -35,11 +41,13 @@ class User_Group extends Component {
             }}
             />)
         }
+        
         if (!this.state.login) {
             return (<Redirect to='/' />)
         }
 
         var list = JSON.parse(sessionStorage.getItem('Group_List')).map(
+            // eslint-disable-next-line
             list => (<User_Group_Info
                 key={list._id}
                 list={list}
@@ -53,12 +61,8 @@ class User_Group extends Component {
                         <Grid.Column width={5}>
                             <h2>{this.state.username}'s Group List</h2>
                         </Grid.Column>
-                        <Grid.Column right width={1}>
-                            <Button onClick ={()=>{
-                                sessionStorage.clear()
-                                this.setState({login: false})
-                            }}  size='mini' color='red' style={{ marginTop: '1em' }}>
-                            logout</Button>
+                        <Grid.Column right="true" width={1}>
+                            <Button onClick ={this.Logout}  size='mini' color='red' style={{ marginTop: '1em' }}>logout</Button>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -72,7 +76,7 @@ class User_Group extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Sidebar vertical visible width='thick'>
+                        <Sidebar vertical="true" visible>
                             <Image src="racheal.png"></Image>
                             {this.state.username}
                         </Sidebar>
@@ -84,4 +88,4 @@ class User_Group extends Component {
 
 }
 
-export default User_Group
+export default withRouter(User_Group)
