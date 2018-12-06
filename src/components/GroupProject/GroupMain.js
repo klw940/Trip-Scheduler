@@ -11,6 +11,7 @@ class GroupMain extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            _id: this.props.location.state._id,
             groupname: this.props.match.params.groupname,
             username: this.props.match.params.username,
             groupid: sessionStorage.getItem('groupid'),
@@ -24,7 +25,6 @@ class GroupMain extends Component {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
     componentDidMount() {
-        socket.emit('channelJoin', this.state.channel);
     }
 
     render() {
@@ -67,7 +67,7 @@ class GroupMain extends Component {
                             {
                                 this.state.cardVisible ?
                                 <Card/>:
-                                <Chat className="Chat" groupname={this.state.groupname} socket={socket} username={this.state.username}/>
+                                <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                             }
                         </Grid.Column>
                         <Grid.Column width={12}>

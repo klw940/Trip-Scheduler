@@ -11,6 +11,7 @@ class User_Group extends Component {
         this.state = {
             login: true,
             redirect: false,
+            _id:'',
             username: sessionStorage.getItem('username'),
             email: sessionStorage.getItem('useremail'),
             reload: false,
@@ -25,8 +26,8 @@ class User_Group extends Component {
             this.setState(result);
         })  // render 부분으로 이동시 무한 루프
     }
-    group(groupID, groupName, ID, Name) {
-        this.setState({ groupID: groupID, groupName:groupName, memberid:ID, membername:Name});
+    group(groupID, groupName, ID, Name, _id) {
+        this.setState({ groupID: groupID, groupName:groupName, memberid:ID, membername:Name, _id:_id});
         this.setState({ redirect: true });
     }
     Logout = () => {
@@ -47,7 +48,7 @@ class User_Group extends Component {
             sessionStorage.setItem("groupid", this.state.groupID);
             return (<Redirect to={{
                 pathname: "/" + this.state.username + "/" + this.state.groupName,
-                state:{memberid:this.state.memberid, membername:this.state.membername}
+                state:{memberid:this.state.memberid, membername:this.state.membername,_id:this.state._id}
             }}
             />)
         }
@@ -61,7 +62,7 @@ class User_Group extends Component {
             list => (<User_Group_Info
                 key={list._id}
                 list={list}
-                group={() => {this.group(list._id, list.Group_Name, list.Member_ID, list.Member_name)}}
+                group={() => {this.group(list._id, list.Group_Name, list.Member_ID, list.Member_name, list._id)}}
             />)
         )
         return (
