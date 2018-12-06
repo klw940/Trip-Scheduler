@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
 import {CreateGroup, User_Group_Info} from '../../components';
+import {PostData} from '../../containers';
 import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
 import './User_Group.css'
 
@@ -12,11 +13,17 @@ class User_Group extends Component {
             redirect: false,
             username: sessionStorage.getItem('username'),
             email: sessionStorage.getItem('useremail'),
+            reload: false,
             change: false
         };
     }
     componentDidMount(){
         this.props.history.push('/'+this.state.username);  ///may be.... dev mode render twice
+        PostData(this.state.username, { name : this.state.username, email : this.state.email })
+        .then(result => {
+            sessionStorage.setItem('Group_List', JSON.stringify(result.data));// session 저장
+            this.setState(result);
+        })  // render 부분으로 이동시 무한 루프
     }
     group(groupID, groupName, ID, Name) {
         this.setState({ groupID: groupID, groupName:groupName, memberid:ID, membername:Name});
@@ -34,10 +41,13 @@ class User_Group extends Component {
         this.setState({ show: false });
     };
     render() {
+
+        
         if (this.state.redirect) {
+            sessionStorage.setItem("groupid", this.state.groupID);
             return (<Redirect to={{
                 pathname: "/" + this.state.username + "/" + this.state.groupName,
-                state:{memberid:this.state.memberid, membername:this.state.membername, groupid:this.state.groupID}
+                state:{memberid:this.state.memberid, membername:this.state.membername}
             }}
             />)
         }
@@ -45,7 +55,7 @@ class User_Group extends Component {
         if (!this.state.login) {
             return (<Redirect to='/' />)
         }
-
+        
         var list = JSON.parse(sessionStorage.getItem('Group_List')).map(
             // eslint-disable-next-line
             list => (<User_Group_Info
@@ -84,6 +94,8 @@ class User_Group extends Component {
                 </Grid>
             </div>
         )
+        
+        
     }
 
 }

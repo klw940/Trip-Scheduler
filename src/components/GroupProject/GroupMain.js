@@ -13,7 +13,7 @@ class GroupMain extends Component {
         this.state = {
             groupname: this.props.match.params.groupname,
             username: this.props.match.params.username,
-            groupid: this.props.location.state.groupid,
+            groupid: sessionStorage.getItem('groupid'),
             membername: this.props.location.state.membername,
             memberid: this.props.location.state.memberid,
             cardVisible: false,
