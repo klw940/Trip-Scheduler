@@ -3,6 +3,7 @@ import { Grid, Header, Image } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
 import "./LoginForm.css";
 import { Redirect, withRouter } from "react-router-dom";
+import { PostData } from "../../containers";
 
 class LoginForm extends Component {
     constructor(props) {
@@ -28,10 +29,14 @@ class LoginForm extends Component {
             };
         }
         if (postData) {
-            sessionStorage.setItem('username', res.w3.ig);
-            sessionStorage.setItem('useremail', res.w3.U3);
-            this.setState(postData);
-            this.setState({ redirect: true });
+            PostData(postData.name, postData).then(result => {
+                this.setState(postData);
+                sessionStorage.setItem('username', res.w3.ig);
+                sessionStorage.setItem('useremail', res.w3.U3);
+                sessionStorage.setItem('Group_List', JSON.stringify(result.data));// session 저장
+                this.setState(result); //_id(Group_ID), Group_Name, User_ID, Member(Array)  4가지 변수 저장
+                this.setState({ redirect: true });
+            });
         };
     }
     render() {
