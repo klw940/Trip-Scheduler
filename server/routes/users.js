@@ -37,11 +37,28 @@ router.post('/create',(req,res)=>{
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
         const db = await client.db('Trip_Scheduler').collection('User_Group')
         const result = await db.insertOne({ Group_Name:user.group, Member_ID : [user.email], Member_name : [user.name]  })
-        console.log(result.ops);
         res.send(result.ops);
         client.close();
+        return result.ops[0];
     }
-    CreateGroup();
+    var CreateEvents = async(rlt) => {
+        const groupid = rlt._id.toString();
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler').collection('Events');
+        await db.insertOne({ channel:groupid, events : []});
+        client.close();
+        return groupid;
+    }
+    var CreateEventid = async(rlt) => {
+        const groupid = rlt;
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const db = await client.db('Trip_Scheduler').collection('EventsId');
+        await db.insertOne({ groupid:groupid, event_id : 0});
+        client.close();
+    }
+    CreateGroup()
+    .then(result => CreateEvents(result))
+    .then(result => CreateEventid(result))
 });
 
 router.post('/delete', (req, res)=>{
@@ -54,7 +71,7 @@ router.post('/delete', (req, res)=>{
             { $project:{ index: { $indexOfArray: [ "$Member_ID", user.email ]}} }, 
             { $match: { _id:ObjectId(user._id)}}
         ]).toArray()
-        
+        client.close();
         return result;
     }
     var DeleteUser = async(indexOfEmail) => {
