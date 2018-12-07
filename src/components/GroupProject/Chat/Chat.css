@@ -97,3 +97,32 @@
     bottom: -9px;
     left: 5px;
 }
+
+/* 마우스 메뉴 */
+
+.context-menus {
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    width: 100px;
+    text-align: center;
+    z-index: 1;
+}
+
+.context-menus.active {
+    display: block;
+    background-color: white;
+}
+
+.context-menus.active>{
+    list-style: none;
+    padding: 10px;
+}
+
+.context-menus.active:hover {
+    background-color: lightgreen;
+}
+
+.chat{
+    height: 100%;
+}

@@ -7,6 +7,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            visible:false, //채팅 우클릭시 메뉴 보여주기위한 체크
             msg:'',
             channel:this.props._id,
             chatList:[],
@@ -42,9 +43,48 @@ class Chat extends Component {
         }
     }
     inputMSG(event) {
-        this.setState({ msg: event.target.value });
+        this.setState({msg: event.target.value});
     }
+
     render() {
+        //우클릭 메뉴창
+        var test = document.getElementById("context-menus");
+
+        /* 마우스 왼클릭 감지 */
+        function leftMouseListener() {
+            document.addEventListener("click", function(e) {
+                toggleOnOff(0);
+            })
+        }
+
+        /* 마우스 메뉴 on & off */
+        function toggleOnOff(num) {
+            num === 1 ? test.classList.add("active") : test.classList.remove("active");
+        }
+
+        function showMenu(x, y) {
+            test.style.top = y + "px";
+            const rootW =  window.innerWidth*0.11;
+            if(rootW<x){
+                test.style.left = x-100 + "px";
+            }
+            else {
+                test.style.left = x + "px";
+            }
+
+        }
+
+        function onContextMenu(e) {
+            e.preventDefault();
+            //e.stopPropagation();
+            toggleOnOff(1);
+            console.log(e)
+            console.log(e.target.textContent);
+            showMenu(e.clientX, e.clientY);
+            //alert(''+e.clientX+' / '+e.clientY);
+        };
+
+        //채팅 불러오기!!
         var my_email=this.state.email;
         var pre_email=this.state.email;
         let list = this.state.chatList.map((item, index) =>{
@@ -67,10 +107,10 @@ class Chat extends Component {
             function mycheck() {
                 if(item.comment.email==my_email){
                     return(
-                        <div>
+                        <div onClick={leftMouseListener}>
                             {addZero(date.getHours())}:{addZero(date.getMinutes())}
                             <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
-                                <div className="msg_text">
+                                <div className="msg_text" onContextMenu={onContextMenu}>
                                 {item.comment.msg}
                                 </div>
                             </div>
@@ -79,9 +119,9 @@ class Chat extends Component {
                 }
                 else{
                     return(
-                        <div>
+                        <div onClick={leftMouseListener}>
                             <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
-                                <div className="msg_text">
+                                <div id="msg_text" onContextMenu={onContextMenu}>
                                     {item.comment.msg}
                                 </div>
                             </div>
@@ -94,7 +134,7 @@ class Chat extends Component {
                 <div key={index}>
                     <div className="chattingView-msgline">
                         <div style={item.comment.email==this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
-                            <div className="chattingView-msgbox">
+                            <div id="chattingView-msgbox">
                                 {emailcheck()}
                                 {mycheck()}
                             </div>
@@ -106,6 +146,11 @@ class Chat extends Component {
 
         //렌더 부분
         return (
+            <div className="chat">
+            <div id="context-menus" class="context-menus">
+                카드만들기
+            </div>
+
             <div className="chattingView-body">
                 {this.state.email}<br/>
                 {this.state.channel}
@@ -117,9 +162,44 @@ class Chat extends Component {
                     <button type="button" className="btn-primary" onClick={this.send}>입력</button>
                 </div>
             </div>
+            </div>
         );
     }
 
 }
 
 export default Chat;
+
+// _handleContextMenu = (event) => {
+//     event.preventDefault();
+//
+//     this.setState({ visible: true });
+//
+//     const clickX = event.clientX;//누른곳 x
+//     const clickY = event.clientY;//누른곳 y
+//     const screenW = window.innerWidth;
+//     const screenH = window.innerHeight;
+//     const rootW = this.root.offsetWidth;
+//     const rootH = this.root.offsetHeight;
+//
+//     const right = (screenW - clickX) > rootW;
+//     const left = !right;
+//     const top = (screenH - clickY) > rootH;
+//     const bottom = !top;
+//
+//     if (right) {
+//         this.root.style.left = `${clickX + 5}px`;
+//     }
+//
+//     if (left) {
+//         this.root.style.left = `${clickX - rootW - 5}px`;
+//     }
+//
+//     if (top) {
+//         this.root.style.top = `${clickY + 5}px`;
+//     }
+//
+//     if (bottom) {
+//         this.root.style.top = `${clickY - rootH - 5}px`;
+//     }
+// };

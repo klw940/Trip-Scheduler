@@ -63,14 +63,14 @@ class GroupMain extends Component {
                 </Menu>
                 </div>
                 <div class="wrapper">
-                        <div>
+                        <div className="wrapper-row">
                             {
                                 this.state.cardVisible ?
                                 <Card/>:
                                 <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                             }
                         </div>
-                        <div>
+                         <div className="wrapper-row">
                              <Calendar className="Calendar" cal_height={document.getElementsByClassName("Calendar").height}/>
                         </div>
                 </div>
