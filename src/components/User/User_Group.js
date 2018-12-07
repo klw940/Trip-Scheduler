@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
-import {CreateGroup, User_Group_Info} from '../../components';
+import { CreateGroup, User_Group_Info} from '../../components';
 import {PostData} from '../../containers';
 import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
 import './User_Group.css'
@@ -11,10 +11,9 @@ class User_Group extends Component {
         this.state = {
             login: true,
             redirect: false,
-            _id:'',
             username: sessionStorage.getItem('username'),
             email: sessionStorage.getItem('useremail'),
-            reload: false,
+            reload : true,
             change: false
         };
     }
@@ -42,8 +41,6 @@ class User_Group extends Component {
         this.setState({ show: false });
     };
     render() {
-
-        
         if (this.state.redirect) {
             sessionStorage.setItem("groupid", this.state.groupID);
             return (<Redirect to={{
@@ -51,8 +48,7 @@ class User_Group extends Component {
                 state:{memberid:this.state.memberid, membername:this.state.membername,_id:this.state._id}
             }}
             />)
-        }
-        
+        } 
         if (!this.state.login) {
             return (<Redirect to='/' />)
         }
@@ -62,6 +58,7 @@ class User_Group extends Component {
             list => (<User_Group_Info
                 key={list._id}
                 list={list}
+                history = {()=>{this.setState({reload:false})}}
                 group={() => {this.group(list._id, list.Group_Name, list.Member_ID, list.Member_name, list._id)}}
             />)
         )
@@ -95,10 +92,7 @@ class User_Group extends Component {
                 </Grid>
             </div>
         )
-        
-        
     }
-
 }
 
 export default withRouter(User_Group)
