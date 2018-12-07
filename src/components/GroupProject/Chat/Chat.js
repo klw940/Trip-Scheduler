@@ -9,7 +9,7 @@ class Chat extends Component {
         super(props);
         this.state = {
             msg:'',
-            channel:this.props.groupname,
+            channel:this.props._id,
             chatList:[],
             email: sessionStorage.getItem('useremail'),
             username:this.props.username
@@ -26,6 +26,9 @@ class Chat extends Component {
             cursor.setState({chatList:cursor.state.chatList.concat([data])});
             document.querySelector(".chattingView-chatbox").scrollTo(0,document.querySelector(".chattingView-chatbox").scrollHeight);
         });
+    }
+    componentWillUnmount(){
+        this.props.socket.emit('channelLeave', this.state.channel);
     }
     send(){
         this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
@@ -50,7 +53,8 @@ class Chat extends Component {
         //렌더 부분
         return (
             <div className="chattingView-body">
-                {this.state.email}
+                {this.state.email}<br/>
+                {this.state.channel}
                 <div className="chattingView-chatbox">
                     <div className="chattingView-chat">{list}</div>
                 </div>

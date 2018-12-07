@@ -7,7 +7,7 @@ class User_Group_Info extends Component {
         return(
             <Item>
                 <Icon name="comment" size="big"/>
-                <Item.Content onClick={() => group(list.Group_Name,list.Member_ID, list.Member_name)} style={{ cursor: "pointer"}}>
+                <Item.Content onClick={() => group(list.Group_Name,list.Member_ID, list.Member_name, list._id)} style={{ cursor: "pointer"}}>
                     <Item.Header>{list.Group_Name}</Item.Header>
                     <Item.Meta>{list.Member_name}</Item.Meta>
                 </Item.Content>

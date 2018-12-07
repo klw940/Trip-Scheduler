@@ -82,11 +82,11 @@ io.on('connection', function (socket) {
             }
         });
         console.log('receive : ',data.channel,dataAddinfo);
-        io.sockets.in(data.channel).emit('receive', {tag:false,comment: dataAddinfo});
+        io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
 
-    socket.on('receive', function (data) {
-        console.log('테스트용');
+    socket.on('channelLeave', function(data){
+        socket.leave(data);
     });
 });
 
