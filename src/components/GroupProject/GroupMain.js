@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
-import { Menu, Icon, Grid } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
@@ -23,8 +23,6 @@ class GroupMain extends Component {
 
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
-    }
-    componentDidMount() {
     }
 
     render() {

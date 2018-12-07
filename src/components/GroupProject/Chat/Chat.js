@@ -97,7 +97,7 @@ class Chat extends Component {
                 return i;
             }
             function emailcheck() {
-                if(pre_email!=now_email){
+                if(pre_email!==now_email){
                     pre_email=now_email
                     return(
                         <p style={{margin:'5px'}}>{item.comment.username}</p>
@@ -105,11 +105,11 @@ class Chat extends Component {
                 }
             }
             function mycheck() {
-                if(item.comment.email==my_email){
+                if(item.comment.email===my_email){
                     return(
                         <div onClick={leftMouseListener}>
                             {addZero(date.getHours())}:{addZero(date.getMinutes())}
-                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
+                            <div className={item.comment.email===my_email?"balloonY":"balloonN"}>
                                 <div className="msg_text" onContextMenu={onContextMenu}>
                                 {item.comment.msg}
                                 </div>
@@ -120,7 +120,7 @@ class Chat extends Component {
                 else{
                     return(
                         <div onClick={leftMouseListener}>
-                            <div className={item.comment.email==my_email?"balloonY":"balloonN"}>
+                            <div className={item.comment.email===my_email?"balloonY":"balloonN"}>
                                 <div id="msg_text" onContextMenu={onContextMenu}>
                                     {item.comment.msg}
                                 </div>
@@ -133,7 +133,7 @@ class Chat extends Component {
             return(
                 <div key={index}>
                     <div className="chattingView-msgline">
-                        <div style={item.comment.email==this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
+                        <div style={item.comment.email===this.state.email?{textAlign:"right"}:{textAlign:"left"}}>
                             <div id="chattingView-msgbox">
                                 {emailcheck()}
                                 {mycheck()}

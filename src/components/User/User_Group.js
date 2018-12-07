@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
-import { CreateGroup, User_Group_Info } from '../../components';
+import { User_Group_Info, CreateGroup } from '../../components';
 import { PostData } from '../../containers';
 import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
-
 import './User_Group.css'
 
 class User_Group extends Component {
@@ -42,7 +41,6 @@ class User_Group extends Component {
         this.setState({ show: false });
     };
     render() {
-
         if (this.state.redirect) {
             sessionStorage.setItem("groupid", this.state.groupID);
             return (<Redirect to={{
@@ -84,7 +82,7 @@ class User_Group extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={2}>
-                            <CreateGroup name={this.state.username} email={this.state.email} change={() => { this.setState({ change: true }) }} />
+                            <CreateGroup name={this.state.username} email={this.state.email} change={() => { this.setState({ change: true })}}/>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -94,6 +92,7 @@ class User_Group extends Component {
                         </Sidebar>
                     </Grid.Row>
                 </Grid>
+                
             </div>
         )
     }
