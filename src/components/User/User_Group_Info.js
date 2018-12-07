@@ -20,17 +20,18 @@ class User_Group_Info extends Component {
                     <Item.Header>{list.Group_Name}</Item.Header>
                     <Item.Meta>{list.Member_name}</Item.Meta>
                 </Item.Content>
-                <Button className="exitGroup" onClick={() => {
+                <Button className="exitGroup" onClick={async() => {
                     var data = {
                         name: this.state.username,
                         email: this.state.email,
                         _id: list._id
                     }
-                    PostData(this.state.username + '/delete', data)
-                    .then(result => {
-                        this.props.history();
-                    })
-
+                    await PostData(this.state.username + '/delete', data)
+                    await PostData(this.state.username, { name: this.state.username, email: this.state.email })
+                        .then(result => {
+                            sessionStorage.setItem('Group_List', JSON.stringify(result.data));// session 저장
+                        })
+                    this.props.history()
                     
                 }}>그룹 나가기</Button>
             </Item>

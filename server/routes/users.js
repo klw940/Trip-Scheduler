@@ -63,11 +63,13 @@ router.post('/delete', (req, res)=>{
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
         const db = await client.db('Trip_Scheduler')
         const User_Group = await db.collection('User_Group');
-        const result1 = await User_Group.update(
+        const result1 = await User_Group.findOneAndUpdate(
             { _id: ObjectId(user._id)},
-            { $set: { [idindex] : null, [nameindex]: null }});
+            { $set: { [idindex] : null, [nameindex]: null }},
+            {returnOriginal:false}
+        );
         const result2 = await User_Group.update({_id: ObjectId(user._id)}, {$pull : { "Member_ID" : null, "Member_name" : null}});
-        res.send('complete');
+        res.send(result1);
         client.close();
     }
     indexOfEmail()
