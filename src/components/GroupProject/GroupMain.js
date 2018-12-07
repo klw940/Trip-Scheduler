@@ -30,7 +30,7 @@ class GroupMain extends Component {
     render() {
         return (
             <div className="GroupMain">
-
+                <div className="Menu">
                 <Menu icon='labeled'>
                     <Menu.Item name="tasks" onClick={this.viewCards}>
                         <Icon name="tasks" size="big" />
@@ -61,20 +61,19 @@ class GroupMain extends Component {
                         }>추가</button>
                     </h4>
                 </Menu>
-                <Grid columns={2}>
-                    <Grid.Row>
-                        <Grid.Column width={4}>
+                </div>
+                <div class="wrapper">
+                        <div>
                             {
                                 this.state.cardVisible ?
                                 <Card/>:
                                 <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                             }
-                        </Grid.Column>
-                        <Grid.Column width={12}>
-                             <Calendar className="Calendar"/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                        </div>
+                        <div>
+                             <Calendar className="Calendar" cal_height={document.getElementsByClassName("Calendar").height}/>
+                        </div>
+                </div>
             </div>
         )
     }

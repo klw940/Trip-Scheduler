@@ -3,7 +3,7 @@ import $ from "jquery";
 import 'jquery-ui-dist/jquery-ui';
 import 'fullcalendar';
 import 'fullcalendar/dist/fullcalendar.css';
-
+import './Calandar.css'
 class Calendar extends Component{
 
     constructor(props) {
@@ -26,13 +26,16 @@ class Calendar extends Component{
                 if ($('#drop-remove').is(':checked')) {
                     $(this).remove();
                 }
-            }
+            },
+            contentHeight:650
         })
     }
 
     render() {
         return (
-            <div id="calendar"></div>
+            <div className="cla_body">
+                <div id="calendar"></div>
+            </div>
         );
     }
 }

@@ -47,8 +47,11 @@
 }
 
 .btn-primary{
-    height: 100%;
+    height: 90%;
     width: 20%;
+    margin: 0;
+    border: 0;
+    padding: 0;
 }
 
 .itemY{

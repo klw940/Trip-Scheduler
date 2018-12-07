@@ -12,8 +12,14 @@
     float: left;
     height: 90%;
 }
-.Calendar {
-    background: none;
-    float: right;
+
+.wrapper {
     height: 90%;
+    display: grid;
+        grid-template-columns: 20% 78%;
+    grid-template-rows: 100%;
+}
+
+.Menu{
+    height: 10%;
 }
