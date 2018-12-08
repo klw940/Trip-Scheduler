@@ -67,16 +67,16 @@ class User_Group extends Component {
         return (
             <div className="User_Group">
                 <Grid centered columns={2} className="User_Group">
-                    <Grid.Row>
-                        <Grid.Column width={5}>
-                            <h2>{this.state.username}'s Group List</h2>
+                    <Grid.Row style={{ marginTop: '2em'}}>
+                        <Grid.Column width={7}>
+                            <h1>{this.state.username}'s Group List</h1>
                         </Grid.Column>
                         <Grid.Column right="true" width={1}>
                             <Button onClick={this.Logout} size='mini' color='red' style={{ marginTop: '1em' }}>logout</Button>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={6}>
+                        <Grid.Column width={8}>
                             <Item.Group divided className="GroupList" >{list}</Item.Group>
                         </Grid.Column>
                     </Grid.Row>

@@ -56,10 +56,10 @@ class CreateGroup extends Component {
                                 </Grid.Row>
                                 <Grid.Row>
                                     <Grid.Column width={2}>
-                                        <Button className="createbtn" onClick={this.createGroup}>Create</Button>
+                                        <Button className="createbtn" onClick={this.createGroup} color="green">Create</Button>
                                     </Grid.Column>
                                     <Grid.Column width={2}>
-                                        <Button onClick={() => this.close()}>Close</Button>
+                                        <Button onClick={() => this.close()} color="red">Close</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
