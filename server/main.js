@@ -36,10 +36,8 @@ io.on('connection', function (socket) {
     var instanceId = socket.id;
 
     socket.on('channelJoinChat', function (data) {
-        console.log('channelJoinChat :', data);
         socket.join(data);
         channel = data;
-        console.log(channel);
         MongoClient.connect('mongodb://127.0.0.1:27017/', function (error, client) {
             console.log(channel);
             if (error) console.log(error);
@@ -48,10 +46,8 @@ io.on('connection', function (socket) {
                 db.collection('log').find({ channel: channel }).sort({ data: 1 }).toArray(function (err, doc) {
                     if (err) console.log(err);
                     doc.forEach(function (item) {
-                        console.log(item);
                         socket.emit('receiveChat', { comment: item });
                     });
-                    console.log("Chat소켓입장확인");
                     client.close();
                 });
             }
@@ -59,15 +55,11 @@ io.on('connection', function (socket) {
     });
 
     socket.on('sendChat', function (data) {
-        console.log('Chat입력소켓')
-        console.log('Chatdata :', data)
         let dataAddinfo = {ip: socket.handshake.address, msg: data.msg, date: Date.now(), email:data.email, username: data.username};
-        console.log(dataAddinfo)
         MongoClient.connect('mongodb://127.0.0.1:27017/', function (error, client) {
             if (error) console.log(error);
             else {
                 const db = client.db(dbName);
-                console.log(data.email)
                 db.collection('log').insert({
                     ip: dataAddinfo.ip,
                     msg: dataAddinfo.msg,
@@ -81,7 +73,6 @@ io.on('connection', function (socket) {
                 });
             }
         });
-        console.log('receiveChat : ',data.channel,dataAddinfo);
         io.sockets.in(data.channel).emit('receiveChat', {comment: dataAddinfo});
     });
 
@@ -90,32 +81,20 @@ io.on('connection', function (socket) {
     });
 
     // calendar socekt
-    socket.on('channelJoinEvent', function (data) {
+    socket.on('channelJoinEvents', function (data) {
         console.log('channelJoinEvent:', data);
-        socket.join(data);
         channel = data;
-        console.log(channel);
         MongoClient.connect('mongodb://127.0.0.1:27017/', function (error, client) {
-            console.log(channel);
             if (error) console.log(error);
             else {
                 const db = client.db(dbName);
                 db.collection('Events').find({ channel: channel }).sort({ data: 1 }).toArray(function (err, doc) {
                     if (err) console.log(err);
                     doc.forEach(function (item) {
+                        console.log("Events Events Events Events Events Events ");
                         console.log(item.events);
-                        socket.emit('receiveEvents', { comment: item.events });
+                        socket.emit('receiveEvents', item.events);
                     });
-                    console.log("Events 소켓입장확인");
-                    client.close();
-                });
-                db.collection('EventsId').find({ groupid: channel }).sort({ data: 1 }).toArray(function (err, doc) {
-                    if (err) console.log(err);
-                    doc.forEach(function (item) {
-                        console.log(item.events.id);
-                        socket.emit('receiveEventsId', { comment: item.events.id });
-                    });
-                    console.log("EventsId 소켓입장확인");
                     client.close();
                 });
             }
@@ -123,26 +102,19 @@ io.on('connection', function (socket) {
     });
 
     socket.on('sendEvents', function (data) {
-        console.log('Events 입력소켓')
-        console.log('Events data :', data)
-        let dataAddinfo = {ip: socket.handshake.address, id: data.id, title: data.title, start:data.start, end: data.end, url: data.url};
-        console.log(dataAddinfo)
+        let dataAddinfo = {id: data.id, title: data.title, start:data.start, end: data.end, contents: data.contents};
         MongoClient.connect('mongodb://127.0.0.1:27017/', function (error, client) {
             if (error) console.log(error);
             else {
                 const db = client.db(dbName);
-                console.log(data.email)
-                db.collection('Events').insert(
-                    {channel: data.id, $push: {events: {
-                                id: data.id, title: data.title, start:data.start, end: data.end, url: data.url
-                            }}}, function (err, doc) {
-                        if (err) console.log(err);
-                        client.close();
-                    });
+                db.collection('Events').findOneAndUpdate(
+                    {channel: data.channel},
+                    {$push: {events: {
+                        id: data.id, title: data.title, start:data.start, end: data.end, contents: data.contents}}},
+                    { upsert: true, useNewUrlParser: true, returnOriginal:false});
             }
         });
-        console.log('receiveEvents : ',data.id, dataAddinfo);
-        io.sockets.in(data.id).emit('receiveEvents', {comment: dataAddinfo});
+        io.sockets.in(data.channel).emit('receiveEvents', dataAddinfo);
     });
 });
 
