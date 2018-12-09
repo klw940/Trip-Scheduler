@@ -52,6 +52,7 @@
     margin: 0;
     border: 0;
     padding: 0;
+    height:65px;
 }
 
 .itemY{
@@ -125,4 +126,14 @@
 
 .chat{
     height: 100%;
+}
+body ::-webkit-scrollbar{
+    width:5px;
+
+}
+body ::-webkit-scrollbar-thumb{
+    width:0px;
+}
+body ::-webkit-scrollbar-track{
+    background:#F7F7F7;
 }

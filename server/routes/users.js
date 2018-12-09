@@ -9,7 +9,7 @@ router.use(bodyparser.json());
 router.post('/', function(req, res, next) {
     const user = JSON.parse(req.body.user);
     var loginCheck = async () => {
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler')
         const loginMember = await db.collection('loginMember');
         const result = await loginMember.updateOne(
@@ -20,7 +20,7 @@ router.post('/', function(req, res, next) {
         client.close();
     }
     var getGroipList = async () => {
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler')
         const User_Group = await db.collection('User_Group');
         const result = await User_Group.find({Member_ID: {$elemMatch:{$eq:user.email}} }).toArray();
@@ -34,7 +34,7 @@ router.post('/', function(req, res, next) {
 router.post('/create',(req,res)=>{
     const user = JSON.parse(req.body.user);
     var CreateGroup = async() => {
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler').collection('User_Group')
         const result = await db.insertOne({ Group_Name:user.group, Member_ID : [user.email], Member_name : [user.name]  })
         res.send(result.ops);
@@ -43,28 +43,28 @@ router.post('/create',(req,res)=>{
     }
     var CreateEvents = async(rlt) => {
         const groupid = rlt._id.toString();
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler').collection('Events');
         await db.insertOne({ channel:groupid, events : []});
         client.close();
         return groupid;
     }
-    var CreateEventid = async(rlt) => {
+    var CreateCards = async(rlt) => {
         const groupid = rlt;
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
-        const db = await client.db('Trip_Scheduler').collection('EventsId');
-        await db.insertOne({ groupid:groupid, event_id : 0});
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+        const db = await client.db('Trip_Scheduler').collection('Cards');
+        await db.insertOne({ channel:groupid, events : []});
         client.close();
     }
     CreateGroup()
     .then(result => CreateEvents(result))
-    .then(result => CreateEventid(result))
+    .then(result => CreateCards(result))
 });
 
 router.post('/delete', (req, res)=>{
     const user = JSON.parse(req.body.user);
     var indexOfEmail = async() => {
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler')
         const User_Group = await db.collection('User_Group');
         const result = await User_Group.aggregate([
@@ -77,7 +77,7 @@ router.post('/delete', (req, res)=>{
     var DeleteUser = async(indexOfEmail) => {
         const idindex = `Member_ID.${indexOfEmail.index}`;
         const nameindex = `Member_name.${indexOfEmail.index}`;
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db('Trip_Scheduler')
         const User_Group = await db.collection('User_Group');
         const result1 = await User_Group.findOneAndUpdate(
