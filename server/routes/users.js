@@ -49,16 +49,16 @@ router.post('/create',(req,res)=>{
         client.close();
         return groupid;
     }
-    var CreateEventid = async(rlt) => {
+    var CreateCards = async(rlt) => {
         const groupid = rlt;
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
-        const db = await client.db('Trip_Scheduler').collection('EventsId');
-        await db.insertOne({ groupid:groupid, event_id : 0});
+        const db = await client.db('Trip_Scheduler').collection('Cards');
+        await db.insertOne({ channel:groupid, events : []});
         client.close();
     }
     CreateGroup()
     .then(result => CreateEvents(result))
-    .then(result => CreateEventid(result))
+    .then(result => CreateCards(result))
 });
 
 router.post('/delete', (req, res)=>{

@@ -22,7 +22,6 @@ class Chat extends Component {
         let cursor=this;
         this.props.socket.emit('channelJoin', this.state.channel);
         this.props.socket.on('receive', function (data) {
-            console.log(data)
             cursor.setState({chatList:cursor.state.chatList.concat([data])});
             document.querySelector(".chattingView-chatbox").scrollTo(0,document.querySelector(".chattingView-chatbox").scrollHeight);
         });
@@ -109,8 +108,8 @@ class Chat extends Component {
                     return(
                         <div onClick={leftMouseListener}>
                             {addZero(date.getHours())}:{addZero(date.getMinutes())}
-                            <div className={item.comment.email===my_email?"balloonY":"balloonN"}>
-                                <div className="msg_text" onContextMenu={onContextMenu}>
+                            <div className={item.comment.email===my_email?"balloonY":"balloonN"} onContextMenu={onContextMenu}>
+                                <div className="msg_text" >
                                 {item.comment.msg}
                                 </div>
                             </div>
@@ -120,8 +119,8 @@ class Chat extends Component {
                 else{
                     return(
                         <div onClick={leftMouseListener}>
-                            <div className={item.comment.email===my_email?"balloonY":"balloonN"}>
-                                <div id="msg_text" onContextMenu={onContextMenu}>
+                            <div className={item.comment.email===my_email?"balloonY":"balloonN"} onContextMenu={onContextMenu}>
+                                <div id="msg_text" >
                                     {item.comment.msg}
                                 </div>
                             </div>
@@ -147,7 +146,7 @@ class Chat extends Component {
         //렌더 부분
         return (
             <div className="chat">
-            <div id="context-menus" class="context-menus">
+            <div id="context-menus" className="context-menus">
                 카드만들기
             </div>
 
