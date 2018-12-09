@@ -10,6 +10,7 @@ class CreateCard extends Component {
             content:this.props.content,
             open:false
         }
+        console.log(this.state.content);
     }
 
     createCard = () => {
@@ -67,7 +68,7 @@ class CreateCard extends Component {
 
                             <Grid.Row>
                                 <Grid.Column width={5}>
-                                    <Input type="text"  placeholder={this.props.content} />
+                                    <Input type="text"  value={this.props.content} />
                                 </Grid.Column>
                             </Grid.Row>
 

@@ -49,16 +49,9 @@ class Chat extends Component {
         this.setState({msg: event.target.value});
     }
 
-    createCard = () => {
-        this.close();
-    }
-
-    closeConfigShow = (Create) => () => {     /*closeConfigShow(Create){()=>{this.setState}}*/
-        this.setState({ Create, open: true })
-    }
-
-    close = () => {
-        this.setState({ open: false })
+    handleClick=()=>{
+        // console.log('hi');
+        this.setState({open:true})
     }
 
     render() {
@@ -93,16 +86,6 @@ class Chat extends Component {
                 menu.style.left = x + "px";
             }
         }
-
-        function onContextMenu(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleOnOff(1);
-            console.log(e);
-            console.log(e.target.textContent);
-            showMenu(e.clientX, e.clientY);
-            content=e.target.textContent;
-        };
 
         //채팅 불러오기!!
         var my_email=this.state.email;
@@ -164,73 +147,37 @@ class Chat extends Component {
             )
         });
 
+        // let cardform;
+        function onContextMenu(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleOnOff(1);
+            console.log(e);
+            console.log(e.target.textContent);
+            showMenu(e.clientX, e.clientY);
+            content=e.target.textContent;
+            console.log('content:'+content);
+        };
+
+
         // function handleCard(content) {
         //     return(
         //         <CreateCard content={content}/>
         //     )
         // }
 
+        let cardform;
+        if(this.state.open==true){
+            console.log(content)
+            cardform=<CreateCard content={content}/>
+        }
+
         const { open, Create } = this.state
         //렌더 부분
         return (
             <div className="chat" onContextMenu={(e)=>{e.preventDefault();}}>
-            <div id="context-menus" class="context-menus">
-                <div>
-                    <div onClick={this.closeConfigShow(false)}>카드 만들기</div>
-                    <Modal
-                        open={open}
-                        create={Create}
-                        onClose={this.close}
-                    >
-                        <Modal.Header>카드 만들기</Modal.Header>
-                        <Modal.Description>
-                            <Grid centered columns={5}>
-                                <Grid.Row>
-                                    <Grid.Column width={1}>
-                                        카드명 :
-                                    </Grid.Column>
-                                    <Grid.Column width={4}>
-                                        <Input type="text"  placeholder='카드명 입력' />
-                                    </Grid.Column>
-                                </Grid.Row>
-
-                                <Grid.Row>
-                                    <Grid.Column width={1}>
-                                        시작 시간
-                                    </Grid.Column>
-                                    <Grid.Column width={4}>
-                                        <Input type="date"/>
-                                    </Grid.Column>
-                                </Grid.Row>
-
-                                <Grid.Row>
-                                    <Grid.Column width={1}>
-                                        마감 시간
-                                    </Grid.Column>
-                                    <Grid.Column width={4}>
-                                        <Input type="date"/>
-                                    </Grid.Column>
-                                </Grid.Row>
-
-                                <Grid.Row>
-                                    <Grid.Column width={5}>
-                                        <Input  className="check" type="text" value="hi"/>
-                                    </Grid.Column>
-                                </Grid.Row>
-
-                                <Grid.Row>
-                                    <Grid.Column width={2}>
-                                        <Button onClick={this.createCard} color="green">Create</Button>
-                                    </Grid.Column>
-                                    <Grid.Column width={1}></Grid.Column>
-                                    <Grid.Column width={2}>
-                                        <Button onClick={() => this.close()} color="red">Close</Button>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Modal.Description>
-                    </Modal>
-                </div >
+            <div id="context-menus" class="context-menus" onClick={this.handleClick}>
+                카드만들기{cardform}
             </div>
 
             <div className="chattingView-body" >
