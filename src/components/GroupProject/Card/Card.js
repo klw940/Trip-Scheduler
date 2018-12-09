@@ -19,9 +19,9 @@ class Card extends Component {
             await this.setState({ cards: data.cards }); //comment: [cardsssss]   저장
             let list = await this.state.cards.map((card) => {
                 return (
-                    <div className='fc-event' >
+                    <div className='fc-event' key={card.id}>
                         <h3 className='title'>{card.title}</h3>
-                        <h5 className='description'>{card.description}</h5>
+                        <h5 className='contents'>{card.contents}</h5>
                         <input className='id' type="hidden" ref={id => this.id = id} value={Date.now()} />{/* id는 캘린더 들어갈 때마다 변해야함 */}
                     </div>
                 )
@@ -32,7 +32,7 @@ class Card extends Component {
                    //초기값 있어야 함
                 $(this).data('event', {             
                     title: $.trim($(this).children('.title').text()), // use the element's text as the event title
-                    description: $.trim($(this).children('.description').text()),
+                    contents: $.trim($(this).children('.contents').text()),
                     id: Date.now(),    //// 변경해서 입력되어야함
                     stick: true // maintain when user navigates (see docs on the renderEvent method)
                 })
@@ -44,7 +44,7 @@ class Card extends Component {
                     start: function (event, ui) {
                         $(event.target).data('event', {              
                             title: $.trim($(event.target).children('.title').text()), // use the element's text as the event title
-                            description: $.trim($(event.target).children('.description').text()),
+                            contents: $.trim($(event.target).children('.contents').text()),
                             id: Date.now(),    //// 변경해서 입력되어야함
                             stick: true // maintain when user navigates (see docs on the renderEvent method)
                         })

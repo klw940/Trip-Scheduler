@@ -15,8 +15,10 @@ class Calendar extends Component {
         }
     }
     componentDidMount() {
-        this.props.socket.emit('calendarJoin', this.state.channel);
-        this.props.socket.on('calreceive', async (data) => {
+        const { socket } = this.props;
+        const { channel } = this.state;
+        socket.emit('calendarJoin', channel);
+        socket.on('calreceive', async (data) => {
             await this.setState({ events: this.state.events.concat(data.events) })
             await $('#calendar').fullCalendar({
                 header: {
@@ -35,9 +37,8 @@ class Calendar extends Component {
                 eventMouseover: function (eventObj) {  //or eventRender : function(eventObj, $el)
                     $(this).popover({
                         title: eventObj.title,
-                        content: eventObj.description,
+                        content: eventObj.contents,
                         trigger: 'show', ///// click or hover or 
-                        //delay: {show : 1000, hide : 0},
                         placement: 'auto',
                         container: 'body'
                     });
@@ -54,7 +55,15 @@ class Calendar extends Component {
                 editable: true,
                 droppable: true,
                 drop: function(date, event){
-                    console.log(event.target);
+                    var target = $(event.target);
+                    var data ={
+                        id : target.children('.id')[0].defaultValue,
+                        title : target.children('.title').text(),
+                        contents: target.children('.contents').text(),
+                        start: date.format(), 
+                        end: date.format(), 
+                    }
+                    socket.emit('sendEvents', data);
                 },
                 contentHeight: 650
             });
@@ -62,13 +71,16 @@ class Calendar extends Component {
                 e.preventDefault()
             })
         })
+        socket.on('receiveEvents', async (data)=>{
+            console.log(data);
+            await this.setState({ events: this.state.events.concat(data.events) })
+            $('#calendar').fullCalendar('renderEvents', [data.events]);
+        })
         
     }
     render() {
         return (
-            <div className="cla_body">
-                <div id="calendar" />
-            </div>
+            <div id="calendar" />
         );
     }
 }
