@@ -86,6 +86,10 @@ io.on('connection', function (socket) {
         io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
 
+    socket.on('createcard', function(data){
+        console.log(data.card);
+    });
+
     socket.on('channelLeave', function(data){
         socket.leave(data);
     });
