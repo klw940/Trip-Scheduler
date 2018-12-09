@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './Chat.css'
+import CreateCard from './CreateCard/CreateCard'
+import {Button, Grid, Input, Modal} from "semantic-ui-react";
 
 ////스타일 CSS로 이동
 
@@ -12,7 +14,8 @@ class Chat extends Component {
             channel:this.props._id,
             chatList:[],
             email: sessionStorage.getItem('useremail'),
-            username:this.props.username
+            username:this.props.username,
+            open:false
         };
         this.send = this.send.bind(this);
         this.keysend = this.keysend.bind(this);
@@ -46,9 +49,22 @@ class Chat extends Component {
         this.setState({msg: event.target.value});
     }
 
+    createCard = () => {
+        this.close();
+    }
+
+    closeConfigShow = (Create) => () => {     /*closeConfigShow(Create){()=>{this.setState}}*/
+        this.setState({ Create, open: true })
+    }
+
+    close = () => {
+        this.setState({ open: false })
+    }
+
     render() {
         //우클릭 메뉴창
-        var test = document.getElementById("context-menus");
+        var menu = document.getElementById("context-menus");
+        var content=' ';
 
         /* 마우스 왼클릭 감지 */
         function leftMouseListener() {
@@ -59,29 +75,33 @@ class Chat extends Component {
 
         /* 마우스 메뉴 on & off */
         function toggleOnOff(num) {
-            num === 1 ? test.classList.add("active") : test.classList.remove("active");
+            if(num === 1){
+                menu.classList.add("active");
+            }
+            else{
+                menu.classList.remove("active");
+            }
         }
 
         function showMenu(x, y) {
-            test.style.top = y + "px";
+            menu.style.top = y + "px";
             const rootW =  window.innerWidth*0.11;
             if(rootW<x){
-                test.style.left = x-100 + "px";
+                menu.style.left = x-100 + "px";
             }
             else {
-                test.style.left = x + "px";
+                menu.style.left = x + "px";
             }
-
         }
 
         function onContextMenu(e) {
             e.preventDefault();
-            //e.stopPropagation();
+            e.stopPropagation();
             toggleOnOff(1);
-            console.log(e)
+            console.log(e);
             console.log(e.target.textContent);
             showMenu(e.clientX, e.clientY);
-            //alert(''+e.clientX+' / '+e.clientY);
+            content=e.target.textContent;
         };
 
         //채팅 불러오기!!
@@ -144,14 +164,76 @@ class Chat extends Component {
             )
         });
 
+        // function handleCard(content) {
+        //     return(
+        //         <CreateCard content={content}/>
+        //     )
+        // }
+
+        const { open, Create } = this.state
         //렌더 부분
         return (
-            <div className="chat">
+            <div className="chat" onContextMenu={(e)=>{e.preventDefault();}}>
             <div id="context-menus" class="context-menus">
-                카드만들기
+                <div>
+                    <div onClick={this.closeConfigShow(false)}>카드 만들기</div>
+                    <Modal
+                        open={open}
+                        create={Create}
+                        onClose={this.close}
+                    >
+                        <Modal.Header>카드 만들기</Modal.Header>
+                        <Modal.Description>
+                            <Grid centered columns={5}>
+                                <Grid.Row>
+                                    <Grid.Column width={1}>
+                                        카드명 :
+                                    </Grid.Column>
+                                    <Grid.Column width={4}>
+                                        <Input type="text"  placeholder='카드명 입력' />
+                                    </Grid.Column>
+                                </Grid.Row>
+
+                                <Grid.Row>
+                                    <Grid.Column width={1}>
+                                        시작 시간
+                                    </Grid.Column>
+                                    <Grid.Column width={4}>
+                                        <Input type="date"/>
+                                    </Grid.Column>
+                                </Grid.Row>
+
+                                <Grid.Row>
+                                    <Grid.Column width={1}>
+                                        마감 시간
+                                    </Grid.Column>
+                                    <Grid.Column width={4}>
+                                        <Input type="date"/>
+                                    </Grid.Column>
+                                </Grid.Row>
+
+                                <Grid.Row>
+                                    <Grid.Column width={5}>
+                                        <Input  className="check" type="text" value="hi"/>
+                                    </Grid.Column>
+                                </Grid.Row>
+
+                                <Grid.Row>
+                                    <Grid.Column width={2}>
+                                        <Button onClick={this.createCard} color="green">Create</Button>
+                                    </Grid.Column>
+                                    <Grid.Column width={1}></Grid.Column>
+                                    <Grid.Column width={2}>
+                                        <Button onClick={() => this.close()} color="red">Close</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Modal.Description>
+                    </Modal>
+                </div >
             </div>
 
-            <div className="chattingView-body">
+            <div className="chattingView-body" >
                 {this.state.email}<br/>
                 {this.state.channel}
                 <div className="chattingView-chatbox">
