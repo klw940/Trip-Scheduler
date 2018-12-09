@@ -148,22 +148,12 @@ class Chat extends Component {
         this.setState({ msg: event.target.value });
     }
 
-    handleClick = () => {
-        // console.log('hi');
-        this.setState({ open: true })
-    }
-
     render() {
         //렌더 부분
         return (
             <div className="chat" onContextMenu={(e) => { e.preventDefault(); }}>
-                <div id="context-menus" class="context-menus" onClick={this.handleClick}>
-                    카드만들기
-                    {
-                        this.state.open
-                            ? <CreateCard content={this.state.content} />
-                            : null
-                    }
+                <div id="context-menus" class="context-menus">
+                    <CreateCard content={this.state.content}/>
                 </div>
 
                 <div className="chattingView-body" >
@@ -184,37 +174,3 @@ class Chat extends Component {
 }
 
 export default Chat;
-
-// _handleContextMenu = (event) => {
-//     event.preventDefault();
-//
-//     this.setState({ visible: true });
-//
-//     const clickX = event.clientX;//누른곳 x
-//     const clickY = event.clientY;//누른곳 y
-//     const screenW = window.innerWidth;
-//     const screenH = window.innerHeight;
-//     const rootW = this.root.offsetWidth;
-//     const rootH = this.root.offsetHeight;
-//
-//     const right = (screenW - clickX) > rootW;
-//     const left = !right;
-//     const top = (screenH - clickY) > rootH;
-//     const bottom = !top;
-//
-//     if (right) {
-//         this.root.style.left = `${clickX + 5}px`;
-//     }
-//
-//     if (left) {
-//         this.root.style.left = `${clickX - rootW - 5}px`;
-//     }
-//
-//     if (top) {
-//         this.root.style.top = `${clickY + 5}px`;
-//     }
-//
-//     if (bottom) {
-//         this.root.style.top = `${clickY - rootH - 5}px`;
-//     }
-// };
