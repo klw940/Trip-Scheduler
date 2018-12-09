@@ -47,10 +47,11 @@ io.on('connection', function (socket) {
                 const db = client.db(dbName);
                 db.collection('log').find({ channel: channel }).sort({ data: 1 }).toArray(function (err, doc) {
                     if (err) console.log(err);
-                    doc.forEach(function (item) {
-                        console.log(item);
-                        socket.emit('receive', { comment: item });
-                    });
+                    socket.emit('receive', { comment: doc });
+                    // doc.forEach(function (item) {
+                    //     console.log(item);
+                    //     socket.emit('receive', { comment: item });
+                    // });
                     console.log("소켓입장확인");
                     client.close();
                 });
