@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
-import { Menu, Icon } from 'semantic-ui-react';
+import { Menu, Icon, Button } from 'semantic-ui-react';
 import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
@@ -35,9 +35,9 @@ class GroupMain extends Component {
                     </Menu.Item>
                     <h1>{this.state.username}-{this.state.groupname}</h1>
                     <h4>
-                        <button type="button" >나가기</button><br />
+                        <Button type="button" >나가기</Button><br />
                         &nbsp; 이메일: <input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
-                        &nbsp; <button type="button" onClick={() => {
+                        &nbsp; <Button type="button" onClick={() => {
 
                             if (this.state.memberid.indexOf(this.id.value) !== -1) {
                                 console.log("이미 있음")
@@ -56,7 +56,7 @@ class GroupMain extends Component {
                                     this.setState({ membername: result.data.value.Member_name });
                                 })
                         }
-                        }>추가</button>
+                        }>추가</Button>
                     </h4>
                 </Menu>
                 </div>
@@ -69,7 +69,7 @@ class GroupMain extends Component {
                             }
                         </div>
                          <div className="wrapper-row">
-                             <Calendar className="Calendar" cal_height={document.getElementsByClassName("Calendar").height}/>
+                             <Calendar className="Calendar" _id={this.state._id} socket={socket} username={this.state.username} cal_height={document.getElementsByClassName("Calendar").height}/>
                         </div>
                 </div>
             </div>

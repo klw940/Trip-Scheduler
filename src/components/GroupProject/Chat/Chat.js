@@ -20,9 +20,9 @@ class Chat extends Component {
     }
     componentDidMount(){
         let cursor=this;
-        this.props.socket.emit('channelJoin', this.state.channel);
-        this.props.socket.on('receive', function (data) {
-            console.log(data)
+        this.props.socket.emit('channelJoinChat', this.state.channel);
+        this.props.socket.on('receiveChat', function (data) {
+            //console.log(data)
             cursor.setState({chatList:cursor.state.chatList.concat([data])});
             document.querySelector(".chattingView-chatbox").scrollTo(0,document.querySelector(".chattingView-chatbox").scrollHeight);
         });
@@ -31,13 +31,13 @@ class Chat extends Component {
         this.props.socket.emit('channelLeave', this.state.channel);
     }
     send(){
-        this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+        this.props.socket.emit('sendChat',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
         this.setState({msg:''});
         document.querySelector(".inputMsg").value="";
     }
     keysend(event){
         if(event.keyCode===13) {
-            this.props.socket.emit('send',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
+            this.props.socket.emit('sendChat',{username:this.state.username,email:this.state.email,msg:this.state.msg, channel:this.state.channel});
             this.setState({msg:''});
             document.querySelector(".inputMsg").value="";
         }

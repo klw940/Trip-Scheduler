@@ -33,6 +33,7 @@ router.post('/create', (req, res) => {
 })
 router.post('/addmember', (req, res) => {
     const group = JSON.parse(req.body.user);
+    console.log(group)
     var memberCheck = async () => {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
         const db = await client.db('Trip_Scheduler').collection('loginMember');
@@ -60,4 +61,6 @@ router.post('/addmember', (req, res) => {
     memberCheck().then(result => addMember(result));
 
 })
+
+
 module.exports = router;
