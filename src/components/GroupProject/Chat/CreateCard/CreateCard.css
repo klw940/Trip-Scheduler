@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .grid-container {
     display: grid;
     grid-template-columns: auto auto ;
@@ -10,4 +11,77 @@
     padding: 20px;
     font-size: 30px;
     text-align: center;
+=======
+article {
+    display: inline-grid;
+    width: 100%;
+    grid-template-columns: 30% 20% 50%;
+    grid-template-rows: 60px 60px 60px auto 60px 60px;
+    font-size: 20px;
+}
+
+.card_section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#card_name1{
+    background-color: white;
+    grid-column: 1/2;
+}
+#card_name2{
+    background-color: white;
+    grid-column: 2/4;
+}
+#card_name2 input{
+    box-sizing : border-box;
+    width: 420px;
+}
+
+#card_start1{
+    background-color: white;
+    grid-column: 1/2;
+}
+#card_start2{
+    background-color: white;
+    grid-column: 2/4;
+}
+#card_start2 input{
+    width: 420px;
+}
+
+#card_end1{
+    background-color: white;
+    grid-column: 1/2;
+}
+#card_end2{
+    background-color: white;
+    grid-column: 2/4;
+}
+#card_end2 input{
+    width: 420px;
+}
+
+#card_content{
+    background-color: white;
+    grid-column: 1/4;
+    padding-top: 20px;
+}
+#card_content input[type="text"]{
+    width: 600px;
+    background-color: white;
+}
+
+#card_create{
+    background-color: white;
+    grid-column: 1/3;
+    padding-top: 20px;
+}
+
+#card_stop{
+    background-color: white;
+    grid-column: 3/4;
+    padding-top: 20px;
+>>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
 }
