@@ -176,7 +176,7 @@ class Chat extends Component {
         }}
       >
         <div id="context-menus" class="context-menus">
-          <CreateCard content={this.state.content} />
+          <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />
         </div>
 
         <div className="chattingView-body">
