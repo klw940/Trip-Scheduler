@@ -195,7 +195,6 @@ h1, h2, h3, h4, h5, h6 {
 .popover-body {
     padding: 0.5rem 0.75rem;
     color: #212529;
-<<<<<<< HEAD
 }
 
 /***/
@@ -220,6 +219,4 @@ h1, h2, h3, h4, h5, h6 {
 
 .calendar-menus.active>div:hover {
     background-color: lightgreen;
-=======
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
 }

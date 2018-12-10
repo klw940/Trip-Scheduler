@@ -29,11 +29,10 @@ class Chat extends Component {
       });
       //우클릭 메뉴창
       var menu = document.getElementById("context-menus");
-<<<<<<< HEAD
 
       /* 마우스 왼클릭 감지 */
       function leftMouseListener() {
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function (e) {
           toggleOnOff(0);
         });
       }
@@ -58,37 +57,6 @@ class Chat extends Component {
       }
       //채팅 불러오기!!
 
-=======
-      var content;
-
-      /* 마우스 왼클릭 감지 */
-      function leftMouseListener() {
-        document.addEventListener("click", function(e) {
-          toggleOnOff(0);
-        });
-      }
-
-      /* 마우스 메뉴 on & off */
-      function toggleOnOff(num) {
-        if (num === 1) {
-          menu.classList.add("active");
-        } else {
-          menu.classList.remove("active");
-        }
-      }
-
-      function showMenu(x, y) {
-        menu.style.top = y + "px";
-        const rootW = window.innerWidth * 0.11;
-        if (rootW < x) {
-          menu.style.left = x - 100 + "px";
-        } else {
-          menu.style.left = x + "px";
-        }
-      }
-      //채팅 불러오기!!
-        
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
       var my_email = this.state.email;
       var pre_email = this.state.email;
       let list = await this.state.chatList.map((item, index) => {
@@ -114,37 +82,21 @@ class Chat extends Component {
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
-<<<<<<< HEAD
+
                   onContextMenu={onContextMenu}
                 >
                   {item.msg}
-=======
-                >
-                  <div className="msg_text" onContextMenu={onContextMenu}>
-                    {item.msg}
-                  </div>
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
                 </div>
               </div>
             );
           } else {
             return (
-<<<<<<< HEAD
               <div onClick={leftMouseListener} >
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
                   onContextMenu={onContextMenu}
                 >
                   {item.msg}
-=======
-              <div onClick={leftMouseListener}>
-                <div
-                  className={item.email === my_email ? "balloonY" : "balloonN"}
-                >
-                  <div id="msg_text" onContextMenu={onContextMenu}>
-                    {item.msg}
-                  </div>
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
                 </div>
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
               </div>
@@ -175,12 +127,7 @@ class Chat extends Component {
         e.stopPropagation();
         toggleOnOff(1);
         showMenu(e.clientX, e.clientY);
-<<<<<<< HEAD
         cursor.setState({ content: e.target.textContent });
-=======
-        content = e.target.textContent;
-        cursor.setState({ content: content });
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
       }
       await this.setState({ list: list });
       await document
@@ -230,13 +177,8 @@ class Chat extends Component {
         }}
       >
         <div id="context-menus" class="context-menus">
-<<<<<<< HEAD
-          <CreateCard content={this.state.content} />
-=======
           <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />
->>>>>>> 854790808cb3dabec183418425910fb5b1c544c1
         </div>
-
         <div className="chattingView-body">
           {this.state.email}
           <br />
