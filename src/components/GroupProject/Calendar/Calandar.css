@@ -196,3 +196,27 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.5rem 0.75rem;
     color: #212529;
 }
+
+/***/
+.calendar-menus {
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    width: 100px;
+    text-align: center;
+    z-index: 1;
+}
+
+.calendar-menus.active {
+    display: block;
+    background-color: white;
+}
+
+.calendar-menus.active>div {
+    list-style: none;
+    padding: 10px;
+}
+
+.calendar-menus.active>div:hover {
+    background-color: lightgreen;
+}

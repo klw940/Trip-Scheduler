@@ -29,7 +29,6 @@ class Chat extends Component {
       });
       //우클릭 메뉴창
       var menu = document.getElementById("context-menus");
-      var content;
 
       /* 마우스 왼클릭 감지 */
       function leftMouseListener() {
@@ -83,22 +82,20 @@ class Chat extends Component {
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
+                  onContextMenu={onContextMenu}
                 >
-                  <div className="msg_text" onContextMenu={onContextMenu}>
-                    {item.msg}
-                  </div>
+                  {item.msg}
                 </div>
               </div>
             );
           } else {
             return (
-              <div onClick={leftMouseListener}>
+              <div onClick={leftMouseListener} >
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
+                  onContextMenu={onContextMenu}
                 >
-                  <div id="msg_text" onContextMenu={onContextMenu}>
-                    {item.msg}
-                  </div>
+                  {item.msg}
                 </div>
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
               </div>
@@ -129,8 +126,7 @@ class Chat extends Component {
         e.stopPropagation();
         toggleOnOff(1);
         showMenu(e.clientX, e.clientY);
-        content = e.target.textContent;
-        cursor.setState({ content: content });
+        cursor.setState({ content: e.target.textContent });
       }
       await this.setState({ list: list });
       await document

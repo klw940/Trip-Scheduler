@@ -70,7 +70,7 @@ router.post('/delete', (req, res)=>{
         const result = await User_Group.aggregate([
             { $project:{ index: { $indexOfArray: [ "$Member_ID", user.email ]}} }, 
             { $match: { _id:ObjectId(user._id)}}
-        ]).toArray()
+        ]).toArray()// member_id에 맞는 인덱스 찾기   이메일 주소에 맞는 name을 찾기위함(동명이인 존재할 수 있음)
         client.close();
         return result;
     }
