@@ -63,7 +63,6 @@ class Calendar extends Component {
         eventClick: function (event) {
           //if(checked)인 상태에서 클릭시 삭제 or 클릭시 팝업으로 확인
           $(this).popover("hide");
-          console.log(event.id);
         },
         events: this.state.events,
         editable: true,
@@ -71,6 +70,7 @@ class Calendar extends Component {
         drop: function (date, event) {
           var target = $(event.target);
           var data = {
+            channel: cursor.state.channel,
             id: target.children('.id')[0].defaultValue,
             title: target.children(".title").text(),
             contents: target.children(".contents").text(),
@@ -86,13 +86,20 @@ class Calendar extends Component {
       });
     });
     socket.on("receiveEvents", async data => {
-      console.log(data.events);
       await this.setState({ events: this.state.events.concat(data.events) });
       $("#calendar").fullCalendar("renderEvents", [data.events]);
     });
+    socket.on("editEvents", async data => {
+      var events= this.state.events;
+      events[events.findIndex(x=>x.id===data.id)]=data;
+      this.setState({events:events});
+      $("#calendar").fullCalendar('removeEvents'); 
+      $("#calendar").fullCalendar('addEventSource', this.state.events);
+      //fullcalendar update가 있었지만 정상작동하지 않음 
+    });
+
     socket.on("deleteEvents", async data => {
       await this.setState({ events: data.events });
-      console.log(data.id)
       $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
   }
@@ -101,7 +108,7 @@ class Calendar extends Component {
   }
   deleteEvent() {
     $("#calendar").fullCalendar("removeEvents", [this.state.eventid]); // array에 id 추가시 제거 + id를 소켓으로 넘겨줌
-    this.state.socket.emit("removeEvents", this.state.eventid)
+    this.state.socket.emit("removeEvents", { id:this.state.eventid, channel:this.state.channel })
   }
   render() {
     return (
@@ -109,7 +116,7 @@ class Calendar extends Component {
         id="calendar"
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
-        <div id="calendar-menus" class="calendar-menus">
+        <div id="calendar-menus" className="calendar-menus">
           <div className="edit" onClick={() => this.editEvent()}>
             <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
           </div>

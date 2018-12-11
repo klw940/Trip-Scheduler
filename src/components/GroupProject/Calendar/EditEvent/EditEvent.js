@@ -11,11 +11,11 @@ class EditEvent extends Component {
             open:false,
             date:''
         }
-        console.log(this.state.content);
     }
 
     editEvent = () => {
         var data = {
+            channel: this.state.channel,
             id : this.props.eventid,
             title : document.getElementById("event_name2_input").value,
             start : document.getElementById("event_start2_input").value,
@@ -23,7 +23,6 @@ class EditEvent extends Component {
             contents: document.getElementById("event_content_input").value
         }
         this.props.socket.emit('editEvents', data);
-        console.log(data);
         this.close();
     }
 
@@ -45,7 +44,7 @@ class EditEvent extends Component {
         
         var start = new Date(this.props.start)
         var start_Y=start.getFullYear();
-        var start_M = addZero(start.getMonth());
+        var start_M = addZero(start.getMonth())+1;
         var start_D = addZero(start.getDate());
         
         var date = ""+start_Y+"-"+start_M+"-"+start_D;
@@ -71,12 +70,12 @@ class EditEvent extends Component {
                     }}>
                         <article>
                             <div className="event_section" id="event_name1">타이틀</div>
-                            <div className="event_section" id="event_name2"><Input className="event_name2_input" id="event_name2_input" type="text"  placeholder='타이틀 입력' defaultValue={this.props.title} /></div>
+                            <div className="event_section" id="event_name2"><Input className="event_name2_input" id="event_name2_input" type="text"  placeholder='타이틀 입력' defaultValue={this.props.title} required="required"/></div>
                             <div className="event_section" id="event_start1">시작 시간</div>
-                            <div className="event_section" id="event_start2"><Input className="event_start2_input" id="event_start2_input" type="date" defaultValue={date}/></div>
+                            <div className="event_section" id="event_start2"><Input className="event_start2_input" id="event_start2_input" type="date" defaultValue={date} required="required"/></div>
                             <div className="event_section" id="event_end1">마감 시간</div>
-                            <div className="event_section" id="event_end2"><Input className="event_end2_input" id="event_end2_input" type="date" defaultValue={date}/></div>
-                            <div className="event_section" id="event_content"><Input className="event_content_input" id="event_content_input" type="text" defaultValue={this.props.content} /></div>
+                            <div className="event_section" id="event_end2"><Input className="event_end2_input" id="event_end2_input" type="date" defaultValue={date} required="required"/></div>
+                            <div className="event_section" id="event_content"><Input className="event_content_input" id="event_content_input" type="text" defaultValue={this.props.content} required="required"/></div>
                             <div className="event_section" id="event_edit"><Button onClick={this.editEvent} color="green">Edit</Button></div>
                             <div className="event_section" id="event_stop"><Button onClick={() => this.close()} color="red">Close</Button></div>
                         </article>
