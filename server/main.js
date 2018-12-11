@@ -27,7 +27,7 @@ server.on('listening', onListening);
 
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
-var io = require('socket.io').listen(3100);
+var io = require('socket.io').listen(server);
 var channel;
 const dbName = 'Trip_Scheduler';
 
@@ -85,6 +85,7 @@ io.on('connection', function (socket) {
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
         const result = await Events.find({ channel: channel }).toArray();
+        console.log(result);
         socket.emit('calreceive', { events: result[0].events });
         client.close();
     });
@@ -108,6 +109,21 @@ io.on('connection', function (socket) {
         );
         io.sockets.in(channel).emit('receiveEvents', {events:data});
         client.close();
+    });
+    socket.on('editEvents', async (data) => { //data는 eventid
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+        const db = await client.db(dbName);
+        const Events = await db.collection('Events');
+        const result = await Events.updateOne(
+            { channel:channel, 'events.id':data.id }, 
+            { $set:{ 
+                "events.$.title": data.title,
+                "events.$.start": data.start,
+                "events.$.end": data.end,
+                "events.$.contents":data.contents }});
+
+        //io.sockets.in(channel).emit('editEvents', {id:data, events:result.value.events});
+        // client.close();
     });
     socket.on('removeEvents', async (data) => { //data는 eventid
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });

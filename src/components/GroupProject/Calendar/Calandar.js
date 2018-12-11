@@ -3,6 +3,7 @@ import $ from "jquery";
 import "bootstrap";
 import "fullcalendar";
 import "fullcalendar/dist/fullcalendar.css";
+import EditEvent from './EditEvent/EditEvent'
 import "./Calandar.css";
 class Calendar extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Calendar extends Component {
       channel: this.props._id,
       email: sessionStorage.getItem("useremail"),
       socket: this.props.socket,
-      events: []
+      events: [],
+      edit: false
     };
   }
   componentDidMount() {
@@ -29,8 +31,7 @@ class Calendar extends Component {
         eventRender: function (event, element) {
           element.bind("mousedown", function (e) {
             if (e.which === 3) {
-              console.log(event.id);
-              cursor.setState({ eventid: event.id });
+              cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start._d });
               var menu = document.getElementById("calendar-menus");
               e.preventDefault();
               e.stopPropagation();
@@ -96,7 +97,7 @@ class Calendar extends Component {
     });
   }
   editEvent(){
-
+    this.setState({edit:true});
   }
   deleteEvent() {
     $("#calendar").fullCalendar("removeEvents", [this.state.eventid]); // array에 id 추가시 제거 + id를 소켓으로 넘겨줌
@@ -106,13 +107,11 @@ class Calendar extends Component {
     return (
       <div
         id="calendar"
-        onClick={document.addEventListener("click", function (e) {
-          document.getElementById("calendar-menus").classList.remove("active");
-        })}
+        onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
         <div id="calendar-menus" class="calendar-menus">
           <div className="edit" onClick={() => this.editEvent()}>
-            편집
+            <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
           </div>
           <div className="delete" onClick={() => this.deleteEvent()}>
             삭제

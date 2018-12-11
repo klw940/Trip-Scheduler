@@ -4,7 +4,7 @@ import { Menu, Icon } from 'semantic-ui-react';
 import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:3100');
+const socket = io.connect('http://localhost:3001');
 
 
 class GroupMain extends Component {
