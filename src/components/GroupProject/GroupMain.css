@@ -27,3 +27,34 @@
 .Menu{
     height: 10%;
 }
+
+.groupMainTransition-appear{
+    opacity: 0;
+}
+
+.groupMainTransition-appear.groupMainTransition-appear-active{
+    opacity: 1;
+    transition: all 1s ease-in-out;
+}
+
+.CalendarTransition-appear{
+    opacity: 0.01;
+    transform: translateY(30%) scale(1);
+}
+
+.CalendarTransition-appear.CalendarTransition-appear-active{
+    opacity: 1;
+    transform: translateY(0%) scale(1);
+    transition: all 1s ease-out;
+}
+
+.cardChatTransition-appear{
+    opacity: 0.01;
+    transform: translateY(30%) scale(1);
+}
+
+.cardChatTransition-appear.cardChatTransition-appear-active{
+    opacity: 1;
+    transform: translateY(0%) scale(1);
+    transition: all 2s ease-out;
+}

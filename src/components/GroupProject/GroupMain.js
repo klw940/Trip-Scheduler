@@ -5,6 +5,7 @@ import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
 import * as ReactDOM from "react-dom";
+import {CSSTransitionGroup} from "react-transition-group";
 var socket;
 
 
@@ -43,6 +44,12 @@ class GroupMain extends Component {
     render() {
         return (
             <div className="GroupMain">
+                <CSSTransitionGroup
+                    transitionName="groupMainTransition"
+                    transitionAppear={true}
+                    transitionAppearTimeout={500}
+                    transitionEnter={false}
+                    transitionLeave={false}>
                 <div className="Menu" style={{backgroundColor: 'paleturquoise'}}>
                     <Icon name="tasks" size="big" style={{ marginTop: '1em', cursor: 'pointer', float: 'left', width: '5%' }} onClick={this.viewCards}/>
                     <Header as='h1' style={{float:'left', width: '70%'}}>{this.state.username}-{this.state.groupname}</Header>
@@ -71,7 +78,14 @@ class GroupMain extends Component {
                         </h4>
                     </div>
                 </div>
+                </CSSTransitionGroup>
                 <div className="wrapper">
+                    <CSSTransitionGroup
+                        transitionName="CalendarTransition"
+                        transitionAppear={true}
+                        transitionAppearTimeout={1000}
+                        transitionEnter={false}
+                        transitionLeave={false}>
                     <div
                         className="wrapper-row"
                         onContextMenu={e => {e.preventDefault();}}
@@ -82,9 +96,17 @@ class GroupMain extends Component {
                                 <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                         }
                     </div>
+                    </CSSTransitionGroup>
+                    <CSSTransitionGroup
+                        transitionName="cardChatTransition"
+                        transitionAppear={true}
+                        transitionAppearTimeout={2000}
+                        transitionEnter={false}
+                        transitionLeave={false}>
                     <div className="wrapper-row">
                         <Calendar className="Calendar" _id={this.state._id} socket={socket} cal_height={document.getElementsByClassName("Calendar").height}/>
                     </div>
+                    </CSSTransitionGroup>
                 </div>
             </div>
         )

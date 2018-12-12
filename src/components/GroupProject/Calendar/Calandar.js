@@ -144,6 +144,7 @@ class Calendar extends Component {
         await  $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
   }
+  
   deleteEvent() {
     $("#calendar").fullCalendar("removeEvents", [this.state.eventid]); // array에 id 추가시 제거 + id를 소켓으로 넘겨줌
     this.state.socket.emit("removeEvents", { id:this.state.eventid, channel:this.state.channel })

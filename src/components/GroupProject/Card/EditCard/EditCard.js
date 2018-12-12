@@ -7,10 +7,11 @@ class EditCard extends Component {
         super(props);
         this.state={
             channel : this.props.channel,
-            content: this.props.content,
+            // content: this.props.content,
             open: false,
             date:''
         }
+        console.log(this.props.card);
     }
 
     editEvent = () => {
