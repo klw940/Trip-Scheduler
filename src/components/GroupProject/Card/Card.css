@@ -14,3 +14,27 @@ h3.title{
 h5.contents{
     pointer-events: none
 }
+
+/***/
+.card-menus {
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    width: 100px;
+    text-align: center;
+    z-index: 1;
+}
+
+.card-menus.active {
+    display: block;
+    background-color: white;
+}
+
+.card-menus.active>div {
+    list-style: none;
+    padding: 10px;
+}
+
+.card-menus.active>div:hover {
+    background-color: lightgreen;
+}

@@ -1,104 +1,3 @@
-.channelJoin{
-    height: 10px;
-}
-
-.chattingView-msgline{ /*메세지 박스*/
-    padding-bottom: 3px;
-    width: 90%;
-    display: inline-block;
-}
-
-.chattingView-msgbox{ /*메세지 박스*/
-    display: inline-block;
-}
-
-.chattingView-body{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-}
-
-.chattingView-chatbox{
-    overflow:scroll;
-    overflow-x: hidden;
-    flex: 1;
-}
-
-.chattingView-input{ /*입력창*/
-    float:bottom;
-    height: 60px;
-    width:100%;
-}
-
-.chattingView-chat{
-    height: 100%;
-    text-align: center;
-}
-
-.inputMsg{
-    margin:0;
-    border:0;
-    padding: 0;
-    height: 100%;
-    width: 80%;
-    font-size: 20px;
-    text-indent: 10px;
-}
-
-.btn-primary{
-    height: 90%;
-    width: 20%;
-    margin: 0;
-    border: 0;
-    padding: 0;
-    height:65px;
-}
-
-.itemY{
-    text-align: right;
-}
-
-.itemN{
-    text-align: left;
-}
-
-.balloonY {
-    display: inline-block;
-    position: relative;
-    background: white;
-    margin: 0 auto 10px;
-    padding: 10px;
-    border-radius: 10px;
-}
-.balloonY:after {
-    content: '';
-    position: absolute;
-    border-top: 10px solid white;
-    border-right: 1px solid transparent;
-    border-left: 15px solid transparent;
-    bottom: -9px;
-    right: 5px;
-}
-
-.balloonN {
-    display: inline-block;
-    position: relative;
-    background: white;
-    margin: 0 auto 10px;
-    padding: 10px;
-    border-radius: 10px;
-}
-.balloonN:after {
-    content: '';
-    position: absolute;
-    border-top: 10px solid white;
-    border-right: 10px solid transparent;
-    border-left: 1px solid transparent;
-    bottom: -9px;
-    left: 5px;
-}
-
 /* 마우스 메뉴 */
 
 .context-menus {
@@ -127,37 +26,133 @@
 .chat{
     height: 100%;
 }
-body ::-webkit-scrollbar{
-    width:5px;
 
-}
-body ::-webkit-scrollbar-thumb{
-    width:0px;
-}
-body ::-webkit-scrollbar-track{
-    background:#F7F7F7;
+.itemY{
+    text-align: right;
 }
 
-/***/
-.card-menus {
-    position: absolute;
-    display: none;
-    border: 1px solid black;
-    width: 100px;
+.itemN{
+    text-align: left;
+}
+
+.chattingView-input{ /*입력창*/
+    float:bottom;
+    height: 100px;
+    width:100%;
+}
+
+.chattingView-msgline{ /*메세지 박스*/
+    padding-bottom: 5px;
+    width: 90%;
+    display: inline-block;
+}
+
+.chattingView-msgbox{ /*메세지 박스*/
+    display: inline-block;
+}
+
+.chattingView-body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.chattingView-chatbox{
+    overflow:scroll;
+    overflow-x: hidden;
+    flex: 1;
+}
+
+inputMsg.channelJoin{
+    height: 10px;
+}
+
+
+.chattingView-chat{
+    height: 100%;
     text-align: center;
-    z-index: 1;
 }
 
-.card-menus.active {
-    display: block;
-    background-color: white;
+
+.inputMsg-box{
+    float: left;
+    height: 100%;
+    width: 70%;
 }
 
-.card-menus.active>div {
-    list-style: none;
+.inputMsg{
+    margin:0;
+    border:0;
+    font-size: 20px;
+    text-indent: 10px;
+    height: 90%;
+    width: 90%;
+    padding-left: 5px;
+}
+.btn-primary-box{
+    float: left;
+    height: 100%;
+    width: 30%;
+}
+
+.btn-primary{
+    margin: 0;
+    border: 0;
+    padding: 0;
+    float: top;
+    height: 90%;
+    width: 100%;
+}
+
+
+.balloonY {
+    display: inline-block;
+    position: relative;
+    background: white;
+    margin: 0 auto 10px;
     padding: 10px;
+    border-radius: 10px;
+    max-width: 90%;
+}
+.balloonY:after {
+    content: '';
+    position: absolute;
+    border-top: 10px solid white;
+    border-right: 1px solid transparent;
+    border-left: 15px solid transparent;
+    bottom: -9px;
+    right: 5px;
 }
 
-.card-menus.active>div:hover {
-    background-color: lightgreen;
+.balloonN {
+    display: inline-block;
+    position: relative;
+    background: white;
+    margin: 0 auto 10px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 90%;
+}
+.balloonN:after {
+    content: '';
+    position: absolute;
+    border-top: 10px solid white;
+    border-right: 10px solid transparent;
+    border-left: 1px solid transparent;
+    bottom: -9px;
+    left: 5px;
+}
+
+.msg_pre{
+    text-align: left;
+    display: block;
+    width: 100%;
+    margin: 0px;
+    float: left;
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap; /* ancient Opera */
+    white-space: -o-pre-wrap; /* newer Opera */
+    white-space: pre-wrap; /* Chrome; W3C standard */
+    word-wrap: break-word; /* IE */
 }
