@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
-import { Menu, Icon } from 'semantic-ui-react';
-import {Chat, Calendar, Card} from '../../components';
+import { Icon, Button, Grid, Input, Header } from 'semantic-ui-react';
+import { Chat, Calendar, Card } from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3100');
@@ -27,17 +27,19 @@ class GroupMain extends Component {
 
     render() {
         return (
-            <div className="GroupMain">
-                <div className="Menu">
-                <Menu icon='labeled'>
-                    <Menu.Item name="tasks" onClick={this.viewCards}>
-                        <Icon name="tasks" size="big" />
-                    </Menu.Item>
-                    <h1>{this.state.username}-{this.state.groupname}</h1>
-                    <h4>
-                        <button type="button" >나가기</button><br />
-                        &nbsp; 이메일: <input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
-                        &nbsp; <button type="button" onClick={() => {
+            <Grid padded style={{ height: '100vh' }} className="GroupMain">
+                <Grid.Row verticalAlign='middle' columns={3} style={{ height: '8%' }} className="Menu">
+                    {/* <Menu icon='labeled'> */}
+
+                    <Grid.Column width={1}>
+                        <Icon name="tasks" size="big" style={{  marginTop: '0.2em' }} onClick={this.viewCards} />
+                    </Grid.Column>
+                    <Grid.Column width={8} right='true'>
+                        <Header as='h1' style={{  marginTop: '0.1em' }}>{this.state.username}-{this.state.groupname}</Header>
+                    </Grid.Column>
+                    <Grid.Column width={5} right='true'>
+                        &nbsp; 이메일: <Input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
+                        &nbsp; <Button type="button" onClick={() => {
 
                             if (this.state.memberid.indexOf(this.id.value) !== -1) {
                                 console.log("이미 있음")
@@ -56,23 +58,23 @@ class GroupMain extends Component {
                                     this.setState({ membername: result.data.value.Member_name });
                                 })
                         }
-                        }>추가</button>
-                    </h4>
-                </Menu>
-                </div>
-                <div className="wrapper">
-                        <div className="wrapper-row">
-                            {
-                                this.state.cardVisible ?
-                                <Card _id={this.state._id} socket={socket}/>:
-                                <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
-                            }
-                        </div>
-                         <div className="wrapper-row">
-                             <Calendar className="Calendar" _id={this.state._id} socket={socket} cal_height={document.getElementsByClassName("Calendar").height}/>
-                        </div>
-                </div>
-            </div>
+                        }>추가</Button>
+                    </Grid.Column>
+                    {/* </Menu> */}
+                </Grid.Row>
+                <Grid.Row columns={2} style={{ height: '90%' }} className="wrapper">
+                    <Grid.Column width={4} className="wrapper-row">
+                        {
+                            this.state.cardVisible ?
+                                <Card _id={this.state._id} socket={socket} /> :
+                                <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username} />
+                        }
+                    </Grid.Column>
+                    <Grid.Column width={12} className="wrapper-row">
+                        <Calendar className="Calendar" _id={this.state._id} socket={socket} cal_height={document.getElementsByClassName("Calendar").height} />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         )
     }
 }

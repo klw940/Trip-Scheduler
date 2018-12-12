@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
 import { User_Group_Info, CreateGroup } from '../../components';
 import { PostData } from '../../containers';
-import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
+import { Image, Sidebar, Grid, Button, Item, GridColumn, Segment, Header } from 'semantic-ui-react';
 import './User_Group.css'
 
 class User_Group extends Component {
@@ -67,7 +67,41 @@ class User_Group extends Component {
         return (
             <div className="User_Group">
                 <Grid centered columns={2} className="User_Group">
-                    <Grid.Row style={{ marginTop: '2em'}}>
+                    <Grid.Row stretched>
+                        <Grid.Column width={4}>
+                            <Segment>
+                                <Image src="racheal.png"></Image>
+                                {this.state.username}
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={12}>
+                            <Grid.Row verticalAlign='middle' columns={2} style={{ marginTop: '3em' }}>
+                                <Grid.Column>
+                                    <Header as='h1'>{this.state.username}'s Group List</Header>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button onClick={this.Logout} size='mini' color='red'>logout</Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Segment width={8}>
+                                    <Item.Group divided className="GroupList" >{list}</Item.Group>
+                                </Segment>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column width={2}>
+                                    <CreateGroup name={this.state.username} email={this.state.email} change={() => { this.setState({ change: true }) }} />
+                                </Grid.Column>
+                            </Grid.Row>
+                            {/* <Grid.Row>
+                                <Sidebar vertical="true" visible>
+                                    <Image src="racheal.png"></Image>
+                                    {this.state.username}
+                                </Sidebar>
+                            </Grid.Row> */}
+                        </Grid.Column>
+                    </Grid.Row>
+                    {/* <Grid.Row style={{ marginTop: '2em'}}>
                         <Grid.Column width={7}>
                             <h1>{this.state.username}'s Group List</h1>
                         </Grid.Column>
@@ -90,9 +124,9 @@ class User_Group extends Component {
                             <Image src="racheal.png"></Image>
                             {this.state.username}
                         </Sidebar>
-                    </Grid.Row>
+                    </Grid.Row> */}
                 </Grid>
-                
+
             </div>
         )
     }
