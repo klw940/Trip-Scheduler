@@ -192,7 +192,7 @@ class Card extends Component {
         {this.state.list}
         <div id="card-menus" className="card-menus">
           <div className="edit">
-            <EditCard content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} />
+            <EditCard title={this.state.card} socket={this.props.socket} channel={this.state.channel} />
             {/* start={this.state.start}  */}
           </div>
           <div className="delete" onClick={() => this.deleteCard()}>
