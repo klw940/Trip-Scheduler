@@ -48,10 +48,10 @@ class Card extends Component {
         let list = await this.state.cards.map(card => {
             return (
                 <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-                    <h3 className="title">{card.title}</h3>
-                    <h5 className="contents">{card.contents}</h5>
-                    <h4 className="start">{card.start}</h4>
-                    <h4 className="end">{card.end}</h4>
+                    <h3 className="title">제목 : {card.title}</h3>
+                    <h6 className="start">시작예정 시간 : {card.start}</h6>
+                    <h6 className="end">마감예정 시간 : {card.end}</h6>
+                    <h5 className="contents">내용 : {card.contents}</h5>
                     {/* id는 캘린더 들어갈 때마다 변해야함 */}
                     <input type="hidden" value={count++} id="id"/>
                 </div>
@@ -95,10 +95,10 @@ class Card extends Component {
               console.log(card);
               return (
                   <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-                      <h3 className="title" >{card.title}</h3>
-                      <h5 className="contents">{card.contents}</h5>
-                      <h4 className="start">{card.start}</h4>
-                      <h4 className="end">{card.end}</h4>
+                      <h3 className="title">제목 : {card.title}</h3>
+                      <h6 className="start">시작예정 시간 : {card.start}</h6>
+                      <h6 className="end">마감예정 시간 : {card.end}</h6>
+                      <h5 className="contents">내용 : {card.contents}</h5>
                       {/* id는 캘린더 들어갈 때마다 변해야함 */}
                       <input type="hidden" value={count++} id="id"/>
                   </div>
@@ -142,10 +142,10 @@ class Card extends Component {
           console.log(card);
           return (
             <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-              <h3 className="title" >{card.title}</h3>
-              <h5 className="contents">{card.contents}</h5>
-              <h4 className="start">{card.start}</h4>
-              <h4 className="end">{card.end}</h4>
+                <h3 className="title">제목 : {card.title}</h3>
+                <h6 className="start">시작예정 시간 : {card.start}</h6>
+                <h6 className="end">마감예정 시간 : {card.end}</h6>
+                <h5 className="contents">내용 : {card.contents}</h5>
               {/* id는 캘린더 들어갈 때마다 변해야함 */}
               <input type="hidden" value={count++} id="id" />
             </div>

@@ -89,6 +89,7 @@ inputMsg.channelJoin{
     height: 90%;
     width: 90%;
     padding-left: 5px;
+    resize: none;
 }
 .btn-primary-box{
     float: left;
