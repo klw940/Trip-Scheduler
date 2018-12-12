@@ -86,7 +86,7 @@ class Calendar extends Component {
             end: end,
             contents: event.contents,
           }
-          socket.emit("editEvents", data);
+          socket.emit("sizeEvents", data);
         },
           drop: function (date, event) {
              var target = $(event.target);
@@ -118,7 +118,7 @@ class Calendar extends Component {
             end: end,
             contents: event.contents,
           }
-          socket.emit("editEvents", data);
+          socket.emit("sizeEvents", data);
         },
         contentHeight: 650
       });
