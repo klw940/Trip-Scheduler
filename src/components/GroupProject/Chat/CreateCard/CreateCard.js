@@ -12,14 +12,13 @@ class CreateCard extends Component {
             open:false,
             date:''
         }
-        console.log(this.state.content);
     }
 
     createCard = () => {
-        console.log(document.getElementById("card_name2").children[0].children[0].value);
-        console.log(document.getElementById("card_start2").children[0].children[0].value);
-        console.log(document.getElementById("card_end2").children[0].children[0].value);
-        console.log(this.props.content);
+        // console.log(document.getElementById("card_name2").children[0].children[0].value);
+        // console.log(document.getElementById("card_start2").children[0].children[0].value);
+        // console.log(document.getElementById("card_end2").children[0].children[0].value);
+        // console.log(this.props.content);
         var data = {
             title: document.getElementById("card_name2").children[0].children[0].value,
             start : document.getElementById("card_start2").children[0].children[0].value,
@@ -27,7 +26,7 @@ class CreateCard extends Component {
             content:this.props.content
         }
         this.props.socket.emit('createcard', {card : data,channel : this.state.channel});
-        console.log(data);
+        //console.log(data);
         this.close();
     }
 
@@ -51,9 +50,9 @@ class CreateCard extends Component {
         var today_Y=today.getFullYear();
         var today_M=addZero(today.getMonth());
         var today_D=addZero(today.getDate());
-        console.log(today_Y);
-        console.log(today_M);
-        console.log(today_D);
+        // console.log(today_Y);
+        // console.log(today_M);
+        // console.log(today_D);
         this.setState({date : ""+today_Y+"-"+today_M+"-"+today_D})
     }
 
@@ -69,8 +68,7 @@ class CreateCard extends Component {
                     create={Create}
                     onClose={this.close}
                     style={{
-                        width:700,
-                        height:500,
+                        width:700
                     }}
                 >
 
@@ -142,7 +140,7 @@ class CreateCard extends Component {
                             <div className="card_section" id="card_start2"><Input className="card_start2_input" type="date" defaultValue={this.state.date}/></div>
                             <div className="card_section" id="card_end1">마감 시간</div>
                             <div className="card_section" id="card_end2"><Input className="card_end2_input" type="date" defaultValue={this.state.date}/></div>
-                            <div className="card_section" id="card_content"><Input className="card_content_input" type="text" defaultValue={this.props.content} /></div>
+                            <div className="card_section" id="card_content"><textarea defaultValue={content}/></div>
                             <div className="card_section" id="card_create"><Button onClick={this.createCard} color="green">Create</Button></div>
                             <div className="card_section" id="card_stop"><Button onClick={() => this.close()} color="red">Close</Button></div>
                         </article>

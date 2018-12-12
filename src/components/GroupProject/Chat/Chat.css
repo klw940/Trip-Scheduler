@@ -1,9 +1,9 @@
-.channelJoin{
+inputMsg.channelJoin{
     height: 10px;
 }
 
 .chattingView-msgline{ /*메세지 박스*/
-    padding-bottom: 3px;
+    padding-bottom: 5px;
     width: 90%;
     display: inline-block;
 }
@@ -25,34 +25,45 @@
     flex: 1;
 }
 
-.chattingView-input{ /*입력창*/
-    float:bottom;
-    height: 60px;
-    width:100%;
-}
-
 .chattingView-chat{
     height: 100%;
     text-align: center;
 }
 
+.chattingView-input{ /*입력창*/
+    float:bottom;
+    height: 100px;
+    width:100%;
+}
+
+.inputMsg-box{
+    float: left;
+    height: 100%;
+    width: 70%;
+}
+
 .inputMsg{
     margin:0;
     border:0;
-    padding: 0;
-    height: 100%;
-    width: 80%;
     font-size: 20px;
     text-indent: 10px;
+    height: 90%;
+    width: 90%;
+    padding-left: 5px;
+}
+.btn-primary-box{
+    float: left;
+    height: 100%;
+    width: 30%;
 }
 
 .btn-primary{
-    height: 90%;
-    width: 20%;
     margin: 0;
     border: 0;
     padding: 0;
-    height:65px;
+    float: top;
+    height: 90%;
+    width: 100%;
 }
 
 .itemY{
@@ -70,6 +81,7 @@
     margin: 0 auto 10px;
     padding: 10px;
     border-radius: 10px;
+    max-width: 90%;
 }
 .balloonY:after {
     content: '';
@@ -88,6 +100,7 @@
     margin: 0 auto 10px;
     padding: 10px;
     border-radius: 10px;
+    max-width: 90%;
 }
 .balloonN:after {
     content: '';
@@ -136,4 +149,17 @@ body ::-webkit-scrollbar-thumb{
 }
 body ::-webkit-scrollbar-track{
     background:#F7F7F7;
+}
+
+.msg_pre{
+    text-align: left;
+    display: block;
+    width: 100%;
+    margin: 0px;
+    float: left;
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap; /* ancient Opera */
+    white-space: -o-pre-wrap; /* newer Opera */
+    white-space: pre-wrap; /* Chrome; W3C standard */
+    word-wrap: break-word; /* IE */
 }

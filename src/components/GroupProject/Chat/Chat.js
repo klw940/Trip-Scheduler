@@ -76,6 +76,10 @@ class Chat extends Component {
           }
         }
         function mycheck() {
+          let content=item.msg;
+            console.log(content)
+          content=item.msg.replace(/<br\/>/g, '\n');
+          console.log(content)
           if (item.email === my_email) {
             return (
               <div onClick={leftMouseListener}>
@@ -85,7 +89,7 @@ class Chat extends Component {
 
                   onContextMenu={onContextMenu}
                 >
-                  {item.msg}
+                    <pre className="msg_pre">{content}</pre>
                 </div>
               </div>
             );
@@ -96,7 +100,7 @@ class Chat extends Component {
                   className={item.email === my_email ? "balloonY" : "balloonN"}
                   onContextMenu={onContextMenu}
                 >
-                  {item.msg}
+                    <pre className="msg_pre">{content}</pre>
                 </div>
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
               </div>
@@ -127,6 +131,7 @@ class Chat extends Component {
         e.stopPropagation();
         toggleOnOff(1);
         showMenu(e.clientX, e.clientY);
+        console.log(e.target.textContent);
         cursor.setState({ content: e.target.textContent });
       }
       await this.setState({ list: list });
@@ -142,25 +147,33 @@ class Chat extends Component {
     this.props.socket.emit("channelLeave", this.state.channel);
   }
   send() {
+    let content=this.state.msg.replace(/\n|\r/g, '<br/>');
     this.props.socket.emit("send", {
       username: this.state.username,
       email: this.state.email,
-      msg: this.state.msg,
+      msg: content,
       channel: this.state.channel
     });
     this.setState({ msg: "" });
     document.querySelector(".inputMsg").value = "";
   }
   keysend(event) {
+      let content=this.state.msg.replace(/\n|\r/g, '<br/>');
     if (event.keyCode === 13) {
-      this.props.socket.emit("send", {
-        username: this.state.username,
-        email: this.state.email,
-        msg: this.state.msg,
-        channel: this.state.channel
-      });
-      this.setState({ msg: "" });
-      document.querySelector(".inputMsg").value = "";
+        if (event.ctrlKey) { //ctrl enter로 개행
+            document.querySelector(".inputMsg").value=event.target.value+'\n';
+        }
+        else { //엔터로 송신
+            this.props.socket.emit("send", {
+                username: this.state.username,
+                email: this.state.email,
+                msg: content,
+                channel: this.state.channel
+            });
+            this.setState({msg: ""});
+            document.querySelector(".inputMsg").value = "";
+            event.preventDefault();
+        }
     }
   }
   inputMSG(event) {
@@ -187,16 +200,19 @@ class Chat extends Component {
             <div className="chattingView-chat">{this.state.list}</div>
           </div>
           <div className="chattingView-input">
-            <input
-              type="text"
+            <div className="inputMsg-box">
+            <textarea
               className=" inputMsg"
               placeholder="input message..."
               onChange={this.inputMSG}
               onKeyDown={this.keysend}
             />
+            </div>
+            <div className="btn-primary-box">
             <button type="button" className="btn-primary" onClick={this.send}>
               입력
             </button>
+            </div>
           </div>
         </div>
       </div>

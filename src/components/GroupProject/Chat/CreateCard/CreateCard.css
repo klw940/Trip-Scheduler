@@ -54,8 +54,9 @@ article {
     grid-column: 1/4;
     padding-top: 20px;
 }
-#card_content input[type="text"]{
+#card_content textarea{
     width: 600px;
+    height: 300px;
     background-color: white;
 }
 
