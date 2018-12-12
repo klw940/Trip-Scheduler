@@ -112,15 +112,18 @@ io.on('connection', function (socket) {
     });
 
     socket.on('removeCards', async (data) => { //data는 eventid
+        var temp = data.id
+        console.log(parseFloat(temp))
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Cards = await db.collection('Cards');
         const result = await Cards.findOneAndUpdate(
             { channel: data.channel },
-            { $pull: { 'events': { id: data.id } } },
+            { $pull: { events : { id: parseFloat(temp) } } },
             { returnOriginal: false }
         );
-        socket.emit('deleteCards', { id: data.id, events: result.value.events });
+        console.log(result);
+        socket.emit('deleteCards', { cards: result.value.events });
         client.close();
     });
 

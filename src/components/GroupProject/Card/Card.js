@@ -3,7 +3,7 @@ import $ from "jquery";
 import "jquery-ui-dist/jquery-ui";
 import EditCard from './EditCard/EditCard';
 import "./Card.css";
-
+var card;
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +33,7 @@ class Card extends Component {
         } else {
           menu.style.left = e.clientX + "px";
         }
-        cursor.setState({ card: e.target });
+        // cursor.setState({ card: $(e.target) });
         cursor.setState({
           title: $(e.target)
             .children(".title")
@@ -47,7 +47,7 @@ class Card extends Component {
       await this.setState({ cards: data.cards }); //comment: [cardsssss]   저장
         let list = await this.state.cards.map(card => {
             return (
-                <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu}>
+                <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
                     <h3 className="title">{card.title}</h3>
                     <h5 className="contents">{card.contents}</h5>
                     <h4 className="start">{card.start}</h4>
@@ -58,6 +58,10 @@ class Card extends Component {
             );
         });
         await this.setState({ list: list });
+        await $('.fc-event ui-draggable ui-draggable-handle').on('click', function(e) {
+         
+          alert( 'clicked the foobar' );
+        });
         $("#external-events .fc-event").each(function() {
             // store data so the calendar knows to render an event upon drop
             //초기값 있어야 함
@@ -90,8 +94,8 @@ class Card extends Component {
           let list = await this.state.cards.map(card => {
               console.log(card);
               return (
-                  <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu}>
-                      <h3 className="title">{card.title}</h3>
+                  <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
+                      <h3 className="title" >{card.title}</h3>
                       <h5 className="contents">{card.contents}</h5>
                       <h4 className="start">{card.start}</h4>
                       <h4 className="end">{card.end}</h4>
@@ -121,17 +125,62 @@ class Card extends Component {
                           id: $(this).children('#id')[0].value,
                           stick: true // maintaicn when user navigates (see docs on the renderEvent method)
                       });
-                  }
-              });
+            }
           });
+        });
       });
-
+      function onHeaderClick(event) {
+        event.preventDefault();
+        var temp = event.currentTarget;
+        console.log(temp);
+        cursor.setState({ card: temp });
+      }
       socket.on("deleteCards", async data => {
         console.log(data);
-        // await this.setState({ cards: data.events });
-        // $(data.card).remove();
+        await this.setState({ cards: data.cards });
+        let list = await this.state.cards.map(card => {
+          console.log(card);
+          return (
+            <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
+              <h3 className="title" >{card.title}</h3>
+              <h5 className="contents">{card.contents}</h5>
+              <h4 className="start">{card.start}</h4>
+              <h4 className="end">{card.end}</h4>
+              {/* id는 캘린더 들어갈 때마다 변해야함 */}
+              <input type="hidden" value={count++} id="id" />
+            </div>
+          );
+        });
+        await this.setState({ list: list }); 
+        $("#external-events .fc-event").each(function () {
+          // store data so the calendar knows to render an event upon drop
+          //초기값 있어야 함
+          $(this).data("event", {
+            title: $.trim($(this).children(".title").text()), // use the element's text as the event title
+            id: $(this).children('#id')[0].value,
+            contents: $.trim($(this).children(".contents").text()),
+            stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+          });
+          // make the event draggable using jQuery UI
+          $(this).draggable({
+            zIndex: 999,
+            revert: true, // will cause the event to go back to its
+            revertDuration: 0, //  original position after the drag
+            stop: function (event, ui) {
+              $(this).data("event", {
+                title: $.trim($(this).children(".title").text()), // use the element's text as the event title
+                contents: $.trim($(this).children(".contents").text()),
+                id: $(this).children('#id')[0].value,
+                stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+              });
+            }
+          });
+        });
       });
     });
+  }
+  deleteCard(){
+    this.props.socket.emit('removeCards', {channel:this.state.channel, id:$(this.state.card)[0].id})
   }
 
   render() {
@@ -146,7 +195,7 @@ class Card extends Component {
             <EditCard content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} />
             {/* start={this.state.start}  */}
           </div>
-          <div className="delete" onClick={() => this.deleteEvent()}>
+          <div className="delete" onClick={() => this.deleteCard()}>
             삭제
           </div>
         </div>
