@@ -38,7 +38,7 @@ class CreateGroup extends Component {
     render() {
         const { open, Create } = this.state
         return (<div>
-            <Button onClick={this.closeConfigShow(false)}>그룹 생성</Button>
+            <Button color='green' onClick={this.closeConfigShow(false)}>그룹 생성</Button>
             <Modal
                 open={open}
                 create={Create}

@@ -34,10 +34,10 @@ class GroupMain extends Component {
                     <Grid.Column width={1}>
                         <Icon name="tasks" size="big" style={{  marginTop: '0.2em' }} onClick={this.viewCards} />
                     </Grid.Column>
-                    <Grid.Column width={8} right='true'>
+                    <Grid.Column width={8} floated='right'>
                         <Header as='h1' style={{  marginTop: '0.1em' }}>{this.state.username}-{this.state.groupname}</Header>
                     </Grid.Column>
-                    <Grid.Column width={5} right='true'>
+                    <Grid.Column width={5} floated='right'>
                         &nbsp; 이메일: <Input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
                         &nbsp; <Button type="button" onClick={() => {
 

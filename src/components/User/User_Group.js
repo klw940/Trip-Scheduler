@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
 import { User_Group_Info, CreateGroup } from '../../components';
 import { PostData } from '../../containers';
-import { Image, Sidebar, Grid, Button, Item, GridColumn, Segment, Header } from 'semantic-ui-react';
+import { Image, Grid, Button, Item, Segment, Header } from 'semantic-ui-react';
 import './User_Group.css'
 
 class User_Group extends Component {
@@ -66,7 +66,7 @@ class User_Group extends Component {
         )
         return (
             <div className="User_Group">
-                <Grid centered columns={2} className="User_Group">
+                <Grid columns={2} className="User_Group">
                     <Grid.Row stretched>
                         <Grid.Column width={4}>
                             <Segment>
@@ -80,11 +80,11 @@ class User_Group extends Component {
                                     <Header as='h1'>{this.state.username}'s Group List</Header>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Button onClick={this.Logout} size='mini' color='red'>logout</Button>
+                                    <Button onClick={this.Logout}  floated='right' style={{ marginTop: '0em' }} size='mini' color='red'>logout</Button>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
-                                <Segment width={8}>
+                                <Segment textAlign='left' width={8}>
                                     <Item.Group divided className="GroupList" >{list}</Item.Group>
                                 </Segment>
                             </Grid.Row>
