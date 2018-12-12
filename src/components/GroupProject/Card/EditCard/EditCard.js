@@ -7,8 +7,8 @@ class EditCard extends Component {
         super(props);
         this.state={
             channel : this.props.channel,
-            content:this.props.content,
-            open:false,
+            content: this.props.content,
+            open: false,
             date:''
         }
     }
@@ -36,7 +36,7 @@ class EditCard extends Component {
     close = () => {
         this.setState({ open: false })
     }
-    
+
     render() {
         function addZero(i) { // 시간이 한자리 일때 앞에 0추가해줌!
             if (i < 10) {

@@ -106,6 +106,7 @@ io.on('connection', function (socket) {
                 events:events
             }}
         );
+        console.log(events);
         io.sockets.in(data.channel).emit('receiveCards', {events:events});
         client.close();
     });
