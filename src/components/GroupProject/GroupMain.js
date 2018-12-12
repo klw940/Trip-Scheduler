@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
 import { Icon, Button, Grid, Input, Header } from 'semantic-ui-react';
-import {Chat, Calendar, Card} from '../../components';
+import { Chat, Calendar, Card } from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3001');
@@ -30,13 +30,14 @@ class GroupMain extends Component {
             <Grid padded style={{ height: '100vh' }} className="GroupMain">
                 <Grid.Row verticalAlign='middle' columns={3} style={{ height: '8%' }} className="Menu">
                     {/* <Menu icon='labeled'> */}
+
                     <Grid.Column width={1}>
                         <Icon name="tasks" size="big" style={{  marginTop: '0.2em' }} onClick={this.viewCards} />
                     </Grid.Column>
                     <Grid.Column width={8} floated='right'>
                         <Header as='h1' style={{  marginTop: '0.1em' }}>{this.state.username}-{this.state.groupname}</Header>
                     </Grid.Column>
-                    <Grid.Column width={5} right='right'>
+                    <Grid.Column width={5} floated='right'>
                         &nbsp; 이메일: <Input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
                         &nbsp; <Button type="button" onClick={() => {
 

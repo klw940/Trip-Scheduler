@@ -124,7 +124,7 @@ class User_Group extends Component {
                             <Image src="racheal.png"></Image>
                             <h3>{this.state.username}</h3>
                         </Sidebar>
-                    </Grid.Row>
+
                     </Grid.Row> */}
                 </Grid>
             </div>
