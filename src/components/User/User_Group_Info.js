@@ -42,7 +42,7 @@ class User_Group_Info extends Component {
                     <Item.Header>{list.Group_Name}</Item.Header>
                     <Item.Meta>{list.Member_name}</Item.Meta>
                 </Item.Content>
-                <Button className="exitGroup" color="gray" size = "mini" onClick={this.openModal}><Icon name="trash alternate outline icon" color="black"></Icon>
+                <Button className="exitGroup" color="grey" size = "mini" onClick={this.openModal}><Icon name="trash alternate outline" color="black"></Icon>
                 </Button>
                 <Modal
                     isOpen={this.state.modalIsOpen}
