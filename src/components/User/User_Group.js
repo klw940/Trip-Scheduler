@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from "react-router-dom";
 import { User_Group_Info, CreateGroup } from '../../components';
 import { PostData } from '../../containers';
-import { Image, Sidebar, Grid, Button, Item } from 'semantic-ui-react';
+import { Image, Grid, Button, Item, Segment, Header } from 'semantic-ui-react';
 import './User_Group.css'
 
 class User_Group extends Component {
@@ -65,9 +65,43 @@ class User_Group extends Component {
             />)
         )
         return (
-            <div className="User_Group">
-                <Grid centered columns={2} className="User_Group">
-                    <Grid.Row style={{ marginTop: '2em'}}>
+            <div className="User_Group" style={{backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
+                <Grid columns={2} className="User_Group">
+                    <Grid.Row stretched>
+                        <Grid.Column width={4}>
+                            <Segment>
+                                <Image src="racheal.png"></Image>
+                                <Header as='h3'>{this.state.username}</Header>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={12}>
+                            <Grid.Row verticalAlign='middle' columns={2} style={{ marginTop: '3em' }}>
+                                <Grid.Column>
+                                    <Header as='h1'>{this.state.username}'s Group List</Header>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button onClick={this.Logout}  floated='right' style={{ marginTop: '0em' }} size='mini' color='red'>logout</Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Segment textAlign='left' width={8}>
+                                    <Item.Group divided className="GroupList" >{list}</Item.Group>
+                                </Segment>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column width={2}>
+                                    <CreateGroup name={this.state.username} email={this.state.email} change={() => { this.setState({ change: true }) }} />
+                                </Grid.Column>
+                            </Grid.Row>
+                            {/* <Grid.Row>
+                                <Sidebar vertical="true" visible>
+                                    <Image src="racheal.png"></Image>
+                                    {this.state.username}
+                                </Sidebar>
+                            </Grid.Row> */}
+                        </Grid.Column>
+                    </Grid.Row>
+                    {/* <Grid.Row style={{ marginTop: '2em'}}>
                         <Grid.Column width={7}>
                             <h1>{this.state.username}'s Group List</h1>
                         </Grid.Column>
@@ -77,7 +111,7 @@ class User_Group extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <Item.Group divided className="GroupList" >{list}</Item.Group>
+                            <Item.Group divided className="GroupList">{list}</Item.Group>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -86,13 +120,13 @@ class User_Group extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Sidebar vertical="true" visible>
+                        <Sidebar vertical="true" visible style={{backgroundColor: 'white'}}>
                             <Image src="racheal.png"></Image>
-                            {this.state.username}
+                            <h3>{this.state.username}</h3>
                         </Sidebar>
-                    </Grid.Row>
+
+                    </Grid.Row> */}
                 </Grid>
-                
             </div>
         )
     }

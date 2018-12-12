@@ -10,3 +10,21 @@
     color: red;
     text-align:center;
   }
+.homeTransition-appear{
+    opacity: 0;
+}
+
+.homeTransition-appear.homeTransition-appear-active{
+    opacity: 1;
+    transition: all .5s ease-in-out;
+}
+.loginTransition-appear{
+    opacity: 0.01;
+    transform: translateY(30%) scale(1);
+}
+
+.loginTransition-appear.loginTransition-appear-active{
+    opacity: 1;
+    transform: translateY(0%) scale(1);
+    transition: all .5s ease-out;
+}
