@@ -30,8 +30,12 @@ class Calendar extends Component {
         },
         eventRender: function (event, element) {
           element.bind("mousedown", function (e) {
+            $(this).popover("hide");
             if (e.which === 3) {
-              cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start._d });
+              var end;
+              if(event.end) end = event.end.format();
+              else end = null
+              cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start.format(), end:end });
               var menu = document.getElementById("calendar-menus");
               e.preventDefault();
               e.stopPropagation();
@@ -52,32 +56,71 @@ class Calendar extends Component {
             content: eventObj.contents,
             trigger: "show", ///// click or hover or
             placement: "auto",
-            container: "body"
+            container: "body",
+            html: true
           });
           $(this).popover("show");
         },
         eventMouseout: function (eventObj) {
-          //or eventRender : function(eventObj, $el)
-          $(this).popover("hide");
+         $(this).popover("hide");
         },
         eventClick: function (event) {
-          //if(checked)인 상태에서 클릭시 삭제 or 클릭시 팝업으로 확인
+          console.log(event);
           $(this).popover("hide");
         },
         events: this.state.events,
         editable: true,
         droppable: true,
-        drop: function (date, event) {
-          var target = $(event.target);
+        eventDrop: function(event, jsevent){
+          console.log(event);
+          var start = event.start.format();
+          var end;
+          if ( !event.end ){
+            if (event.allDay === true) end = new Date(new Date(event.start._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
+            else end = new Date(new Date(event.start._d).valueOf() + 2000*3600).toISOString();
+          }
+          else end = event.end.format();
           var data = {
             channel: cursor.state.channel,
-            id: target.children('.id')[0].defaultValue,
+            id: event.id,
+            title: event.title,
+            start: start,
+            end: end,
+            contents: event.contents,
+          }
+          socket.emit("editEvents", data);
+        },
+        drop: function (date, event) {
+          var target = $(event.target);
+          //object type == week
+          var start = date.format();
+          var end;
+          if(typeof(date._i)!=="object") 
+            end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
+          else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
+          console.log(target)
+          var data = {
+            channel: cursor.state.channel,
+            id: Date.now(),
             title: target.children(".title").text(),
             contents: target.children(".contents").text(),
-            start: date.format(),
-            end: date.format()
+            start: start,
+            end: end
           };
           socket.emit("sendEvents", data);
+        },
+        eventResize: function (event, jsevent){
+          var start = event.start.format();
+          var end = event.end.format();
+          var data = {
+            channel: cursor.state.channel,
+            id: event.id,
+            title: event.title,
+            start: start,
+            end: end,
+            contents: event.contents,
+          }
+          socket.emit("editEvents", data);
         },
         contentHeight: 650
       });
@@ -92,7 +135,7 @@ class Calendar extends Component {
     socket.on("editEvents", async data => {
       var events= this.state.events;
       events[events.findIndex(x=>x.id===data.id)]=data;
-      this.setState({events:events});
+      await this.setState({events:events});
       $("#calendar").fullCalendar('removeEvents'); 
       $("#calendar").fullCalendar('addEventSource', this.state.events);
       //fullcalendar update가 있었지만 정상작동하지 않음 
@@ -102,9 +145,6 @@ class Calendar extends Component {
       await this.setState({ events: data.events });
       $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
-  }
-  editEvent(){
-    this.setState({edit:true});
   }
   deleteEvent() {
     $("#calendar").fullCalendar("removeEvents", [this.state.eventid]); // array에 id 추가시 제거 + id를 소켓으로 넘겨줌
@@ -117,8 +157,16 @@ class Calendar extends Component {
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
         <div id="calendar-menus" className="calendar-menus">
-          <div className="edit" onClick={() => this.editEvent()}>
-            <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
+          <div className="edit">
+            <EditEvent 
+            eventid ={this.state.eventid} 
+            content={this.state.content} 
+            title={this.state.title} 
+            socket={this.props.socket} 
+            channel={this.state.channel}
+            start = {this.state.start}
+            end = {this.state.end}
+            />
           </div>
           <div className="delete" onClick={() => this.deleteEvent()}>
             삭제

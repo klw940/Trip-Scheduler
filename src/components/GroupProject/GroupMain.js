@@ -24,7 +24,9 @@ class GroupMain extends Component {
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
-
+    componentWillUnmount() {
+        this.props.socket.emit("channelLeave", this.state.groupid);
+    }
     render() {
         return (
             <Grid padded style={{margin: '0', height: '100vh' }} className="GroupMain">
@@ -62,10 +64,10 @@ class GroupMain extends Component {
                     {/* </Menu> */}
                 </Grid.Row>
                 <Grid.Row columns={2} style={{ height: '90%' }} className="wrapper">
-                    <Grid.Column width={4} className="wrapper-row">
+                    <Grid.Column width={4} className="wrapper-row" onContextMenu={e => {e.preventDefault();}}>
                         {
                             this.state.cardVisible ?
-                                <Card _id={this.state._id} socket={socket} /> :
+                                <Card _id={this.state._id} socket={socket} groupnmae={this.state.groupname}/> :
                                 <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username} />
                         }
                     </Grid.Column>

@@ -17,7 +17,6 @@ router.post('/', function (req, res, next) {
     }
     getList();
 });
-
 router.post('/addmember', (req, res) => {
     const group = JSON.parse(req.body.user);
     var memberCheck = async () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Button, Input, Modal} from "semantic-ui-react";
-import './EditEvent.css'
-class EditEvent extends Component {
+import './EditCard.css'
+class EditCard extends Component {
 
     constructor(props){
         super(props);
@@ -14,12 +14,15 @@ class EditEvent extends Component {
     }
 
     editEvent = () => {
+        /**수정 필요 */
+        var start = new Date(document.getElementById("event_start2_input").value).toString();
+        var end = new Date(document.getElementById("event_end2_input").value).toString();
         var data = {
             channel: this.state.channel,
             id : this.props.eventid,
             title : document.getElementById("event_name2_input").value,
-            start: this.props.start,
-            end: this.props.end,
+            start : start,
+            end : end,
             contents: document.getElementById("event_content_input").value
         }
         this.props.socket.emit('editEvents', data);
@@ -35,6 +38,22 @@ class EditEvent extends Component {
     }
     
     render() {
+        function addZero(i) { // 시간이 한자리 일때 앞에 0추가해줌!
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+        
+        var start = new Date(this.props.start)
+        var start_Y=start.getFullYear();
+        var start_M = addZero(start.getMonth()+1);
+        var start_D = addZero(start.getDate());
+        var end_D = addZero(start.getDate()+1);
+
+        var sdate = start_Y+"-"+start_M+"-"+start_D;
+        var edate = start_Y+"-"+start_M+"-"+(end_D);
+
         const { open, Edit } = this.state
         return (
             <div>
@@ -45,7 +64,7 @@ class EditEvent extends Component {
                     onClose={this.close}
                     style={{
                         width:700,
-                        height:350,
+                        height:500,
                     }}
                 >
 
@@ -57,6 +76,10 @@ class EditEvent extends Component {
                         <article>
                             <div className="event_section" id="event_name1">타이틀</div>
                             <div className="event_section" id="event_name2"><Input className="event_name2_input" id="event_name2_input" type="text"  placeholder='타이틀 입력' defaultValue={this.props.title} required={true}/></div>
+                            <div className="event_section" id="event_start1">시작 시간</div>
+                            <div className="event_section" id="event_start2"><Input className="event_start2_input" id="event_start2_input" type="date" defaultValue={sdate} required={true}/></div>
+                            <div className="event_section" id="event_end1">마감 시간</div>
+                            <div className="event_section" id="event_end2"><Input className="event_end2_input" id="event_end2_input" type="date" defaultValue={edate} required={true}/></div>
                             <div className="event_section" id="event_content"><Input className="event_content_input" id="event_content_input" type="text" defaultValue={this.props.content} required={true}/></div>
                             <div className="event_section" id="event_edit"><Button onClick={this.editEvent} color="green">Edit</Button></div>
                             <div className="event_section" id="event_stop"><Button onClick={() => this.close()} color="red">Close</Button></div>
@@ -69,4 +92,4 @@ class EditEvent extends Component {
 }
 
 
-export default EditEvent;
+export default EditCard;

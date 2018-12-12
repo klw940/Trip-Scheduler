@@ -82,7 +82,6 @@ class Chat extends Component {
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
-
                   onContextMenu={onContextMenu}
                 >
                   {item.msg}
@@ -138,9 +137,6 @@ class Chat extends Component {
         );
     });
   }
-  componentWillUnmount() {
-    this.props.socket.emit("channelLeave", this.state.channel);
-  }
   send() {
     this.props.socket.emit("send", {
       username: this.state.username,
@@ -169,12 +165,9 @@ class Chat extends Component {
 
   render() {
     //렌더 부분
-    return (
+    return (//우클릭 방지 Groupmain으로 
       <div
         className="chat"
-        onContextMenu={e => {
-          e.preventDefault();
-        }}
       >
         <div id="context-menus" className="context-menus">
           <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />
