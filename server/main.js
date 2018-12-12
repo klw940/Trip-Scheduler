@@ -94,7 +94,7 @@ io.on('connection', function (socket) {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Cards = await db.collection('Cards');
-        const result = await Cards.updata(
+        const result = await Cards.update(
             { channel: channel },
             { $push:{
                 events:events
