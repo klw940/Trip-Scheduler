@@ -71,6 +71,7 @@ io.on('connection', function (socket) {
         client.close();
         io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
+
     socket.on('cardJoin', async (data) => {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
@@ -79,6 +80,7 @@ io.on('connection', function (socket) {
         socket.emit('cardreceive', { cards: result[0].events });
         client.close();
     });
+
     socket.on('createcard', async(data) => {
         channel = data.channel;
         const events = {
@@ -100,6 +102,7 @@ io.on('connection', function (socket) {
         io.sockets.in(data.channel).emit('receiveCards', {events:events});
         client.close();
     });
+    
     socket.on('removeCards', async (data) => { //data는 eventid
         console.log(data);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });

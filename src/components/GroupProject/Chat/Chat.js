@@ -82,7 +82,6 @@ class Chat extends Component {
                 {addZero(date.getHours())}:{addZero(date.getMinutes())}
                 <div
                   className={item.email === my_email ? "balloonY" : "balloonN"}
-
                   onContextMenu={onContextMenu}
                 >
                   {item.msg}

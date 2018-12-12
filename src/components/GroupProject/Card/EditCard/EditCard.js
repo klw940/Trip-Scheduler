@@ -14,6 +14,7 @@ class EditCard extends Component {
     }
 
     editEvent = () => {
+        /**수정 필요 */
         var start = new Date(document.getElementById("event_start2_input").value).toString();
         var end = new Date(document.getElementById("event_end2_input").value).toString();
         var data = {

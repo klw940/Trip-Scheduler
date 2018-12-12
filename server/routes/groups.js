@@ -17,18 +17,6 @@ router.post('/', function (req, res, next) {
     }
     getList();
 });
-router.post('/eventnum', async(req,res)=>{
-    const group = JSON.parse(req.body.user);
-    const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
-    const db = await client.db('Trip_Scheduler').collection('EventsId');
-    const result = await db.findOneAndUpdate(
-        { channel: group.channel },
-        { $inc:{id:1}}
-        )
-    res.send(result);
-    client.close();
-})
-
 router.post('/addmember', (req, res) => {
     const group = JSON.parse(req.body.user);
     var memberCheck = async () => {

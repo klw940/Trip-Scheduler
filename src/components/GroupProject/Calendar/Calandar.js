@@ -5,7 +5,6 @@ import "fullcalendar";
 import "fullcalendar/dist/fullcalendar.css";
 import EditEvent from './EditEvent/EditEvent'
 import "./Calandar.css";
-
 class Calendar extends Component {
   constructor(props) {
     super(props);
@@ -53,13 +52,14 @@ class Calendar extends Component {
             title: eventObj.title,
             content: eventObj.contents,
             trigger: "show", ///// click or hover or
-            placement: "top",
-            container: "body"
+            placement: "auto",
+            container: "body",
+            html: true
           });
           $(this).popover("show");
         },
         eventMouseout: function (eventObj) {
-          $(this).popover("hide");
+         $(this).popover("hide");
         },
         eventClick: function (event) {
           console.log(event);
@@ -86,7 +86,7 @@ class Calendar extends Component {
             contents: event.contents,
           }
           socket.emit("editEvents", data);
-        } ,
+        },
         drop: function (date, event) {
           var target = $(event.target);
           //object type == week
@@ -95,9 +95,10 @@ class Calendar extends Component {
           if(typeof(date._i)!=="object") 
             end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
           else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
+          console.log(target)
           var data = {
             channel: cursor.state.channel,
-            
+            id: Date.now(),
             title: target.children(".title").text(),
             contents: target.children(".contents").text(),
             start: start,
@@ -138,7 +139,6 @@ class Calendar extends Component {
     });
 
     socket.on("deleteEvents", async data => {
-      console.log(data.events);
       await this.setState({ events: data.events });
       $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
@@ -154,7 +154,7 @@ class Calendar extends Component {
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
         <div id="calendar-menus" className="calendar-menus">
-          <div className="edit" onClick={()=> this.editEvent()}>
+          <div className="edit">
             <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
           </div>
           <div className="delete" onClick={() => this.deleteEvent()}>
