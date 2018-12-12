@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
-import { Icon, Button, Grid, Input, Header } from 'semantic-ui-react';
-import { Chat, Calendar, Card } from '../../components';
+import { Icon, Segment, Header } from 'semantic-ui-react';
+import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:3001');
+import * as ReactDOM from "react-dom";
+var socket;
 
 
 class GroupMain extends Component {
@@ -20,28 +21,39 @@ class GroupMain extends Component {
             cardVisible: false,
         }
     }
+    componentWillMount(){
+        socket= io.connect('http://localhost:3001');
+        socket.emit("channel", this.state._id);
+    }
+    componentDidMount(){
+        //await this.state.socket.emit("channelLeave", this.state._id)
+    }
+
+    componentWillUnmount(){
+        var check
+        check = document.querySelector(".GroupMain");
+        ReactDOM.unmountComponentAtNode(check);
+        socket.emit("channelLeave",this.state._id);
+        socket.disconnect();
+    }
 
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
-    componentWillUnmount() {
-        this.props.socket.emit("channelLeave", this.state.groupid);
-    }
     render() {
         return (
-            <Grid padded style={{margin: '0', height: '100vh' }} className="GroupMain">
-                <Grid.Row verticalAlign='middle' columns={3} style={{ height: '8%', backgroundColor: '#6699FF'}} className="Menu">
-                    {/* <Menu icon='labeled'> */}
-                    <Grid.Column width={1}>
-                        <Icon name="tasks" size="big" style={{  marginTop: '0.2em', cursor: 'pointer' }} onClick={this.viewCards} />
-                    </Grid.Column>
-                    <Grid.Column width={8} floated='right'>
-                        <Header as='h1' style={{  marginTop: '0.1em'}}>{this.state.username}-{this.state.groupname}</Header>
-                    </Grid.Column>
-                    <Grid.Column width={5} floated='right'>
-                        &nbsp; 이메일: <Input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
-                        &nbsp; <Button type="button" onClick={() => {
-
+            <div className="GroupMain">
+                <div className="Menu">
+                        <div name="menu" style={{float: 'left', width: '30%'}}>
+                            <Icon name="tasks" size="big" style={{ marginTop: '0.2em' }} onClick={this.viewCards}/>
+                        </div>
+                    <div>
+                        <Header as='h1' style={{ width: '30%'}}>{this.state.username}-{this.state.groupname}</Header>
+                    </div>
+                    <div>
+                        <h4>
+                            &nbsp; 이메일: <input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
+                            &nbsp; <button type="button" onClick={() => {
                             if (this.state.memberid.indexOf(this.id.value) !== -1) {
                                 console.log("이미 있음")
                                 this.id.value = "";
@@ -59,23 +71,27 @@ class GroupMain extends Component {
                                     this.setState({ membername: result.data.value.Member_name });
                                 })
                         }
-                    }>추가</Button>
-                    </Grid.Column>
-                    {/* </Menu> */}
-                </Grid.Row>
-                <Grid.Row columns={2} style={{ height: '90%' }} className="wrapper">
-                    <Grid.Column width={4} className="wrapper-row" onContextMenu={e => {e.preventDefault();}}>
+                        }>추가</button>
+                        </h4>
+                    </div>
+
+                </div>
+                <div className="wrapper">
+                    <div
+                        className="wrapper-row"
+                        onContextMenu={e => {e.preventDefault();}}
+                    >
                         {
                             this.state.cardVisible ?
-                                <Card _id={this.state._id} socket={socket} groupnmae={this.state.groupname}/> :
-                                <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username} />
+                                <Card _id={this.state._id} socket={socket} groupnmae={this.state.groupname}/>:
+                                <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                         }
-                    </Grid.Column>
-                    <Grid.Column width={12} className="wrapper-row">
-                        <Calendar className="Calendar" _id={this.state._id} socket={socket} cal_height={document.getElementsByClassName("Calendar").height} />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                    </div>
+                    <div className="wrapper-row">
+                        <Calendar className="Calendar" _id={this.state._id} socket={socket} cal_height={document.getElementsByClassName("Calendar").height}/>
+                    </div>
+                </div>
+            </div>
         )
     }
 }
