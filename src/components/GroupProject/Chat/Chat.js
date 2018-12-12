@@ -191,9 +191,6 @@ class Chat extends Component {
                     <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />
                 </div>
                 <div className="chattingView-body">
-                    {this.state.email}
-                    <br />
-                    {this.state.channel}
                     <div className="chattingView-chatbox">
                         <div className="chattingView-chat">{this.state.list}</div>
                     </div>
