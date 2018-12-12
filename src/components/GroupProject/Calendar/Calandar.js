@@ -8,7 +8,6 @@ import "./Calandar.css";
 class Calendar extends Component {
   constructor(props) {
     super(props);
-    console.log("hello!");
     this.state = {
       channel: this.props._id,
       email: sessionStorage.getItem("useremail"),
@@ -17,16 +16,11 @@ class Calendar extends Component {
       edit: false
     };
   }
-  componentWillUnmount(){
-    console.log("dieasdkjfhasldkfhasdf");
-  }
   componentDidMount() {
-    console.log("hi");
     const cursor = this;
     const { socket, channel } = this.state;
     socket.emit("calendarJoin", channel);
     socket.on("calreceive", async data => {
-      console.log('hello!!');
       await this.setState({ events: this.state.events.concat(data.events) });
       await $("#calendar").fullCalendar({
         header: {
@@ -71,14 +65,12 @@ class Calendar extends Component {
          $(this).popover("hide");
         },
         eventClick: function (event) {
-          console.log(event);
           $(this).popover("hide");
         },
         events: this.state.events,
         editable: true,
         droppable: true,
         eventDrop: function(event, jsevent){
-          console.log(event);
           var start = event.start.format();
           var end;
           if ( !event.end ){
@@ -104,7 +96,6 @@ class Calendar extends Component {
              if(typeof(date._i)!=="object")
                  end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
              else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
-             //console.log(target)
              var data = {
                  channel: cursor.state.channel,
                  id: Date.now(),
@@ -113,7 +104,6 @@ class Calendar extends Component {
                  start: start,
                  end: end
              };
-             console.log(target.children('#id')[0].value);
              $("#calendar").fullCalendar("removeEvents", [target.children('#id')[0].value]);
              socket.emit("sendEvents", data);
              },
@@ -137,7 +127,6 @@ class Calendar extends Component {
       });
     });
     socket.on("receiveEvents", async data => {
-      console.log("카드 receive");
       await this.setState({ events: this.state.events.concat(data.events) });
       $("#calendar").fullCalendar("renderEvents", [data.events]);
     });

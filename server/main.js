@@ -34,7 +34,7 @@ const dbName = 'Trip_Scheduler';
 io.on('connection', function (socket) {
 
     socket.on('channel', async function (data) {
-        console.log('connect');
+        console.log('socket connect');
         socket.join(data);
 
         io.of('/').in(data).clients(function (err,clients) {
@@ -51,13 +51,10 @@ io.on('connection', function (socket) {
         .toArray();
         
         socket.emit('receive', { comment: result });
-        console.log("소켓입장확인");
         client.close();
     });
 
     socket.on('send', async function (data) {
-        console.log("chat send");
-        console.log(data);
         let dataAddinfo = {
             ip: socket.handshake.address, 
             msg: data.msg, 
@@ -65,7 +62,6 @@ io.on('connection', function (socket) {
             email:data.email, 
             username: data.username
         };
-        console.log(dataAddinfo);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const result = await db.collection('log').insert(
@@ -115,7 +111,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('removeCards', async (data) => { //data는 eventid
-        console.log(data);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Cards = await db.collection('Cards');
@@ -140,7 +135,6 @@ io.on('connection', function (socket) {
         client.close();
     });
     socket.on('sendEvents', async (data) => {
-        console.log("카드 옮기기");
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
@@ -158,7 +152,6 @@ io.on('connection', function (socket) {
             },
             { returnOriginal: false }
         );
-        console.log(data)
         io.sockets.in(data.channel).emit('receiveEvents', {events:data});
         client.close();
     });
@@ -178,12 +171,10 @@ io.on('connection', function (socket) {
             { $set:{ 
                 "events.$.title": data.title,
                 "events.$.contents":data.contents }});
-                console.log(editData);
         io.sockets.in(data.channel).emit('editEvents', editData);
         client.close();
     });
     socket.on('removeEvents', async (data) => { //data는 eventid
-        console.log(data);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
@@ -199,7 +190,6 @@ io.on('connection', function (socket) {
 
     /***********************************8       그룹나가기        ***************/
     socket.on('channelLeave', function(data){
-        console.log("방 탈출");
         socket.leave(data,function (err) {
             console.log(err);
         });

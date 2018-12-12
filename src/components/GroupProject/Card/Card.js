@@ -95,8 +95,13 @@ class Card extends Component {
       });
     });
   }
+
+    getSnapshotBeforeUpdate(){
+
+    }
+
   render() {
-    return <div 
+    return <div
     id="external-events" 
     onClick={() => document.getElementById("card-menus").classList.remove("active")}
     >
