@@ -65,8 +65,8 @@ class User_Group extends Component {
             />)
         )
         return (
-            <div className="User_Group" style={{backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
-                <Grid columns={2} className="User_Group">
+            <div className="User_Group" style={{ backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
+                <Grid columns={2} className="User_Group" style={{margin:'0'}} >
                     <Grid.Row stretched>
                         <Grid.Column width={4}>
                             <Segment>

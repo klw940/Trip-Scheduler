@@ -57,7 +57,7 @@ class LoginForm extends Component {
                 transitionAppearTimeout={500}
                 transitionEnter={false}
                 transitionLeave={false}>
-                <Grid centered columns={2} verticalAlign='middle' className="login-form" style={{backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
+                <Grid centered columns={2} verticalAlign='middle' className="login-form" style={{margin:'0', backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
                     <Grid.Row>
                         <Grid.Column width={6} textAlign='center'>
                             <CSSTransitionGroup

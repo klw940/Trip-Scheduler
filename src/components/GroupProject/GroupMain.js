@@ -47,10 +47,10 @@ class GroupMain extends Component {
                     {/* <Menu icon='labeled'> */}
 
                     <Grid.Column width={1}>
-                        <Icon name="tasks" size="big" style={{  marginTop: '0.2em' }} onClick={this.viewCards} />
+                        <Icon name="tasks" size="big" style={{ marginTop: '0.2em', cursor: 'pointer'}} onClick={this.viewCards} />
                     </Grid.Column>
                     <Grid.Column width={8} floated='right'>
-                        <Header as='h1' style={{  marginTop: '0.1em' }}>{this.state.username}-{this.state.groupname}</Header>
+                        <Header as='h1' style={{ arginTop: '0.1em' }}>{this.state.username}-{this.state.groupname}</Header>
                     </Grid.Column>
                     <Grid.Column width={5} floated='right'>
                         &nbsp; 이메일: <Input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
