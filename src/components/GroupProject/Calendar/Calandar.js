@@ -154,7 +154,6 @@ class Calendar extends Component {
         id="calendar"
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
-          {this.state.channel}
         <div id="calendar-menus" className="calendar-menus">
           <div className="edit">
             <EditEvent 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import "./GroupMain.css"
-import { Icon, Segment, Header } from 'semantic-ui-react';
+import { Icon, Header, Button } from 'semantic-ui-react';
 import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
@@ -43,17 +43,13 @@ class GroupMain extends Component {
     render() {
         return (
             <div className="GroupMain">
-                <div className="Menu">
-                        <div name="menu" style={{float: 'left', width: '30%'}}>
-                            <Icon name="tasks" size="big" style={{ marginTop: '0.2em' }} onClick={this.viewCards}/>
-                        </div>
+                <div className="Menu" style={{backgroundColor: 'paleturquoise'}}>
+                    <Icon name="tasks" size="big" style={{ marginTop: '1em', cursor: 'pointer', float: 'left', width: '5%' }} onClick={this.viewCards}/>
+                    <Header as='h1' style={{float:'left', width: '70%'}}>{this.state.username}-{this.state.groupname}</Header>
                     <div>
-                        <Header as='h1' style={{ width: '30%'}}>{this.state.username}-{this.state.groupname}</Header>
-                    </div>
-                    <div>
-                        <h4>
+                        <h4 style={{ marginTop: '1em', float: 'right', width: '20%'}}>
                             &nbsp; 이메일: <input type="text" className="add-memberid" ref={ref => { this.id = ref }} />
-                            &nbsp; <button type="button" onClick={() => {
+                            &nbsp; <Button onClick={() => {
                             if (this.state.memberid.indexOf(this.id.value) !== -1) {
                                 console.log("이미 있음")
                                 this.id.value = "";
@@ -71,10 +67,9 @@ class GroupMain extends Component {
                                     this.setState({ membername: result.data.value.Member_name });
                                 })
                         }
-                        }>추가</button>
+                        }>추가</Button>
                         </h4>
                     </div>
-
                 </div>
                 <div className="wrapper">
                     <div

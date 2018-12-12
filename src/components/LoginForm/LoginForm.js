@@ -68,7 +68,7 @@ class LoginForm extends Component {
                                 transitionLeave={false}>
                                 <div>
                             <Image src="/logo.png" centered/>
-                            <Header className="header" as="h2">
+                            <Header className="loginHeader" as="h2">
                                 Log-in to your account
                             </Header>
                             <GoogleLogin
