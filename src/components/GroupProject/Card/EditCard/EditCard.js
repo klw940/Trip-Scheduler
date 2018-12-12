@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Button, Input, Modal} from "semantic-ui-react";
-import './EditEvent.css'
-class EditEvent extends Component {
+import './EditCard.css'
+class EditCard extends Component {
 
     constructor(props){
         super(props);
@@ -91,4 +91,4 @@ class EditEvent extends Component {
 }
 
 
-export default EditEvent;
+export default EditCard;

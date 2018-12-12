@@ -61,7 +61,10 @@ class GroupMain extends Component {
                 </Menu>
                 </div>
                 <div className="wrapper">
-                        <div className="wrapper-row">
+                        <div 
+                        className="wrapper-row" 
+                        onContextMenu={e => {e.preventDefault();}}
+                        >
                             {
                                 this.state.cardVisible ?
                                 <Card _id={this.state._id} socket={socket}/>:

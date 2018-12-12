@@ -5,6 +5,7 @@ import "fullcalendar";
 import "fullcalendar/dist/fullcalendar.css";
 import EditEvent from './EditEvent/EditEvent'
 import "./Calandar.css";
+
 class Calendar extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +31,7 @@ class Calendar extends Component {
         },
         eventRender: function (event, element) {
           element.bind("mousedown", function (e) {
+            $(this).popover("hide");
             if (e.which === 3) {
               cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start._d });
               var menu = document.getElementById("calendar-menus");
@@ -51,33 +53,69 @@ class Calendar extends Component {
             title: eventObj.title,
             content: eventObj.contents,
             trigger: "show", ///// click or hover or
-            placement: "auto",
+            placement: "top",
             container: "body"
           });
           $(this).popover("show");
         },
         eventMouseout: function (eventObj) {
-          //or eventRender : function(eventObj, $el)
           $(this).popover("hide");
         },
         eventClick: function (event) {
-          //if(checked)인 상태에서 클릭시 삭제 or 클릭시 팝업으로 확인
+          console.log(event);
           $(this).popover("hide");
         },
         events: this.state.events,
         editable: true,
         droppable: true,
+        eventDrop: function(event, jsevent){
+          var start = event.start.format();
+          var end;
+          if ( !event.end ){
+            if (event.allDay === true) end = new Date(new Date(event.start._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
+            else end = new Date(new Date(event.start._d).valueOf() + 2000*3600).toISOString();
+          }
+          else end = event.end.format();
+          var data = {
+            channel: cursor.state.channel,
+            id: event.id,
+            title: event.title,
+            start: start,
+            end: end,
+            contents: event.contents,
+          }
+          socket.emit("editEvents", data);
+        } ,
         drop: function (date, event) {
           var target = $(event.target);
+          //object type == week
+          var start = date.format();
+          var end;
+          if(typeof(date._i)!=="object") 
+            end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
+          else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
           var data = {
             channel: cursor.state.channel,
             id: target.children('.id')[0].defaultValue,
             title: target.children(".title").text(),
             contents: target.children(".contents").text(),
-            start: date.format(),
-            end: date.format()
+            start: start,
+            end: end
           };
           socket.emit("sendEvents", data);
+        },
+        eventResize: function (event, jsevent){
+          var start = event.start.format();
+          var end = event.end.format();
+          var data = {
+            channel: cursor.state.channel,
+            id: event.id,
+            title: event.title,
+            start: start,
+            end: end,
+            contents: event.contents,
+          }
+          socket.emit("editEvents", data);
         },
         contentHeight: 650
       });
@@ -99,12 +137,10 @@ class Calendar extends Component {
     });
 
     socket.on("deleteEvents", async data => {
+      console.log(data.events);
       await this.setState({ events: data.events });
       $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
-  }
-  editEvent(){
-    this.setState({edit:true});
   }
   deleteEvent() {
     $("#calendar").fullCalendar("removeEvents", [this.state.eventid]); // array에 id 추가시 제거 + id를 소켓으로 넘겨줌
@@ -117,7 +153,7 @@ class Calendar extends Component {
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
         <div id="calendar-menus" className="calendar-menus">
-          <div className="edit" onClick={() => this.editEvent()}>
+          <div className="edit" onClick={()=> this.editEvent()}>
             <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
           </div>
           <div className="delete" onClick={() => this.deleteEvent()}>

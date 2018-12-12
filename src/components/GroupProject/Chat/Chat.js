@@ -169,12 +169,9 @@ class Chat extends Component {
 
   render() {
     //렌더 부분
-    return (
+    return (//우클릭 방지 Groupmain으로 
       <div
         className="chat"
-        onContextMenu={e => {
-          e.preventDefault();
-        }}
       >
         <div id="context-menus" className="context-menus">
           <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />

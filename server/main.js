@@ -71,10 +71,49 @@ io.on('connection', function (socket) {
         client.close();
         io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
-
-    socket.on('createcard', function(data){
-        console.log(data.card);
+    socket.on('cardJoin', async (data) => {
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+        const db = await client.db(dbName);
+        const Cards = await db.collection('Cards');
+        const result = await Cards.find({ channel: data }).toArray();
+        socket.emit('cardreceive', { cards: result[0].events });
+        client.close();
     });
+    socket.on('createcard', async(data) => {
+        channel = data.channel;
+        const events = {
+            id: Date.now(),
+            title: data.card.title,
+            contents: data.card.content,
+            start: data.card.start,
+            end: data.card.end
+        };
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+        const db = await client.db(dbName);
+        const Cards = await db.collection('Cards');
+        const result = await Cards.updata(
+            { channel: channel },
+            { $push:{
+                events:events
+            }}
+        );
+        io.sockets.in(data.channel).emit('receiveCards', {events:events});
+        client.close();
+    });
+    socket.on('removeCards', async (data) => { //data는 eventid
+        console.log(data);
+        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+        const db = await client.db(dbName);
+        const Cards = await db.collection('Cards');
+        const result = await Cards.findOneAndUpdate(
+            { channel: data.channel },
+            { $pull: { 'events': { id: data.id } } },
+            { returnOriginal: false }
+        );
+        socket.emit('deleteCards', { id: data.id, events: result.value.events });
+        client.close();
+    });
+
 
     socket.on('channelLeave', function(data){
         socket.leave(data);
@@ -129,10 +168,11 @@ io.on('connection', function (socket) {
                 "events.$.end": data.end,
                 "events.$.contents":data.contents }});
 
-        io.sockets.in(channel).emit('editEvents', editData);
-        // client.close();
+        io.sockets.in(data.channel).emit('editEvents', editData);
+        client.close();
     });
     socket.on('removeEvents', async (data) => { //data는 eventid
+        console.log(data);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
@@ -141,15 +181,7 @@ io.on('connection', function (socket) {
             { $pull:{ 'events': { id:data.id }}},
             { returnOriginal: false }
         );
-        io.sockets.in(channel).emit('deleteEvents', {id:data.id, events:result.value.events});
-        client.close();
-    });
-    socket.on('cardJoin', async (data) => {
-        const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
-        const db = await client.db(dbName);
-        const Cards = await db.collection('Cards');
-        const result = await Cards.find({ channel: data }).toArray();
-        socket.emit('cardreceive', { cards: result[0].events });
+        io.sockets.in(data.channel).emit('deleteEvents', {id:data.id, events:result.value.events});
         client.close();
     });
 });

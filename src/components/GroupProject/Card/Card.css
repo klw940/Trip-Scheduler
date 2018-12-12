@@ -6,6 +6,9 @@
     background: green;
     border:0px;
 }
+#external-events {
+    height: 100%;
+}
 h3.title{
     pointer-events: none
 }
