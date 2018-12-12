@@ -138,9 +138,6 @@ class Chat extends Component {
         );
     });
   }
-  componentWillUnmount() {
-    this.props.socket.emit("channelLeave", this.state.channel);
-  }
   send() {
     this.props.socket.emit("send", {
       username: this.state.username,

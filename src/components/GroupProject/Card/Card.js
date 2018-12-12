@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import 'jquery-ui-dist/jquery-ui';
+import {PostData} from '../../../containers';
 import EditCard from './EditCard/EditCard';
 import './Card.css';
 
@@ -10,6 +11,7 @@ class Card extends Component {
         this.state = {
             socket: this.props.socket,
             channel: this.props._id,
+            name : sessionStorage.getItem('username'),
             email: sessionStorage.getItem('useremail'),
             cards: [],
         }
@@ -45,33 +47,46 @@ class Card extends Component {
                     <div className='fc-event' key={card.id} id={card.id} onContextMenu={onContextMenu}>
                         <h3 className='title'>{card.title}</h3>
                         <h5 className='contents'>{card.contents}</h5>
-                        <input className='id' type="hidden" value={Date.now()} />{/* id는 캘린더 들어갈 때마다 변해야함 */}
                     </div>
                 )
             });
             await this.setState({ list: list })
             $('#external-events .fc-event').each(function () {
                 // store data so the calendar knows to render an event upon drop
-                //초기값 있어야 함
-                $(this).data('event', {
-                    title: $.trim($(this).children('.title').text()), // use the element's text as the event title
-                    contents: $.trim($(this).children('.contents').text()),
-                    id: document.querySelector('.id').value,
-                    stick: true // maintaicn when user navigates (see docs on the renderEvent method)
-                })
+                var item;
+                PostData(cursor.state.name+'/'+cursor.props.groupname+'/eventnum', {id:channel})
+                .then(
+                    result =>{
+                        console.log(result)
+                        item={
+                            title: $.trim($(this).children('.title').text()), // use the element's text as the event title
+                            contents: $.trim($(this).children('.contents').text()),
+                            id: result.id,
+                            stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+                        }
+                    }
+                )
+                
+
+                $(this).data('event', item)
                 // make the event draggable using jQuery UI
                 $(this).draggable({
                     zIndex: 999,
                     revert: true,      // will cause the event to go back to its
                     revertDuration: 0,  //  original position after the drag
                     stop: function (event, ui) {
-                        document.querySelector('.id').value = Date.now()
-                        $(this).data('event', {
-                            title: $.trim($(this).children('.title').text()), // use the element's text as the event title
-                            contents: $.trim($(this).children('.contents').text()),
-                            id: document.querySelector('.id').value,
-                            stick: true // maintaicn when user navigates (see docs on the renderEvent method)
-                        })
+                        PostData(cursor.state.name + '/' + cursor.props.groupname + '/eventnum', { id: channel })
+                            .then(
+                                result => {
+                                    item = {
+                                        title: $.trim($(this).children('.title').text()), // use the element's text as the event title
+                                        contents: $.trim($(this).children('.contents').text()),
+                                        id: result.id,
+                                        stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+                                    }
+                            }
+                        )
+                        $(this).data('event', item)
                     },
                 });
             });

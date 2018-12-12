@@ -69,6 +69,7 @@ class Calendar extends Component {
         editable: true,
         droppable: true,
         eventDrop: function(event, jsevent){
+          console.log(event);
           var start = event.start.format();
           var end;
           if ( !event.end ){
@@ -96,7 +97,7 @@ class Calendar extends Component {
           else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
           var data = {
             channel: cursor.state.channel,
-            id: target.children('.id')[0].defaultValue,
+            
             title: target.children(".title").text(),
             contents: target.children(".contents").text(),
             start: start,

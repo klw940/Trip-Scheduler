@@ -24,7 +24,9 @@ class GroupMain extends Component {
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
     }
-
+    componentWillUnmount() {
+        this.props.socket.emit("channelLeave", this.state.groupid);
+    }
     render() {
         return (
             <div className="GroupMain">
@@ -67,7 +69,7 @@ class GroupMain extends Component {
                         >
                             {
                                 this.state.cardVisible ?
-                                <Card _id={this.state._id} socket={socket}/>:
+                                <Card _id={this.state._id} socket={socket} groupnmae={this.state.groupname}/>:
                                 <Chat className="Chat" _id={this.state._id} socket={socket} username={this.state.username}/>
                             }
                         </div>
