@@ -32,7 +32,10 @@ class Calendar extends Component {
           element.bind("mousedown", function (e) {
             $(this).popover("hide");
             if (e.which === 3) {
-              cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start._d });
+              var end;
+              if(event.end) end = event.end.format();
+              else end = null
+              cursor.setState({ eventid: event.id, content: event.contents, title: event.title, start:event.start.format(), end:end });
               var menu = document.getElementById("calendar-menus");
               e.preventDefault();
               e.stopPropagation();
@@ -132,7 +135,7 @@ class Calendar extends Component {
     socket.on("editEvents", async data => {
       var events= this.state.events;
       events[events.findIndex(x=>x.id===data.id)]=data;
-      this.setState({events:events});
+      await this.setState({events:events});
       $("#calendar").fullCalendar('removeEvents'); 
       $("#calendar").fullCalendar('addEventSource', this.state.events);
       //fullcalendar update가 있었지만 정상작동하지 않음 
@@ -155,7 +158,15 @@ class Calendar extends Component {
       >
         <div id="calendar-menus" className="calendar-menus">
           <div className="edit">
-            <EditEvent eventid ={this.state.eventid} content={this.state.content} title={this.state.title} socket={this.props.socket} channel={this.state.channel} start ={this.state.start} />
+            <EditEvent 
+            eventid ={this.state.eventid} 
+            content={this.state.content} 
+            title={this.state.title} 
+            socket={this.props.socket} 
+            channel={this.state.channel}
+            start = {this.state.start}
+            end = {this.state.end}
+            />
           </div>
           <div className="delete" onClick={() => this.deleteEvent()}>
             삭제

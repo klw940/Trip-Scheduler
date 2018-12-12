@@ -33,7 +33,7 @@ const dbName = 'Trip_Scheduler';
 
 io.on('connection', function (socket) {
     console.log('connect');
-
+/****************                                     채팅       ***************/
     socket.on('channelJoin', async function (data) {
         socket.join(data);
         channel = data;
@@ -72,6 +72,7 @@ io.on('connection', function (socket) {
         io.sockets.in(data.channel).emit('receive', {comment: dataAddinfo});
     });
 
+/****************                                     카드      ***************/    
     socket.on('cardJoin', async (data) => {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
@@ -102,7 +103,7 @@ io.on('connection', function (socket) {
         io.sockets.in(data.channel).emit('receiveCards', {events:events});
         client.close();
     });
-    
+
     socket.on('removeCards', async (data) => { //data는 eventid
         console.log(data);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
@@ -118,10 +119,7 @@ io.on('connection', function (socket) {
     });
 
 
-    socket.on('channelLeave', function(data){
-        socket.leave(data);
-    });
-
+/****************                              캘린더      ***************/
     socket.on('calendarJoin', async (data) => {
         channel = data
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
@@ -163,14 +161,12 @@ io.on('connection', function (socket) {
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
-        const result = await Events.updateOne(
+        await Events.updateOne(
             { channel:data.channel, 'events.id':data.id }, 
             { $set:{ 
                 "events.$.title": data.title,
-                "events.$.start": data.start,
-                "events.$.end": data.end,
                 "events.$.contents":data.contents }});
-
+                console.log(editData);
         io.sockets.in(data.channel).emit('editEvents', editData);
         client.close();
     });
@@ -186,6 +182,12 @@ io.on('connection', function (socket) {
         );
         io.sockets.in(data.channel).emit('deleteEvents', {id:data.id, events:result.value.events});
         client.close();
+    });
+
+
+    /***********************************8       그룹나가기        ***************/
+    socket.on('channelLeave', function(data){
+        socket.leave(data);
     });
 });
 
