@@ -20,7 +20,7 @@
 .wrapper {
     height: 90%;
     display: grid;
-        grid-template-columns: 22% 78%;
+    grid-template-columns: 22% 78%;
     grid-template-rows: 100%;
 }
 
