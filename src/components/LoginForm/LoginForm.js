@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Grid, Header, Image } from "semantic-ui-react";
+import { Grid, Header, Image, Transition } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
 import "./LoginForm.css";
+import {CSSTransitionGroup} from "react-transition-group";
 import { Redirect, withRouter } from "react-router-dom";
 import { PostData } from "../../containers";
 
@@ -49,21 +50,37 @@ class LoginForm extends Component {
             this.signup(response, "google");
         };
         return (
-            <Grid centered columns={2} verticalAlign='middle' className="login-form">
-                <Grid.Row>
-                    <Grid.Column width={6} textAlign='center'>
-                        <Image src="/logo.png" centered/>
-                        <Header className="header" as="h2">
-                            Log-in to your account
-                        </Header>
-                        <GoogleLogin
-                            clientId="717271903689-1elevq8nve9karftirv96uh5g20po8vp.apps.googleusercontent.com"
-                            onSuccess={responseGoogle}
-                            onFailure={responseGoogle}
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <CSSTransitionGroup
+                transitionName="homeTransition"
+                transitionAppear={true}
+                transitionAppearTimeout={500}
+                transitionEnter={false}
+                transitionLeave={false}>
+                <Grid centered columns={2} verticalAlign='middle' className="login-form" style={{backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
+                    <Grid.Row>
+                        <Grid.Column width={6} textAlign='center'>
+                            <CSSTransitionGroup
+                                transitionName="loginTransition"
+                                transitionAppear={true}
+                                transitionAppearTimeout={1000}
+                                transitionEnter={false}
+                                transitionLeave={false}>
+                                <div>
+                            <Image src="/logo.png" centered/>
+                            <Header className="header" as="h2">
+                                Log-in to your account
+                            </Header>
+                            <GoogleLogin
+                                clientId="717271903689-1elevq8nve9karftirv96uh5g20po8vp.apps.googleusercontent.com"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                            />
+                                </div>
+                            </CSSTransitionGroup>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </CSSTransitionGroup>
         );
     }
 }
