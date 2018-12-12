@@ -21,11 +21,17 @@ class GroupMain extends Component {
         }
     }
 
+    componentDidMount(){
+        //await this.state.socket.emit("channelLeave", this.state._id)
+        socket.emit("channel", this.state._id);
+    }
+
+    componentWillUnmount(){
+        socket.emit("channelLeave",this.state._id);
+    }
+
     viewCards = () => {
         this.setState({ cardVisible: !this.state.cardVisible });
-    }
-    componentWillUnmount() {
-        this.props.socket.emit("channelLeave", this.state.groupid);
     }
     render() {
         return (

@@ -8,6 +8,7 @@ import "./Calandar.css";
 class Calendar extends Component {
   constructor(props) {
     super(props);
+    console.log("hello!");
     this.state = {
       channel: this.props._id,
       email: sessionStorage.getItem("useremail"),
@@ -16,7 +17,11 @@ class Calendar extends Component {
       edit: false
     };
   }
+  componentWillUnmount(){
+    console.log("dieasdkjfhasldkfhasdf");
+  }
   componentDidMount() {
+    console.log("hi");
     const cursor = this;
     const { socket, channel } = this.state;
     socket.emit("calendarJoin", channel);
@@ -90,25 +95,27 @@ class Calendar extends Component {
           }
           socket.emit("editEvents", data);
         },
-        drop: function (date, event) {
-          var target = $(event.target);
-          //object type == week
-          var start = date.format();
-          var end;
-          if(typeof(date._i)!=="object") 
-            end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
-          else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
-          console.log(target)
-          var data = {
-            channel: cursor.state.channel,
-            id: Date.now(),
-            title: target.children(".title").text(),
-            contents: target.children(".contents").text(),
-            start: start,
-            end: end
-          };
-          socket.emit("sendEvents", data);
-        },
+          drop: function (date, event) {
+             var target = $(event.target);
+             //object type == week
+             var start = date.format();
+             var end;
+             if(typeof(date._i)!=="object")
+                 end = new Date(new Date(date._d).valueOf() + 1000*3600*24).toISOString().split('T')[0];
+             else end = new Date(new Date(date._d).valueOf() + 1000*3600).toISOString();
+             //console.log(target)
+             var data = {
+                 channel: cursor.state.channel,
+                 id: Date.now(),
+                 title: target.children(".title").text(),
+                 contents: target.children(".contents").text(),
+                 start: start,
+                 end: end
+             };
+             console.log(target.children('#id')[0].value);
+             $("#calendar").fullCalendar("removeEvents", [target.children('#id')[0].value]);
+             socket.emit("sendEvents", data);
+             },
         eventResize: function (event, jsevent){
           var start = event.start.format();
           var end = event.end.format();
@@ -129,6 +136,7 @@ class Calendar extends Component {
       });
     });
     socket.on("receiveEvents", async data => {
+      console.log("카드 receive");
       await this.setState({ events: this.state.events.concat(data.events) });
       $("#calendar").fullCalendar("renderEvents", [data.events]);
     });
@@ -136,14 +144,14 @@ class Calendar extends Component {
       var events= this.state.events;
       events[events.findIndex(x=>x.id===data.id)]=data;
       await this.setState({events:events});
-      $("#calendar").fullCalendar('removeEvents'); 
-      $("#calendar").fullCalendar('addEventSource', this.state.events);
+        await $("#calendar").fullCalendar('removeEvents');
+        await $("#calendar").fullCalendar('addEventSource', this.state.events);
       //fullcalendar update가 있었지만 정상작동하지 않음 
     });
 
     socket.on("deleteEvents", async data => {
       await this.setState({ events: data.events });
-      $("#calendar").fullCalendar("removeEvents", [data.id]);
+        await  $("#calendar").fullCalendar("removeEvents", [data.id]);
     });
   }
   deleteEvent() {
@@ -156,6 +164,7 @@ class Calendar extends Component {
         id="calendar"
         onClick={ () => document.getElementById("calendar-menus").classList.remove("active") }
       >
+          {this.state.channel}
         <div id="calendar-menus" className="calendar-menus">
           <div className="edit">
             <EditEvent 

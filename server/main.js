@@ -32,7 +32,15 @@ var channel;
 const dbName = 'Trip_Scheduler';
 
 io.on('connection', function (socket) {
-    console.log('connect');
+
+    socket.on('channel', async function (data) {
+        console.log('connect');
+        socket.join(data);
+
+        io.of('/').in(data).clients(function (err,clients) {
+            console.log(clients.length);
+        });
+    });
 /****************                                     채팅       ***************/
     socket.on('channelJoin', async function (data) {
         socket.join(data);
@@ -62,7 +70,7 @@ io.on('connection', function (socket) {
             {
                 ip: dataAddinfo.ip,
                 msg: dataAddinfo.msg,
-                date: dataAddinfo.date,
+                date: dataAdd+info.date,
                 channel: data.channel,
                 email: dataAddinfo.email,
                 username:dataAddinfo.username
@@ -130,6 +138,7 @@ io.on('connection', function (socket) {
         client.close();
     });
     socket.on('sendEvents', async (data) => {
+        console.log("카드 옮기기");
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const Events = await db.collection('Events');
@@ -147,6 +156,7 @@ io.on('connection', function (socket) {
             },
             { returnOriginal: false }
         );
+        console.log(data)
         io.sockets.in(data.channel).emit('receiveEvents', {events:data});
         client.close();
     });
@@ -187,7 +197,10 @@ io.on('connection', function (socket) {
 
     /***********************************8       그룹나가기        ***************/
     socket.on('channelLeave', function(data){
-        socket.leave(data);
+        console.log("방 탈출");
+        socket.leave(data,function (err) {
+            console.log(err);
+        });
     });
 });
 

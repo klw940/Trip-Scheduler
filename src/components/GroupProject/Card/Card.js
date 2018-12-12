@@ -17,6 +17,7 @@ class Card extends Component {
 
   componentDidMount() {
     let cursor = this;
+      var count =0 ; //전역변수로
     const { socket, channel } = this.state;
     socket.emit("cardJoin", channel);
     socket.on("cardreceive", async data => {
@@ -44,40 +45,43 @@ class Card extends Component {
         });
       }
       await this.setState({ cards: data.cards }); //comment: [cardsssss]   저장
-      let list = await this.state.cards.map(card => {
-        return (
-          <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu}>
-            <h3 className="title">{card.title}</h3>
-            <h5 className="contents">{card.contents}</h5>
-            <h4 className="start">{card.start}</h4>
-            <h4 className="end">{card.end}</h4>
-            {/* id는 캘린더 들어갈 때마다 변해야함 */}
-          </div>
-        );
-      });
-      await this.setState({ list: list });
-      $("#external-events .fc-event").each(function() {
-        // store data so the calendar knows to render an event upon drop
-        //초기값 있어야 함
-        $(this).data("event", { 
-          title: $.trim($(this).children(".title").text()), // use the element's text as the event title
-          contents: $.trim($(this).children(".contents").text()),
-          stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+        let list = await this.state.cards.map(card => {
+            return (
+                <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu}>
+                    <h3 className="title">{card.title}</h3>
+                    <h5 className="contents">{card.contents}</h5>
+                    <h4 className="start">{card.start}</h4>
+                    <h4 className="end">{card.end}</h4>
+                    {/* id는 캘린더 들어갈 때마다 변해야함 */}
+                    <input type="hidden" value={count++} id="id"/>
+                </div>
+            );
         });
-        // make the event draggable using jQuery UI
-        $(this).draggable({
-          zIndex: 999,
-          revert: true, // will cause the event to go back to its
-          revertDuration: 0, //  original position after the drag
-          stop: function(event, ui) {
+        await this.setState({ list: list });
+        $("#external-events .fc-event").each(function() {
+            // store data so the calendar knows to render an event upon drop
+            //초기값 있어야 함
             $(this).data("event", {
-              title: $.trim($(this).children(".title").text()), // use the element's text as the event title
-              contents: $.trim($(this).children(".contents").text()),
-              stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+                title: $.trim($(this).children(".title").text()), // use the element's text as the event title
+                id:  $(this).children('#id')[0].value,
+                contents: $.trim($(this).children(".contents").text()),
+                stick: true // maintaicn when user navigates (see docs on the renderEvent method)
             });
-          }
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true, // will cause the event to go back to its
+                revertDuration: 0, //  original position after the drag
+                stop: function(event, ui) {
+                    $(this).data("event", {
+                        title: $.trim($(this).children(".title").text()), // use the element's text as the event title
+                        contents: $.trim($(this).children(".contents").text()),
+                        id: $(this).children('#id')[0].value,
+                        stick: true // maintaicn when user navigates (see docs on the renderEvent method)
+                    });
+                }
+            });
         });
-      });
       socket.on("receiveCards", async data => {
         await cursor.setState({
           cards: this.state.cards.concat(data.events)
