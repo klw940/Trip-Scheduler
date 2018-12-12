@@ -85,7 +85,7 @@ class User_Group extends Component {
                         <Grid.Column width={12}>
                             <Grid.Row verticalAlign='middle' columns={2}>
                                 <Grid.Column>
-                                    <Button onClick={this.Logout}  floated='right' size='mini' color='red'>logout</Button>
+                                    <Button onClick={this.Logout} floated='right' size='mini' color='red'>logout</Button>
                                 </Grid.Column>
                                 <Grid.Column style={{ marginTop: '3em' }}>
                                     <Header as='h1'><Icon name="paper plane outline"/>{this.state.username}'s Group List</Header>
@@ -97,12 +97,10 @@ class User_Group extends Component {
                                 transitionAppearTimeout={1000}
                                 transitionEnter={false}
                                 transitionLeave={false}>
-                                <Grid.Row columns={1}>
-                                    <Grid.Column>
-                                        <Segment textAlign='left' >
+                                <Grid.Row centered columns={1}>
+                                        <Segment textAlign='left' style={{marginLeft: 'auto', marginRight: 'auto', width: '60%'}}>
                                             <Item.Group divided className="GroupList" >{list}</Item.Group>
                                         </Segment>
-                                    </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row style={{ marginTop: '3em' }}>
                                     <Grid.Column width={2}>
