@@ -43,7 +43,6 @@ io.on('connection', function (socket) {
     });
 /****************                                     채팅       ***************/
     socket.on('channelJoin', async function (data) {
-        socket.join(data);
         channel = data;
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
@@ -57,6 +56,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('send', async function (data) {
+        console.log("chat send");
+        console.log(data);
         let dataAddinfo = {
             ip: socket.handshake.address, 
             msg: data.msg, 
@@ -64,13 +65,14 @@ io.on('connection', function (socket) {
             email:data.email, 
             username: data.username
         };
+        console.log(dataAddinfo);
         const client = await MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
         const db = await client.db(dbName);
         const result = await db.collection('log').insert(
             {
                 ip: dataAddinfo.ip,
                 msg: dataAddinfo.msg,
-                date: dataAdd+info.date,
+                date: dataAddinfo.date,
                 channel: data.channel,
                 email: dataAddinfo.email,
                 username:dataAddinfo.username

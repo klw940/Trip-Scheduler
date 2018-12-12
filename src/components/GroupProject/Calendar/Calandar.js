@@ -26,6 +26,7 @@ class Calendar extends Component {
     const { socket, channel } = this.state;
     socket.emit("calendarJoin", channel);
     socket.on("calreceive", async data => {
+      console.log('hello!!');
       await this.setState({ events: this.state.events.concat(data.events) });
       await $("#calendar").fullCalendar({
         header: {

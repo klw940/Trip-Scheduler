@@ -4,7 +4,8 @@ import { Menu, Icon } from 'semantic-ui-react';
 import {Chat, Calendar, Card} from '../../components';
 import { PostData } from '../../containers';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:3001');
+import * as ReactDOM from "react-dom";
+var socket;
 
 
 class GroupMain extends Component {
@@ -20,14 +21,20 @@ class GroupMain extends Component {
             cardVisible: false,
         }
     }
-
+    componentWillMount(){
+        socket= io.connect('http://localhost:3001');
+        socket.emit("channel", this.state._id);
+    }
     componentDidMount(){
         //await this.state.socket.emit("channelLeave", this.state._id)
-        socket.emit("channel", this.state._id);
     }
 
     componentWillUnmount(){
+        var check
+        check = document.querySelector(".GroupMain");
+        ReactDOM.unmountComponentAtNode(check);
         socket.emit("channelLeave",this.state._id);
+        socket.disconnect();
     }
 
     viewCards = () => {
