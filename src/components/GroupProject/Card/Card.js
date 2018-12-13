@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import $ from "jquery";
 import "jquery-ui-dist/jquery-ui";
-import EditCard from './EditCard/EditCard';
 import "./Card.css";
-var card;
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -48,10 +46,10 @@ class Card extends Component {
         let list = await this.state.cards.map(card => {
             return (
                 <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-                    <h3 className="title">{card.title}</h3>
-                    <h5 className="contents">{card.contents}</h5>
-                    <h4 className="start">{card.start}</h4>
-                    <h4 className="end">{card.end}</h4>
+                    <h3 className="title">제목 : {card.title}</h3>
+                    <h6 className="start">시작예정 시간 : {card.start}</h6>
+                    <h6 className="end">마감예정 시간 : {card.end}</h6>
+                    <h5 className="contents">내용 : {card.contents}</h5>
                     {/* id는 캘린더 들어갈 때마다 변해야함 */}
                     <input type="hidden" value={count++} id="id"/>
                 </div>
@@ -92,14 +90,12 @@ class Card extends Component {
           cards: this.state.cards.concat(data.events)
         });
           let list = await this.state.cards.map(card => {
-              console.log(card);
               return (
                   <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-                      <h3 className="title" >{card.title}</h3>
-                      <h5 className="contents">{card.contents}</h5>
-                      <h4 className="start">{card.start}</h4>
-                      <h4 className="end">{card.end}</h4>
-                      {/* id는 캘린더 들어갈 때마다 변해야함 */}
+                      <h3 className="title">제목 : {card.title}</h3>
+                      <h6 className="start">시작예정 시간 : {card.start}</h6>
+                      <h6 className="end">마감예정 시간 : {card.end}</h6>
+                      <h5 className="contents">내용 : {card.contents}</h5>
                       <input type="hidden" value={count++} id="id"/>
                   </div>
               );
@@ -132,21 +128,18 @@ class Card extends Component {
       function onHeaderClick(event) {
         event.preventDefault();
         var temp = event.currentTarget;
-        console.log(temp);
         cursor.setState({ card: temp });
+       
       }
       socket.on("deleteCards", async data => {
-        console.log(data);
         await this.setState({ cards: data.cards });
         let list = await this.state.cards.map(card => {
-          console.log(card);
           return (
             <div className="fc-event" key={card.id} id={card.id} onContextMenu={onContextMenu} onMouseUp={onHeaderClick}>
-              <h3 className="title" >{card.title}</h3>
-              <h5 className="contents">{card.contents}</h5>
-              <h4 className="start">{card.start}</h4>
-              <h4 className="end">{card.end}</h4>
-              {/* id는 캘린더 들어갈 때마다 변해야함 */}
+                <h3 className="title">제목 : {card.title}</h3>
+                <h6 className="start">시작예정 시간 : {card.start}</h6>
+                <h6 className="end">마감예정 시간 : {card.end}</h6>
+                <h5 className="contents">내용 : {card.contents}</h5>
               <input type="hidden" value={count++} id="id" />
             </div>
           );
@@ -176,7 +169,8 @@ class Card extends Component {
             }
           });
         });
-      });
+      });///////////socketend
+      
     });
   }
   deleteCard(){
@@ -191,10 +185,6 @@ class Card extends Component {
         <h4>Card List</h4>
         {this.state.list}
         <div id="card-menus" className="card-menus">
-          <div className="edit">
-            <EditCard title={this.state.card} socket={this.props.socket} channel={this.state.channel} />
-            {/* start={this.state.start}  */}
-          </div>
           <div className="delete" onClick={() => this.deleteCard()}>
             삭제
           </div>

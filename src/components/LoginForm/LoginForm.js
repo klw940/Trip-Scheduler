@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Header, Image, Transition } from "semantic-ui-react";
+import { Grid, Header, Image } from "semantic-ui-react";
 import GoogleLogin from "react-google-login";
 import "./LoginForm.css";
 import {CSSTransitionGroup} from "react-transition-group";
@@ -56,8 +56,10 @@ class LoginForm extends Component {
                 transitionAppear={true}
                 transitionAppearTimeout={500}
                 transitionEnter={false}
+                // eslint-disable-next-line
                 transitionLeave={false}>
-                <Grid centered columns={2} verticalAlign='middle' className="login-form" style={{margin:'0', backgroundImage: 'url('+"background_image.jpg"+')', backgroundSize: 'cover'}}>
+                
+                <Grid centered columns={2} verticalAlign='middle' className="login-form" style={{margin:'0', backgroundImage: 'url(background_image.jpg)', backgroundSize: 'cover'}}>
                     <Grid.Row>
                         <Grid.Column width={6} textAlign='center'>
                             <CSSTransitionGroup

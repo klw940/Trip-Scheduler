@@ -110,7 +110,7 @@ io.on('connection', function (socket) {
         io.sockets.in(data.channel).emit('receiveCards', {events:events});
         client.close();
     });
-
+    
     socket.on('removeCards', async (data) => { //data는 eventid
         var temp = data.id
         console.log(parseFloat(temp))
@@ -123,7 +123,7 @@ io.on('connection', function (socket) {
             { returnOriginal: false }
         );
         console.log(result);
-        socket.emit('deleteCards', { cards: result.value.events });
+        io.sockets.in(data.channel).emit('deleteCards', { cards: result.value.events });
         client.close();
     });
 

@@ -47,7 +47,6 @@ class Chat extends Component {
             }
 
             function showMenu(x, y) {
-                console.log(y);
                 menu.style.top = y + "px";
                 const rootW = window.innerWidth * 0.11;
                 if (rootW < x) {
@@ -78,9 +77,7 @@ class Chat extends Component {
                 }
                 function mycheck() {
                     let content=item.msg;
-                    console.log(content)
                     content=item.msg.replace(/<br\/>/g, '\n');
-                    console.log(content)
                     if (item.email === my_email) {
                         return (
                             <div onClick={leftMouseListener}>
@@ -132,7 +129,6 @@ class Chat extends Component {
                 e.stopPropagation();
                 toggleOnOff(1);
                 showMenu(e.clientX, e.clientY);
-                console.log(e.target.textContent);
                 cursor.setState({ content: e.target.textContent });
             }
             await this.setState({ list: list });
@@ -143,9 +139,6 @@ class Chat extends Component {
                     document.querySelector(".chattingView-chatbox").scrollHeight
                 );
         });
-    }
-    componentWillUnmount() {
-        this.props.socket.emit("channelLeave", this.state.channel);
     }
     send() {
         let content=this.state.msg.replace(/\n|\r/g, '<br/>');
@@ -190,13 +183,10 @@ class Chat extends Component {
                     e.preventDefault();
                 }}
             >
-                <div id="context-menus" class="context-menus">
+                <div id="context-menus" className="context-menus">
                     <CreateCard content={this.state.content} socket={this.props.socket} channel={this.state.channel} />
                 </div>
                 <div className="chattingView-body">
-                    {this.state.email}
-                    <br />
-                    {this.state.channel}
                     <div className="chattingView-chatbox">
                         <div className="chattingView-chat">{this.state.list}</div>
                     </div>
