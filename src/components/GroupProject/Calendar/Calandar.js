@@ -99,8 +99,8 @@ class Calendar extends Component {
              var data = {
                  channel: cursor.state.channel,
                  id: Date.now(),
-                 title: target.children(".title").text(),
-                 contents: target.children(".contents").text(),
+                 title: target.children(".title").text().split(': ')[1],
+                 contents: target.children(".contents").text().split(': ')[1],
                  start: start,
                  end: end
              };

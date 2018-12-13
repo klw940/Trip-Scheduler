@@ -62,7 +62,6 @@ class GroupMain extends Component {
                                 this.id.value = "";
                                 return 0;
                             }
-                            console.log(this.state.groupid);
                             let data = {
                                 groupid: this.state.groupid,//그룹방
                                 newMemberid: this.id.value

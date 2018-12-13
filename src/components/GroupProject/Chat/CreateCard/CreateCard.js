@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import { PostData } from '../../../containers';
-import {Button, Grid, Input, Modal} from "semantic-ui-react";
+import {Button, Input, Modal} from "semantic-ui-react";
 import './CreateCard.css'
 class CreateCard extends Component {
 
@@ -15,10 +15,6 @@ class CreateCard extends Component {
     }
 
     createCard = () => {
-        // console.log(document.getElementById("card_name2").children[0].children[0].value);
-        // console.log(document.getElementById("card_start2").children[0].children[0].value);
-        // console.log(document.getElementById("card_end2").children[0].children[0].value);
-        // console.log(this.props.content);
         var data = {
             title: document.getElementById("card_name2").children[0].children[0].value,
             start : document.getElementById("card_start2").children[0].children[0].value,
@@ -26,7 +22,6 @@ class CreateCard extends Component {
             content:this.props.content
         }
         this.props.socket.emit('createcard', {card : data,channel : this.state.channel});
-        //console.log(data);
         this.close();
     }
 
@@ -50,9 +45,6 @@ class CreateCard extends Component {
         var today_Y=today.getFullYear();
         var today_M=addZero(today.getMonth());
         var today_D=addZero(today.getDate());
-        // console.log(today_Y);
-        // console.log(today_M);
-        // console.log(today_D);
         this.setState({date : ""+today_Y+"-"+today_M+"-"+today_D})
     }
 
@@ -71,68 +63,11 @@ class CreateCard extends Component {
                         width:700
                     }}
                 >
-
                     <Modal.Header>카드 만들기</Modal.Header>
                     <Modal.Description
                         style={{
                             padding:50
                         }}>
-                        {/*<Grid centered columns={5}>*/}
-                        {/*<Grid.Row>*/}
-                        {/*<Grid.Column width={1}>*/}
-                        {/*카드명 :*/}
-                        {/*</Grid.Column>*/}
-                        {/*<Grid.Column width={4}>*/}
-                        {/*<Input type="text"  placeholder='카드명 입력' />*/}
-                        {/*</Grid.Column>*/}
-                        {/*</Grid.Row>*/}
-
-                        {/*<Grid.Row>*/}
-                        {/*<Grid.Column width={1}>*/}
-                        {/*시작 시간*/}
-                        {/*</Grid.Column>*/}
-                        {/*<Grid.Column width={4}>*/}
-                        {/*<Input type="date"/>*/}
-                        {/*</Grid.Column>*/}
-                        {/*</Grid.Row>*/}
-
-                        {/*<Grid.Row>*/}
-                        {/*<Grid.Column width={1}>*/}
-                        {/*마감 시간*/}
-                        {/*</Grid.Column>*/}
-                        {/*<Grid.Column width={4}>*/}
-                        {/*<Input type="date"/>*/}
-                        {/*</Grid.Column>*/}
-                        {/*</Grid.Row>*/}
-
-                        {/*<Grid.Row>*/}
-                        {/*<Grid.Column width={5}>*/}
-                        {/*<Input type="text"  value={this.props.content} />*/}
-                        {/*</Grid.Column>*/}
-                        {/*</Grid.Row>*/}
-
-                        {/*<Grid.Row>*/}
-                        {/*<Grid.Column width={2}>*/}
-                        {/*<Button onClick={this.createCard} color="green">Create</Button>*/}
-                        {/*</Grid.Column>*/}
-                        {/*<Grid.Column width={1}></Grid.Column>*/}
-                        {/*<Grid.Column width={2}>*/}
-                        {/*<Button onClick={() => this.close()} color="red">Close</Button>*/}
-                        {/*</Grid.Column>*/}
-                        {/*</Grid.Row>*/}
-                        {/*</Grid>*/}
-                        {/*<div className="grid-container">*/}
-                        {/*<div className="grid-cardname1">카드명</div>*/}
-                        {/*<div className="grid-cardname2"><Input type="text"  placeholder='카드명 입력' /></div>*/}
-                        {/*<div className="grid-starttime1">시작시간</div>*/}
-                        {/*<div className="grid-starttime2"><Input type="date"/></div>*/}
-                        {/*<div className="grid-endtime1">마감시간</div>*/}
-                        {/*<div className="grid-endtime2"><Input type="date"/></div>*/}
-                        {/*<div className="grid-content1">내용</div>*/}
-                        {/*<div className="grid-content2"><Input type="text"  value={this.props.content} /></div>*/}
-                        {/*<div className="grid-create"><Button onClick={this.createCard} color="green">Create</Button></div>*/}
-                        {/*<div className="grid-close"><Button onClick={() => this.close()} color="red">Close</Button></div>*/}
-                        {/*</div>*/}
                         <article>
                             <div className="card_section" id="card_name1">카드명</div>
                             <div className="card_section" id="card_name2"><Input className="card_name2_input" type="text"  placeholder='카드명 입력' /></div>
